@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Денис Морев](https://up.htmlacademy.ru/ecmascript/18/user/1451793).
-* Наставник: `Неизвестно`.
+* Наставник: [Полина Шнайдер](https://htmlacademy.ru/profile/id1178327).
 
 ---
 
