@@ -6,8 +6,10 @@ import SortView from './view/sort-view.js';
 import FooterStatisticsView from './view/footer-statistics-view.js';
 
 import FilmsPresenter from './presenter/films-presenter.js';
+import FilmDetailsPresenter from './presenter/film-details-presenter.js';
 
 const filmsPresenter = new FilmsPresenter();
+const filmDetailsPresenter = new FilmDetailsPresenter();
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -20,3 +22,4 @@ render(new SortView(), siteMainElement);
 render(new FooterStatisticsView(), footerStatisticsElement);
 
 filmsPresenter.init(siteMainElement);
+filmDetailsPresenter.init(siteFooterElement);
