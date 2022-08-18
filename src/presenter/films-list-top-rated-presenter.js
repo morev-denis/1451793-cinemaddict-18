@@ -15,6 +15,7 @@ export default class FilmsListTopRatedPresenter {
 
   init = (filmsListContainer) => {
     this.filmsListContainer = filmsListContainer;
+
     render(this.filmsListTopRatedComponent, filmsListContainer);
 
     filmsListContainerPresenter.init(this.filmsListTopRatedComponent.getElement(), 2);

@@ -8,6 +8,7 @@ export default class FilmsListContainerPresenter {
 
   init = (filmsListContainer, filmsCount) => {
     this.filmsListContainer = filmsListContainer;
+
     render(this.filmsListContainerComponent, filmsListContainer);
 
     for (let i = 0; i < filmsCount; i++) {
