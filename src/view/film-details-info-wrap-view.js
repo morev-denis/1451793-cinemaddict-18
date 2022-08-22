@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-const filmDetailsInfoWrapTemplate = () =>
+const createFilmDetailsInfoWrapTemplate = () =>
   `<div class="film-details__info-wrap">
   </div>`;
 
 export default class FilmDetailsInfoWrapView {
   getTemplate() {
-    return filmDetailsInfoWrapTemplate;
+    return createFilmDetailsInfoWrapTemplate();
   }
 
   getElement() {

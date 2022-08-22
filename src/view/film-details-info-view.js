@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const filmDetailsInfoTemplate = () =>
+const createFilmDetailsInfoTemplate = () =>
   `<div class="film-details__info">
     <div class="film-details__info-head">
       <div class="film-details__title-wrap">
@@ -54,7 +54,7 @@ const filmDetailsInfoTemplate = () =>
 
 export default class FilmDetailsInfoView {
   getTemplate() {
-    return filmDetailsInfoTemplate;
+    return createFilmDetailsInfoTemplate();
   }
 
   getElement() {

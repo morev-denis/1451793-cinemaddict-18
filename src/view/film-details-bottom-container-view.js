@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const filmDetailsBottomContainerTemplate = () =>
+const createFilmDetailsBottomContainerTemplate = () =>
   `<div class="film-details__bottom-container">
     <section class="film-details__comments-wrap">
       <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
@@ -9,7 +9,7 @@ const filmDetailsBottomContainerTemplate = () =>
 
 export default class FilmDetailsBottomContainerView {
   getTemplate() {
-    return filmDetailsBottomContainerTemplate;
+    return createFilmDetailsBottomContainerTemplate();
   }
 
   getElement() {

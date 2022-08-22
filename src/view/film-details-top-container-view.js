@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-const filmDetailsTopContainerTemplate = () =>
+const createFilmDetailsTopContainerTemplate = () =>
   `<div class="film-details__top-container">
   </div>`;
 
 export default class FilmDetailsTopContainerView {
   getTemplate() {
-    return filmDetailsTopContainerTemplate;
+    return createFilmDetailsTopContainerTemplate();
   }
 
   getElement() {

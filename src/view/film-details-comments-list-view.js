@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-const filmDetailsCommentsListTemplate = () =>
+const createFilmDetailsCommentsListTemplate = () =>
   `<ul class="film-details__comments-list">
   </ul>`;
 
 export default class FilmDetailsCommentsListView {
   getTemplate() {
-    return filmDetailsCommentsListTemplate;
+    return createFilmDetailsCommentsListTemplate();
   }
 
   getElement() {

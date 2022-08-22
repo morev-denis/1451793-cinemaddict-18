@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const filmDetailsFormTemplate = () =>
+const createFilmDetailsFormTemplate = () =>
   `<form class="film-details__new-comment" action="" method="get">
     <div class="film-details__add-emoji-label"></div>
 
@@ -33,7 +33,7 @@ const filmDetailsFormTemplate = () =>
 
 export default class FilmDetailsFormView {
   getTemplate() {
-    return filmDetailsFormTemplate;
+    return createFilmDetailsFormTemplate();
   }
 
   getElement() {

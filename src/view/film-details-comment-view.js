@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const filmDetailsCommentTemplate = () =>
+const createFilmDetailsCommentTemplate = () =>
   `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
       <img src="./images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
@@ -17,7 +17,7 @@ const filmDetailsCommentTemplate = () =>
 
 export default class FilmDetailsCommentView {
   getTemplate() {
-    return filmDetailsCommentTemplate;
+    return createFilmDetailsCommentTemplate();
   }
 
   getElement() {
