@@ -1,4 +1,4 @@
-import { FILMS_COUNT, MOST_COMMENTED_FILMS_COUNT, TOP_RATED_FILMS_COUNT } from '../constants.js';
+import { MOST_COMMENTED_FILMS_COUNT, TOP_RATED_FILMS_COUNT } from '../constants.js';
 
 import { render } from '../render.js';
 
@@ -20,8 +20,10 @@ export default class FilmsPresenter {
   showMoreButtonComponent = new ShowMoreButtonView();
   filmsListTopRatedComponent = new FilmsListTopRatedView();
 
-  init = (filmsContainer) => {
+  init = (filmsContainer, filmsModel) => {
     this.filmsContainer = filmsContainer;
+    this.filmsModel = filmsModel;
+    this.films = [...this.filmsModel.getFilms()];
 
     render(this.filmsComponent, filmsContainer);
 
@@ -29,8 +31,8 @@ export default class FilmsPresenter {
 
     render(this.filmsListContainerComponent, this.filmsListComponent.getElement());
 
-    for (let i = 0; i < FILMS_COUNT; i++) {
-      render(new FilmCardView(), this.filmsListContainerComponent.getElement());
+    for (let i = 0; i < this.films.length; i++) {
+      render(new FilmCardView(this.films[i]), this.filmsListContainerComponent.getElement());
     }
 
     render(this.showMoreButtonComponent, this.filmsListComponent.getElement());
