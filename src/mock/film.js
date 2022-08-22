@@ -1,11 +1,11 @@
 export const generateFilm = () => ({
   id: '0',
-  comments: [],
+  comments: [1, 2],
   filmInfo: {
     title: 'A Little Pony Without The Carpet',
     alternativeTitle: 'Laziness Who Sold Themselves',
     totalRating: 5.3,
-    poster: 'images/posters/blue-blazes.jpg',
+    poster: 'images/posters/santa-claus-conquers-the-martians.jpg',
     ageRating: 0,
     director: 'Tom Ford',
     writers: ['Takeshi Kitano'],

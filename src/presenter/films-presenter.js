@@ -42,7 +42,10 @@ export default class FilmsPresenter {
     render(this.filmsListTopRatedContainerComponent, this.filmsListTopRatedComponent.getElement());
 
     for (let i = 0; i < TOP_RATED_FILMS_COUNT; i++) {
-      render(new FilmCardView(), this.filmsListTopRatedContainerComponent.getElement());
+      render(
+        new FilmCardView(this.films[i]),
+        this.filmsListTopRatedContainerComponent.getElement(),
+      );
     }
 
     render(this.filmsListMostCommentedComponent, this.filmsComponent.getElement());
@@ -53,7 +56,10 @@ export default class FilmsPresenter {
     );
 
     for (let i = 0; i < MOST_COMMENTED_FILMS_COUNT; i++) {
-      render(new FilmCardView(), this.filmsListMostCommentedContainerComponent.getElement());
+      render(
+        new FilmCardView(this.films[i]),
+        this.filmsListMostCommentedContainerComponent.getElement(),
+      );
     }
   };
 }
