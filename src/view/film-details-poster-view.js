@@ -2,13 +2,13 @@ import { createElement } from '../render.js';
 
 const createFilmDetailsPosterTemplate = (film) => {
   const {
-    filmInfo: { title, poster },
+    filmInfo: { title, poster, ageRating },
   } = film;
 
   return `
     <div class="film-details__poster">
       <img class="film-details__poster-img" src=${poster} alt="Poster of the ${title}">
-      <p class="film-details__age">18+</p>
+      <p class="film-details__age">${ageRating}+</p>
     </div>`;
 };
 
