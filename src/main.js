@@ -26,4 +26,4 @@ render(new SortView(), siteMainElement);
 render(new FooterStatisticsView(), footerStatisticsElement);
 
 filmsPresenter.init(siteMainElement, filmsModel);
-// filmDetailsPresenter.init(siteFooterElement);
+filmDetailsPresenter.init(siteFooterElement, filmsModel);

@@ -31,8 +31,10 @@ export default class FilmDetailsPresenter {
 
   filmDetailsFormComponent = new FilmDetailsFormView();
 
-  init = (filmDetailsContainer) => {
+  init = (filmDetailsContainer, filmsModel) => {
     this.filmDetailsContainer = filmDetailsContainer;
+    this.filmsModel = filmsModel;
+    this.films = [...this.filmsModel.getFilms()];
 
     hideOverflow();
 
@@ -47,9 +49,9 @@ export default class FilmDetailsPresenter {
 
     render(this.filmDetailsInfoWrapComponent, this.filmDetailsTopContainerComponent.getElement());
 
-    render(this.FilmDetailsPosterComponent, this.filmDetailsInfoWrapComponent.getElement());
+    render(new FilmDetailsPosterView(this.films[0]), this.filmDetailsInfoWrapComponent.getElement());
 
-    render(this.filmDetailsInfoComponent, this.filmDetailsInfoWrapComponent.getElement());
+    render(new FilmDetailsInfoView(this.films[0]), this.filmDetailsInfoWrapComponent.getElement());
 
     render(this.filmDetailsControlsComponent, this.filmDetailsTopContainerComponent.getElement());
 
@@ -58,7 +60,10 @@ export default class FilmDetailsPresenter {
       this.filmDetailsComponent.getElement().firstElementChild,
     );
 
-    render(this.filmDetailsCommentsListComponent, this.filmDetailsBottomContainerComponent.getElement().firstElementChild,);
+    render(
+      this.filmDetailsCommentsListComponent,
+      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+    );
 
     for (let i = 0; i < 4; i++) {
       render(new FilmDetailsCommentView(), this.filmDetailsCommentsListComponent.getElement());

@@ -1,14 +1,24 @@
 import { createElement } from '../render.js';
 
-const createFilmDetailsPosterTemplate = () =>
-  `<div class="film-details__poster">
-    <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
-    <p class="film-details__age">18+</p>
-  </div>`;
+const createFilmDetailsPosterTemplate = (film) => {
+  const {
+    filmInfo: { title, poster },
+  } = film;
+
+  return `
+    <div class="film-details__poster">
+      <img class="film-details__poster-img" src=${poster} alt="Poster of the ${title}">
+      <p class="film-details__age">18+</p>
+    </div>`;
+};
 
 export default class FilmDetailsPosterView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmDetailsPosterTemplate();
+    return createFilmDetailsPosterTemplate(this.film);
   }
 
   getElement() {
