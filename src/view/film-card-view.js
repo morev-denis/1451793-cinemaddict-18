@@ -29,8 +29,8 @@ const createFilmCardTemplate = (film) => {
         </p>
         <img src=${poster} alt="Poster of the ${title}" class="film-card__poster">
         <p class="film-card__description">${
-          description.length > 140 ? description.slice(0, 139) + '…' : description
-        }</p>
+  description.length > 140 ? `${description.slice(0, 139) }…` : description
+}</p>
         <span class="film-card__comments">${comments.length} comments</span>
       </a>
       <div class="film-card__controls">
