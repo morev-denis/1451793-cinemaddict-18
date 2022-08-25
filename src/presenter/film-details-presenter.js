@@ -8,6 +8,7 @@ import FilmDetailsPosterView from '../view/film-details-poster-view.js';
 import FilmDetailsInfoView from '../view/film-details-info-view.js';
 import FilmDetailsControlsView from '../view/film-details-controls-view.js';
 import FilmDetailsBottomContainerView from '../view/film-details-bottom-container-view.js';
+import FilmDetailsCommentsTitleView from '../view/film-details-comments-title-view.js';
 import FilmDetailsCommentsListView from '../view/film-details-comments-list-view.js';
 import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 import FilmDetailsFormView from '../view/film-details-form-view.js';
@@ -27,6 +28,7 @@ export default class FilmDetailsPresenter {
   filmDetailsInfoComponent = new FilmDetailsInfoView();
   filmDetailsControlsComponent = new FilmDetailsControlsView();
   filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
+  filmDetailsCommentsTitleComponent = new FilmDetailsCommentsTitleView();
   filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();
   filmDetailsFormComponent = new FilmDetailsFormView();
 
@@ -35,7 +37,7 @@ export default class FilmDetailsPresenter {
     this.filmsModel = filmsModel;
     this.films = [...this.filmsModel.getFilms()];
     this.commentsModel = commentsModel;
-    this.comments = [...this.commentsModel.getComments()];
+    this.comments = [...this.commentsModel.getComments(this.films[0])];
 
     hideOverflow();
 
@@ -65,11 +67,16 @@ export default class FilmDetailsPresenter {
     );
 
     render(
+      new FilmDetailsCommentsTitleView(this.comments),
+      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+    );
+
+    render(
       this.filmDetailsCommentsListComponent,
       this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
     );
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < this.comments.length; i++) {
       render(
         new FilmDetailsCommentView(this.comments[i]),
         this.filmDetailsCommentsListComponent.getElement(),

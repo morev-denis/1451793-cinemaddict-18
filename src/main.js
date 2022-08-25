@@ -15,7 +15,7 @@ const filmsPresenter = new FilmsPresenter();
 const filmDetailsPresenter = new FilmDetailsPresenter();
 
 const filmsModel = new FilmsModel();
-const commentsModel = new CommentsModel();
+const commentsModel = new CommentsModel(filmsModel);
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
