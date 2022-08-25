@@ -1,6 +1,7 @@
 const FILMS_COUNT = 5;
 const MOST_COMMENTED_FILMS_COUNT = 2;
 const TOP_RATED_FILMS_COUNT = 2;
+const MAX_COMMENTS_ON_FILM = 5;
 
 const CommentLength = {
   MIN: 0,
@@ -76,10 +77,32 @@ const FilmMockData = {
   ],
 };
 
+const CommentMockData = {
+  AUTHORS: ['Doctor Eggman', 'Hello Kitty', 'Nanako Dojima', 'Relm Arrowny'],
+
+  COMMENTS: [
+    'The movie started out pretty innocently, and for the first 20 minutes, I was wondering where the movie was going.',
+    'I have only ever seen this film once, I only ever want to see this film once and I will only ever need to see this film once.',
+    'Ive seen this film one time in 1994. This is one of the best movies ever made, but many scenes of the film are so brutal, that Im afraid to see this film for a second time.',
+    'This is probably the most important movie of director Steven Spielbergs career.',
+  ],
+  DATES: [
+    '1999-01-19T10:14:30.576Z',
+    '2020-11-09T12:03:00.526Z',
+    '2021-12-29T22:04:01.573Z',
+    '2022-05-01T23:54:59.776Z',
+    '2000-04-18T01:59:11.556Z',
+  ],
+
+  EMOTIONS: ['smile', 'sleeping', 'puke', 'angry'],
+};
+
 export {
   FILMS_COUNT,
   MOST_COMMENTED_FILMS_COUNT,
   TOP_RATED_FILMS_COUNT,
+  MAX_COMMENTS_ON_FILM,
   FilmMockData,
+  CommentMockData,
   CommentLength,
 };
