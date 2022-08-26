@@ -1,3 +1,5 @@
+import { MOST_COMMENTED_FILMS_COUNT, TOP_RATED_FILMS_COUNT } from '../constants.js';
+
 import { render } from '../render.js';
 
 import FilmsView from '../view/films-view.js';
@@ -18,8 +20,10 @@ export default class FilmsPresenter {
   showMoreButtonComponent = new ShowMoreButtonView();
   filmsListTopRatedComponent = new FilmsListTopRatedView();
 
-  init = (filmsContainer) => {
+  init = (filmsContainer, filmsModel) => {
     this.filmsContainer = filmsContainer;
+    this.filmsModel = filmsModel;
+    this.films = [...this.filmsModel.getFilms()];
 
     render(this.filmsComponent, filmsContainer);
 
@@ -27,8 +31,8 @@ export default class FilmsPresenter {
 
     render(this.filmsListContainerComponent, this.filmsListComponent.getElement());
 
-    for (let i = 0; i < 5; i++) {
-      render(new FilmCardView(), this.filmsListContainerComponent.getElement());
+    for (let i = 0; i < this.films.length; i++) {
+      render(new FilmCardView(this.films[i]), this.filmsListContainerComponent.getElement());
     }
 
     render(this.showMoreButtonComponent, this.filmsListComponent.getElement());
@@ -37,8 +41,11 @@ export default class FilmsPresenter {
 
     render(this.filmsListTopRatedContainerComponent, this.filmsListTopRatedComponent.getElement());
 
-    for (let i = 0; i < 2; i++) {
-      render(new FilmCardView(), this.filmsListTopRatedContainerComponent.getElement());
+    for (let i = 0; i < TOP_RATED_FILMS_COUNT; i++) {
+      render(
+        new FilmCardView(this.films[i]),
+        this.filmsListTopRatedContainerComponent.getElement(),
+      );
     }
 
     render(this.filmsListMostCommentedComponent, this.filmsComponent.getElement());
@@ -48,8 +55,11 @@ export default class FilmsPresenter {
       this.filmsListMostCommentedComponent.getElement(),
     );
 
-    for (let i = 0; i < 2; i++) {
-      render(new FilmCardView(), this.filmsListMostCommentedContainerComponent.getElement());
+    for (let i = 0; i < MOST_COMMENTED_FILMS_COUNT; i++) {
+      render(
+        new FilmCardView(this.films[i]),
+        this.filmsListMostCommentedContainerComponent.getElement(),
+      );
     }
   };
 }

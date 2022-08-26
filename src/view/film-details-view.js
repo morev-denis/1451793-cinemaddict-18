@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const filmDetailsTemplate = () =>
+const createFilmDetailsTemplate = () =>
   `<section class="film-details">
     <div class="film-details__inner">
     </div>
@@ -8,7 +8,7 @@ const filmDetailsTemplate = () =>
 
 export default class FilmDetailsView {
   getTemplate() {
-    return filmDetailsTemplate;
+    return createFilmDetailsTemplate();
   }
 
   getElement() {

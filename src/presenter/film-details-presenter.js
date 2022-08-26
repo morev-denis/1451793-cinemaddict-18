@@ -8,6 +8,7 @@ import FilmDetailsPosterView from '../view/film-details-poster-view.js';
 import FilmDetailsInfoView from '../view/film-details-info-view.js';
 import FilmDetailsControlsView from '../view/film-details-controls-view.js';
 import FilmDetailsBottomContainerView from '../view/film-details-bottom-container-view.js';
+import FilmDetailsCommentsTitleView from '../view/film-details-comments-title-view.js';
 import FilmDetailsCommentsListView from '../view/film-details-comments-list-view.js';
 import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 import FilmDetailsFormView from '../view/film-details-form-view.js';
@@ -27,12 +28,16 @@ export default class FilmDetailsPresenter {
   filmDetailsInfoComponent = new FilmDetailsInfoView();
   filmDetailsControlsComponent = new FilmDetailsControlsView();
   filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
+  filmDetailsCommentsTitleComponent = new FilmDetailsCommentsTitleView();
   filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();
-
   filmDetailsFormComponent = new FilmDetailsFormView();
 
-  init = (filmDetailsContainer) => {
+  init = (filmDetailsContainer, filmsModel, commentsModel) => {
     this.filmDetailsContainer = filmDetailsContainer;
+    this.filmsModel = filmsModel;
+    this.films = [...this.filmsModel.getFilms()];
+    this.commentsModel = commentsModel;
+    this.comments = [...this.commentsModel.getComments(this.films[0])];
 
     hideOverflow();
 
@@ -47,9 +52,12 @@ export default class FilmDetailsPresenter {
 
     render(this.filmDetailsInfoWrapComponent, this.filmDetailsTopContainerComponent.getElement());
 
-    render(this.FilmDetailsPosterComponent, this.filmDetailsInfoWrapComponent.getElement());
+    render(
+      new FilmDetailsPosterView(this.films[0]),
+      this.filmDetailsInfoWrapComponent.getElement(),
+    );
 
-    render(this.filmDetailsInfoComponent, this.filmDetailsInfoWrapComponent.getElement());
+    render(new FilmDetailsInfoView(this.films[0]), this.filmDetailsInfoWrapComponent.getElement());
 
     render(this.filmDetailsControlsComponent, this.filmDetailsTopContainerComponent.getElement());
 
@@ -58,10 +66,21 @@ export default class FilmDetailsPresenter {
       this.filmDetailsComponent.getElement().firstElementChild,
     );
 
-    render(this.filmDetailsCommentsListComponent, this.filmDetailsBottomContainerComponent.getElement().firstElementChild,);
+    render(
+      new FilmDetailsCommentsTitleView(this.comments),
+      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+    );
 
-    for (let i = 0; i < 4; i++) {
-      render(new FilmDetailsCommentView(), this.filmDetailsCommentsListComponent.getElement());
+    render(
+      this.filmDetailsCommentsListComponent,
+      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+    );
+
+    for (let i = 0; i < this.comments.length; i++) {
+      render(
+        new FilmDetailsCommentView(this.comments[i]),
+        this.filmDetailsCommentsListComponent.getElement(),
+      );
     }
 
     render(
