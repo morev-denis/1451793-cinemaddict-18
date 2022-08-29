@@ -20,72 +20,72 @@ const hideOverflow = () => {
 };
 
 export default class FilmDetailsPresenter {
-  filmDetailsComponent = new FilmDetailsView();
-  filmDetailsTopContainerComponent = new FilmDetailsTopContainerView();
-  filmDetailsCloseComponent = new FilmDetailsCloseView();
-  filmDetailsInfoWrapComponent = new FilmDetailsInfoWrapView();
-  FilmDetailsPosterComponent = new FilmDetailsPosterView();
-  filmDetailsInfoComponent = new FilmDetailsInfoView();
-  filmDetailsControlsComponent = new FilmDetailsControlsView();
-  filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
-  filmDetailsCommentsTitleComponent = new FilmDetailsCommentsTitleView();
-  filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();
-  filmDetailsFormComponent = new FilmDetailsFormView();
+  #filmDetailsComponent = new FilmDetailsView();
+  #filmDetailsTopContainerComponent = new FilmDetailsTopContainerView();
+  #filmDetailsCloseComponent = new FilmDetailsCloseView();
+  #filmDetailsInfoWrapComponent = new FilmDetailsInfoWrapView();
+  #filmDetailsControlsComponent = new FilmDetailsControlsView();
+  #filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
+  #filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();
+  #filmDetailsFormComponent = new FilmDetailsFormView();
+
+  #filmDetailsContainer = null;
+  #filmsModel = null;
+  #films = [];
+  #commentsModel = null;
+  #comments = [];
 
   init = (filmDetailsContainer, filmsModel, commentsModel) => {
-    this.filmDetailsContainer = filmDetailsContainer;
-    this.filmsModel = filmsModel;
-    this.films = [...this.filmsModel.getFilms()];
-    this.commentsModel = commentsModel;
-    this.comments = [...this.commentsModel.getComments(this.films[0])];
+    this.#filmDetailsContainer = filmDetailsContainer;
+    this.#filmsModel = filmsModel;
+    this.#films = [...this.#filmsModel.films];
+    this.#commentsModel = commentsModel;
+    this.#comments = [...this.#commentsModel.getComments(this.#films[0])];
 
     hideOverflow();
 
-    render(this.filmDetailsComponent, this.filmDetailsContainer, RenderPosition.AFTEREND);
+    render(this.#filmDetailsComponent, this.#filmDetailsContainer, RenderPosition.AFTEREND);
 
     render(
-      this.filmDetailsTopContainerComponent,
-      this.filmDetailsComponent.getElement().firstElementChild,
+      this.#filmDetailsTopContainerComponent,
+      this.#filmDetailsComponent.element.firstElementChild,
     );
 
-    render(this.filmDetailsCloseComponent, this.filmDetailsTopContainerComponent.getElement());
+    render(this.#filmDetailsCloseComponent, this.#filmDetailsTopContainerComponent.element);
 
-    render(this.filmDetailsInfoWrapComponent, this.filmDetailsTopContainerComponent.getElement());
+    render(this.#filmDetailsInfoWrapComponent, this.#filmDetailsTopContainerComponent.element);
 
-    render(
-      new FilmDetailsPosterView(this.films[0]),
-      this.filmDetailsInfoWrapComponent.getElement(),
-    );
+    render(new FilmDetailsPosterView(this.#films[0]), this.#filmDetailsInfoWrapComponent.element);
 
-    render(new FilmDetailsInfoView(this.films[0]), this.filmDetailsInfoWrapComponent.getElement());
+    render(new FilmDetailsInfoView(this.#films[0]), this.#filmDetailsInfoWrapComponent.element);
 
-    render(this.filmDetailsControlsComponent, this.filmDetailsTopContainerComponent.getElement());
+    render(this.#filmDetailsControlsComponent, this.#filmDetailsTopContainerComponent.element);
 
     render(
-      this.filmDetailsBottomContainerComponent,
-      this.filmDetailsComponent.getElement().firstElementChild,
+      this.#filmDetailsBottomContainerComponent,
+      this.#filmDetailsComponent.element.firstElementChild,
     );
 
     render(
-      new FilmDetailsCommentsTitleView(this.comments),
-      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+      new FilmDetailsCommentsTitleView(this.#comments),
+      this.#filmDetailsBottomContainerComponent.element.firstElementChild,
     );
 
     render(
-      this.filmDetailsCommentsListComponent,
-      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+      this.#filmDetailsCommentsListComponent,
+      this.#filmDetailsBottomContainerComponent.element.firstElementChild,
     );
 
-    for (let i = 0; i < this.comments.length; i++) {
+    for (let i = 0; i < this.#comments.length; i++) {
       render(
-        new FilmDetailsCommentView(this.comments[i]),
-        this.filmDetailsCommentsListComponent.getElement(),
+        new FilmDetailsCommentView(this.#comments[i]),
+        this.#filmDetailsCommentsListComponent.element,
       );
     }
 
     render(
-      this.filmDetailsFormComponent,
-      this.filmDetailsBottomContainerComponent.getElement().firstElementChild,
+      this.#filmDetailsFormComponent,
+      this.#filmDetailsBottomContainerComponent.element.firstElementChild,
     );
   };
 }
