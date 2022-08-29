@@ -19,6 +19,10 @@ const hideOverflow = () => {
   bodyElement.classList.add('hide-overflow');
 };
 
+const showOverflow = () => {
+  bodyElement.classList.remove('hide-overflow');
+};
+
 export default class FilmDetailsPresenter {
   #filmDetailsComponent = new FilmDetailsView();
   #filmDetailsTopContainerComponent = new FilmDetailsTopContainerView();
@@ -52,6 +56,29 @@ export default class FilmDetailsPresenter {
     );
 
     render(this.#filmDetailsCloseComponent, this.#filmDetailsTopContainerComponent.element);
+
+    const filmDetailsCloseBtn = this.#filmDetailsCloseComponent.element.querySelector(
+      '.film-details__close-btn',
+    );
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        this.#filmDetailsComponent.element.remove();
+        showOverflow();
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
+    const onCloseBtnClick = () => {
+      this.#filmDetailsComponent.element.remove();
+      showOverflow();
+      document.removeEventListener('keydown', onEscKeyDown);
+    };
+
+    document.addEventListener('keydown', onEscKeyDown);
+
+    filmDetailsCloseBtn.addEventListener('click', onCloseBtnClick);
 
     render(this.#filmDetailsInfoWrapComponent, this.#filmDetailsTopContainerComponent.element);
 
