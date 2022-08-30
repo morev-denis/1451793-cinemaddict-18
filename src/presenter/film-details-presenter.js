@@ -25,7 +25,6 @@ export default class FilmDetailsPresenter {
   #filmDetailsComponent = new FilmDetailsView();
   #filmDetailsTopContainerComponent = new FilmDetailsTopContainerView();
   #filmDetailsCloseComponent = new FilmDetailsCloseView();
-  // #filmDetailsInfoWrapComponent = new FilmDetailsInfoWrapView();
   #filmDetailsControlsComponent = new FilmDetailsControlsView();
   #filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
   #filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();

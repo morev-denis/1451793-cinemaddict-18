@@ -36,7 +36,7 @@ export default class FilmsPresenter {
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
     for (let i = 0; i < this.#films.length; i++) {
-      render(new FilmCardView(this.#films[i]), this.#filmsListContainerComponent.element);
+      this.#renderFilmCard(this.#films[i], this.#filmsListContainerComponent.element);
     }
 
     render(this.#showMoreButtonComponent, this.#filmsListComponent.element);
@@ -46,7 +46,7 @@ export default class FilmsPresenter {
     render(this.#filmsListTopRatedContainerComponent, this.#filmsListTopRatedComponent.element);
 
     for (let i = 0; i < TOP_RATED_FILMS_COUNT; i++) {
-      render(new FilmCardView(this.#films[i]), this.#filmsListTopRatedContainerComponent.element);
+      this.#renderFilmCard(this.#films[i], this.#filmsListTopRatedContainerComponent.element);
     }
 
     render(this.#filmsListMostCommentedComponent, this.#filmsComponent.element);
@@ -57,10 +57,12 @@ export default class FilmsPresenter {
     );
 
     for (let i = 0; i < MOST_COMMENTED_FILMS_COUNT; i++) {
-      render(
-        new FilmCardView(this.#films[i]),
-        this.#filmsListMostCommentedContainerComponent.element,
-      );
+      this.#renderFilmCard(this.#films[i], this.#filmsListMostCommentedContainerComponent.element);
     }
+  };
+
+  #renderFilmCard = (film, container) => {
+    const filmCardComponent = new FilmCardView(film);
+    render(filmCardComponent, container);
   };
 }
