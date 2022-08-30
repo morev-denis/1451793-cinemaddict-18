@@ -4,8 +4,6 @@ import FilmDetailsView from '../view/film-details-view.js';
 import FilmDetailsTopContainerView from '../view/film-details-top-container-view.js';
 import FilmDetailsCloseView from '../view/film-details-close-view.js';
 import FilmDetailsInfoWrapView from '../view/film-details-info-wrap-view.js';
-import FilmDetailsPosterView from '../view/film-details-poster-view.js';
-import FilmDetailsInfoView from '../view/film-details-info-view.js';
 import FilmDetailsControlsView from '../view/film-details-controls-view.js';
 import FilmDetailsBottomContainerView from '../view/film-details-bottom-container-view.js';
 import FilmDetailsCommentsTitleView from '../view/film-details-comments-title-view.js';
@@ -27,7 +25,7 @@ export default class FilmDetailsPresenter {
   #filmDetailsComponent = new FilmDetailsView();
   #filmDetailsTopContainerComponent = new FilmDetailsTopContainerView();
   #filmDetailsCloseComponent = new FilmDetailsCloseView();
-  #filmDetailsInfoWrapComponent = new FilmDetailsInfoWrapView();
+  // #filmDetailsInfoWrapComponent = new FilmDetailsInfoWrapView();
   #filmDetailsControlsComponent = new FilmDetailsControlsView();
   #filmDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
   #filmDetailsCommentsListComponent = new FilmDetailsCommentsListView();
@@ -80,11 +78,10 @@ export default class FilmDetailsPresenter {
 
     filmDetailsCloseBtn.addEventListener('click', onCloseBtnClick);
 
-    render(this.#filmDetailsInfoWrapComponent, this.#filmDetailsTopContainerComponent.element);
-
-    render(new FilmDetailsPosterView(this.#films[0]), this.#filmDetailsInfoWrapComponent.element);
-
-    render(new FilmDetailsInfoView(this.#films[0]), this.#filmDetailsInfoWrapComponent.element);
+    render(
+      new FilmDetailsInfoWrapView(this.#films[0]),
+      this.#filmDetailsTopContainerComponent.element,
+    );
 
     render(this.#filmDetailsControlsComponent, this.#filmDetailsTopContainerComponent.element);
 
