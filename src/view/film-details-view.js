@@ -1,16 +1,17 @@
 import { createElement } from '../render.js';
 
-const createFilmDetailsTemplate = () =>
-  `<section class="film-details">
-    <div class="film-details__inner">
-    </div>
-  </section>`;
+import { createFilmDetailsTemplate } from './film-details-template.js';
 
 export default class FilmDetailsView {
   #element = null;
+  #film = null;
+
+  constructor(film) {
+    this.#film = film;
+  }
 
   get template() {
-    return createFilmDetailsTemplate();
+    return createFilmDetailsTemplate(this.#film);
   }
 
   get element() {

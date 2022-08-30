@@ -9,10 +9,19 @@ import FilmCardView from '../view/film-card-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
+import FilmDetailsView from '../view/film-details-view.js';
+import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 
-import FilmDetailsPresenter from '../presenter/film-details-presenter.js';
-
+const bodyNode = document.querySelector('body');
 const siteFooterNode = document.querySelector('.footer');
+
+const hideOverflow = () => {
+  bodyNode.classList.add('hide-overflow');
+};
+
+const showOverflow = () => {
+  bodyNode.classList.remove('hide-overflow');
+};
 
 export default class FilmsPresenter {
   #filmsComponent = new FilmsView();
@@ -20,20 +29,75 @@ export default class FilmsPresenter {
   #filmsListContainerComponent = new FilmsListContainerView();
   #filmsListTopRatedContainerComponent = new FilmsListContainerView();
   #filmsListMostCommentedContainerComponent = new FilmsListContainerView();
+  #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
   #showMoreButtonComponent = new ShowMoreButtonView();
-  #filmsListTopRatedComponent = new FilmsListTopRatedView();
-
-  #filmDetailsPresenter = new FilmDetailsPresenter();
 
   #filmsContainer = null;
   #filmsModel = null;
   #films = [];
+  #commentsModel = null;
 
-  init = (filmsContainer, filmsModel) => {
+  #renderFilmCard = (film, container) => {
+    const filmCardComponent = new FilmCardView(film);
+    const filmDetailsComponent = new FilmDetailsView(film);
+
+    const filmDetailsCloseBtn = filmDetailsComponent.element.querySelector(
+      '.film-details__close-btn',
+    );
+
+    const filmCardLink = filmCardComponent.element.querySelector('.film-card__link');
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        bodyNode.removeChild(filmDetailsComponent.element);
+        document.removeEventListener('keydown', onEscKeyDown);
+        showOverflow();
+      }
+    };
+
+    const onFilmDetailsCloseBtnClick = () => {
+      bodyNode.removeChild(filmDetailsComponent.element);
+      showOverflow();
+      document.removeEventListener('keydown', onEscKeyDown);
+    };
+
+    const renderFilmComments = () => {
+      const comments = [...this.#commentsModel.getComments(film)];
+      const filmCommentsContainer = filmDetailsComponent.element.querySelector(
+        '.film-details__comments-list',
+      );
+
+      filmCommentsContainer.innerHTML = '';
+
+      for (let i = 0; i < comments.length; i++) {
+        render(new FilmDetailsCommentView(comments[i]), filmCommentsContainer);
+      }
+    };
+
+    const renderFilmDetails = () => {
+      hideOverflow();
+      render(filmDetailsComponent, siteFooterNode, 'afterend');
+      renderFilmComments();
+
+      document.addEventListener('keydown', onEscKeyDown);
+    };
+
+    const onFilmCardLinkClick = () => renderFilmDetails();
+
+    filmDetailsCloseBtn.addEventListener('click', onFilmDetailsCloseBtnClick);
+
+    render(filmCardComponent, container);
+
+    filmCardLink.addEventListener('click', onFilmCardLinkClick);
+  };
+
+  init = (filmsContainer, filmsModel, commentsModel) => {
     this.#filmsContainer = filmsContainer;
     this.#filmsModel = filmsModel;
     this.#films = [...this.#filmsModel.films];
+    this.#commentsModel = commentsModel;
 
     render(this.#filmsComponent, this.#filmsContainer);
 
@@ -65,14 +129,5 @@ export default class FilmsPresenter {
     for (let i = 0; i < MOST_COMMENTED_FILMS_COUNT; i++) {
       this.#renderFilmCard(this.#films[i], this.#filmsListMostCommentedContainerComponent.element);
     }
-  };
-
-  #renderFilmCard = (film, container) => {
-    const filmCardComponent = new FilmCardView(film);
-    render(filmCardComponent, container);
-
-    filmCardComponent.element.querySelector('.film-card__link').addEventListener('click', () => {
-      this.#filmDetailsPresenter.init(siteFooterNode, film);
-    });
   };
 }
