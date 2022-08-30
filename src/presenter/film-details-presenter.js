@@ -11,14 +11,20 @@ import FilmDetailsCommentsListView from '../view/film-details-comments-list-view
 import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 import FilmDetailsFormView from '../view/film-details-form-view.js';
 
-const bodyElement = document.querySelector('body');
+import FilmsModel from '../model/films-model.js';
+import CommentsModel from '../model/comments-model.js';
+
+const bodyNode = document.querySelector('body');
+
+const filmsModel = new FilmsModel();
+const commentsModel = new CommentsModel(filmsModel);
 
 const hideOverflow = () => {
-  bodyElement.classList.add('hide-overflow');
+  bodyNode.classList.add('hide-overflow');
 };
 
 const showOverflow = () => {
-  bodyElement.classList.remove('hide-overflow');
+  bodyNode.classList.remove('hide-overflow');
 };
 
 export default class FilmDetailsPresenter {
@@ -36,12 +42,12 @@ export default class FilmDetailsPresenter {
   #commentsModel = null;
   #comments = [];
 
-  init = (filmDetailsContainer, filmsModel, commentsModel) => {
+  init = (filmDetailsContainer, film) => {
     this.#filmDetailsContainer = filmDetailsContainer;
     this.#filmsModel = filmsModel;
     this.#films = [...this.#filmsModel.films];
     this.#commentsModel = commentsModel;
-    this.#comments = [...this.#commentsModel.getComments(this.#films[0])];
+    this.#comments = [...this.#commentsModel.getComments(film)];
 
     hideOverflow();
 
@@ -61,14 +67,14 @@ export default class FilmDetailsPresenter {
     const onEscKeyDown = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        this.#filmDetailsComponent.element.remove();
+        // bodyNode.removeChild(this.#filmDetailsComponent.element);
         showOverflow();
         document.removeEventListener('keydown', onEscKeyDown);
       }
     };
 
     const onCloseBtnClick = () => {
-      this.#filmDetailsComponent.element.remove();
+      // bodyNode.removeChild(this.#filmDetailsComponent.element);
       showOverflow();
       document.removeEventListener('keydown', onEscKeyDown);
     };
@@ -77,10 +83,7 @@ export default class FilmDetailsPresenter {
 
     filmDetailsCloseBtn.addEventListener('click', onCloseBtnClick);
 
-    render(
-      new FilmDetailsInfoWrapView(this.#films[0]),
-      this.#filmDetailsTopContainerComponent.element,
-    );
+    render(new FilmDetailsInfoWrapView(film), this.#filmDetailsTopContainerComponent.element);
 
     render(this.#filmDetailsControlsComponent, this.#filmDetailsTopContainerComponent.element);
 

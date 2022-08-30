@@ -10,6 +10,10 @@ import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
 
+import FilmDetailsPresenter from '../presenter/film-details-presenter.js';
+
+const siteFooterNode = document.querySelector('.footer');
+
 export default class FilmsPresenter {
   #filmsComponent = new FilmsView();
   #filmsListComponent = new FilmsListView();
@@ -19,6 +23,8 @@ export default class FilmsPresenter {
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
   #showMoreButtonComponent = new ShowMoreButtonView();
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
+
+  #filmDetailsPresenter = new FilmDetailsPresenter();
 
   #filmsContainer = null;
   #filmsModel = null;
@@ -64,5 +70,9 @@ export default class FilmsPresenter {
   #renderFilmCard = (film, container) => {
     const filmCardComponent = new FilmCardView(film);
     render(filmCardComponent, container);
+
+    filmCardComponent.element.querySelector('.film-card__link').addEventListener('click', () => {
+      this.#filmDetailsPresenter.init(siteFooterNode, film);
+    });
   };
 }
