@@ -49,6 +49,13 @@ export default class FilmsPresenter {
   #commentsModel = null;
   #renderedFilmCount = FILMS_COUNT_PER_STEP;
 
+  constructor(filmsContainer, filmsModel, commentsModel) {
+    this.#filmsContainer = filmsContainer;
+    this.#filmsModel = filmsModel;
+    this.#films = [...this.#filmsModel.films];
+    this.#commentsModel = commentsModel;
+  }
+
   #renderFilmCard = (film, container) => {
     const filmCardComponent = new FilmCardView(film);
     const filmDetailsComponent = new FilmDetailsView(film);
@@ -117,12 +124,7 @@ export default class FilmsPresenter {
     }
   };
 
-  init = (filmsContainer, filmsModel, commentsModel) => {
-    this.#filmsContainer = filmsContainer;
-    this.#filmsModel = filmsModel;
-    this.#films = [...this.#filmsModel.films];
-    this.#commentsModel = commentsModel;
-
+  #renderFilms = () => {
     render(this.#filmsComponent, this.#filmsContainer);
 
     render(this.#filmsListComponent, this.#filmsComponent.element);
@@ -174,5 +176,9 @@ export default class FilmsPresenter {
         );
       }
     }
+  };
+
+  init = () => {
+    this.#renderFilms();
   };
 }
