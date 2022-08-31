@@ -41,6 +41,7 @@ export default class FilmsPresenter {
   #filmsModel = null;
   #films = [];
   #commentsModel = null;
+  #renderedFilmCount = FILMS_COUNT_PER_STEP;
 
   #renderFilmCard = (film, container) => {
     const filmCardComponent = new FilmCardView(film);
@@ -99,7 +100,15 @@ export default class FilmsPresenter {
 
   #onShowMoreButtonClick = (evt) => {
     evt.preventDefault();
-    console.log('test');
+    this.#films
+      .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILMS_COUNT_PER_STEP)
+      .forEach((film) => this.#renderFilmCard(film, this.#filmsListContainerComponent.element));
+    this.#renderedFilmCount += FILMS_COUNT_PER_STEP;
+
+    if (this.#renderedFilmCount >= this.#films.length) {
+      this.#showMoreButtonComponent.element.remove();
+      this.#showMoreButtonComponent.removeElement();
+    }
   };
 
   init = (filmsContainer, filmsModel, commentsModel) => {
@@ -114,7 +123,7 @@ export default class FilmsPresenter {
 
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
-    for (let i = 0; i < this.#films.length; i++) {
+    for (let i = 0; i < Math.min(this.#films.length, FILMS_COUNT_PER_STEP); i++) {
       this.#renderFilmCard(this.#films[i], this.#filmsListContainerComponent.element);
     }
 
