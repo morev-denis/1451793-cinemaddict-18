@@ -1,12 +1,30 @@
-const FILMS_COUNT = 17;
+const FILMS_COUNT = 12;
 const FILMS_COUNT_PER_STEP = 5;
 const MOST_COMMENTED_FILMS_COUNT = 2;
 const TOP_RATED_FILMS_COUNT = 2;
 const MAX_COMMENTS_ON_FILM = 5;
 
-const CommentLength = {
+const DescriptionLength = {
   MIN: 0,
   MAX: 140,
+};
+
+const Classes = {
+  VISUALLY_HIDDEN_CLASS: 'visually-hidden',
+  HIDE_OVERFLOW_CLASS: 'hide-overflow',
+};
+
+const Selectors = {
+  FILM_CARD_LINK_SELECTOR: '.film-card__link',
+  FOOTER_STATISTICS: '.footer__statistics',
+};
+
+const FilmsListTitle = {
+  MAIN_TITLE: 'All movies. Upcoming',
+  EMPTY_LIST: 'There are no movies in our database',
+  EMPTY_WATCHLIST: 'There are no movies to watch now',
+  EMPTY_HISTORY: 'There are no watched movies now',
+  EMPTY_FAVORITES: 'There are no favorite movies now',
 };
 
 const FilmMockData = {
@@ -104,7 +122,10 @@ export {
   MOST_COMMENTED_FILMS_COUNT,
   TOP_RATED_FILMS_COUNT,
   MAX_COMMENTS_ON_FILM,
+  Classes,
+  Selectors,
   FilmMockData,
   CommentMockData,
-  CommentLength,
+  DescriptionLength,
+  FilmsListTitle,
 };
