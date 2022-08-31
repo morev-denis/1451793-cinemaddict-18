@@ -1,4 +1,8 @@
-import { MOST_COMMENTED_FILMS_COUNT, TOP_RATED_FILMS_COUNT } from '../constants.js';
+import {
+  FILMS_COUNT_PER_STEP,
+  MOST_COMMENTED_FILMS_COUNT,
+  TOP_RATED_FILMS_COUNT,
+} from '../constants.js';
 
 import { render } from '../render.js';
 
@@ -93,6 +97,11 @@ export default class FilmsPresenter {
     filmCardLink.addEventListener('click', onFilmCardLinkClick);
   };
 
+  #onShowMoreButtonClick = (evt) => {
+    evt.preventDefault();
+    console.log('test');
+  };
+
   init = (filmsContainer, filmsModel, commentsModel) => {
     this.#filmsContainer = filmsContainer;
     this.#filmsModel = filmsModel;
@@ -109,7 +118,11 @@ export default class FilmsPresenter {
       this.#renderFilmCard(this.#films[i], this.#filmsListContainerComponent.element);
     }
 
-    render(this.#showMoreButtonComponent, this.#filmsListComponent.element);
+    if (this.#films.length > FILMS_COUNT_PER_STEP) {
+      render(this.#showMoreButtonComponent, this.#filmsListComponent.element);
+
+      this.#showMoreButtonComponent.element.addEventListener('click', this.#onShowMoreButtonClick);
+    }
 
     render(this.#filmsListTopRatedComponent, this.#filmsComponent.element);
 
