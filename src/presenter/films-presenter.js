@@ -6,7 +6,7 @@ import {
   FilmsListTitle,
 } from '../constants.js';
 
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
@@ -62,14 +62,14 @@ export default class FilmsPresenter {
     const onEscKeyDown = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        bodyElement.removeChild(filmDetailsComponent.element);
+        remove(filmDetailsComponent);
         document.removeEventListener('keydown', onEscKeyDown);
         showOverflow();
       }
     };
 
     const onFilmDetailsCloseBtnClick = () => {
-      bodyElement.removeChild(filmDetailsComponent.element);
+      remove(filmDetailsComponent);
       showOverflow();
       document.removeEventListener('keydown', onEscKeyDown);
     };
@@ -111,8 +111,7 @@ export default class FilmsPresenter {
     this.#renderedFilmCount += FILMS_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#films.length) {
-      this.#showMoreButtonComponent.element.remove();
-      this.#showMoreButtonComponent.removeElement();
+      remove(this.#showMoreButtonComponent);
     }
   };
 

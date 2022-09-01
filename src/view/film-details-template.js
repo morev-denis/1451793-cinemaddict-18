@@ -1,4 +1,4 @@
-import { convertMinutesToHours, formatISOStringToDate } from '../utils.js';
+import { convertMinutesToHours, formatISOStringToDate } from '../utils/film.js';
 
 export const createFilmDetailsTemplate = (film) => {
   const {
