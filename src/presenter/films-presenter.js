@@ -7,7 +7,7 @@ import {
   FilmsListTitle,
 } from '../constants.js';
 
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';

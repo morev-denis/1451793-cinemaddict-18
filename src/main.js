@@ -1,4 +1,4 @@
-import { render } from './render.js';
+import { render } from './framework/render.js';
 
 import { Selectors } from './constants.js';
 
@@ -11,7 +11,6 @@ import FilmsPresenter from './presenter/films-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 
-
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
@@ -21,7 +20,6 @@ const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel(filmsModel);
 
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
-
 
 render(new HeaderProfileView(), siteHeaderElement);
 render(new MainNavigationView(), siteMainElement);
