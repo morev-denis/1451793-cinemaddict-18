@@ -3,7 +3,6 @@ import {
   MOST_COMMENTED_FILMS_COUNT,
   TOP_RATED_FILMS_COUNT,
   Classes,
-  Selectors,
   FilmsListTitle,
 } from '../constants.js';
 
@@ -60,12 +59,6 @@ export default class FilmsPresenter {
     const filmCardComponent = new FilmCardView(film);
     const filmDetailsComponent = new FilmDetailsView(film);
 
-    const filmDetailsCloseBtn = filmDetailsComponent.element.querySelector(
-      '.film-details__close-btn',
-    );
-
-    const filmCardLink = filmCardComponent.element.querySelector(Selectors.FILM_CARD_LINK_SELECTOR);
-
     const onEscKeyDown = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
@@ -104,15 +97,14 @@ export default class FilmsPresenter {
 
     const onFilmCardLinkClick = () => renderFilmDetails();
 
-    filmDetailsCloseBtn.addEventListener('click', onFilmDetailsCloseBtnClick);
+    filmDetailsComponent.setClickHandler(onFilmDetailsCloseBtnClick);
 
     render(filmCardComponent, container);
 
-    filmCardLink.addEventListener('click', onFilmCardLinkClick);
+    filmCardComponent.setClickHandler(onFilmCardLinkClick);
   };
 
-  #onShowMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #onShowMoreButtonClick = () => {
     this.#films
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILMS_COUNT_PER_STEP)
       .forEach((film) => this.#renderFilmCard(film, this.#filmsListContainerComponent.element));
@@ -149,10 +141,7 @@ export default class FilmsPresenter {
       if (this.#films.length > FILMS_COUNT_PER_STEP) {
         render(this.#showMoreButtonComponent, this.#filmsListComponent.element);
 
-        this.#showMoreButtonComponent.element.addEventListener(
-          'click',
-          this.#onShowMoreButtonClick,
-        );
+        this.#showMoreButtonComponent.setClickHandler(this.#onShowMoreButtonClick);
       }
       render(this.#filmsListTopRatedComponent, this.#filmsComponent.element);
 

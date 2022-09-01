@@ -17,6 +17,7 @@ const Classes = {
 const Selectors = {
   FILM_CARD_LINK_SELECTOR: '.film-card__link',
   FOOTER_STATISTICS: '.footer__statistics',
+  FILM_DETAILS_CLOSE_BTN: '.film-details__close-btn',
 };
 
 const FilmsListTitle = {
