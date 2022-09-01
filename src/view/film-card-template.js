@@ -1,5 +1,5 @@
 import { formatISOStringToYear, formatMinutesToTime } from '../utils.js';
-import { CommentLength } from '../constants.js';
+import { DescriptionLength } from '../constants.js';
 
 export const createFilmCardTemplate = (film) => {
   const {
@@ -27,8 +27,8 @@ export const createFilmCardTemplate = (film) => {
         </p>
         <img src=${poster} alt="Poster of the ${title}" class="film-card__poster">
         <p class="film-card__description">${
-  description.length > CommentLength.MAX
-    ? `${description.slice(CommentLength.MIN, CommentLength.MAX - 1)}…`
+  description.length > DescriptionLength.MAX
+    ? `${description.slice(DescriptionLength.MIN, DescriptionLength.MAX - 1)}…`
     : description
 }</p>
         <span class="film-card__comments">${comments.length} comments</span>
