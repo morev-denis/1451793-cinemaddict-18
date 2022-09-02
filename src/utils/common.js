@@ -7,4 +7,6 @@ const getRandomInteger = (a = 0, b = 1) => {
 
 const getRandomItem = (items) => items[getRandomInteger(0, items.length - 1)];
 
-export { getRandomInteger, getRandomItem };
+const getRandomBoolean = () => Boolean(getRandomInteger(0, 1));
+
+export { getRandomInteger, getRandomItem, getRandomBoolean };
