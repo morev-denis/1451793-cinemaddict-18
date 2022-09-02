@@ -18,10 +18,14 @@ const formatISOStringToYear = (ISOString) => dayjs(ISOString).format('YYYY');
 
 const formatMinutesToTime = (minutes) => dayjs.duration(minutes, 'minutes').format('H[h] mm[m]');
 
+const getFilteredFilmsCount = (filters, name) =>
+  filters.find((filter) => filter.name === name).count;
+
 export {
   convertMinutesToHours,
   formatISOStringToDate,
   formatISOStringToYear,
   formatMinutesToTime,
   formatISOStringToDateWithTime,
+  getFilteredFilmsCount,
 };
