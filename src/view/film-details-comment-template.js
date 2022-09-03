@@ -1,4 +1,4 @@
-import { formatISOStringToDateWithTime } from '../utils.js';
+import { formatISOStringToDateWithTime } from '../utils/film.js';
 
 export const createFilmDetailsCommentTemplate = (commentObj) => {
   const { author, comment, date, emotion } = commentObj;

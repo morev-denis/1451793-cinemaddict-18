@@ -1,6 +1,6 @@
 import { CommentMockData } from '../constants.js';
 
-import { getRandomItem } from '../utils.js';
+import { getRandomItem } from '../utils/common.js';
 
 export const generateComment = () => ({
   author: getRandomItem(CommentMockData.AUTHORS),

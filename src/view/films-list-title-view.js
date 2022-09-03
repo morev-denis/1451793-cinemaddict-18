@@ -1,29 +1,16 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
-const createFilmsListTitleTemplate = (text) =>
-  `<h2 class="films-list__title">${text}</h2>`;
+const createFilmsListTitleTemplate = (text) => `<h2 class="films-list__title">${text}</h2>`;
 
-export default class FilmsListContainerView {
-  #element = null;
+export default class FilmsListContainerView extends AbstractView {
   #text = '';
 
   constructor(text) {
+    super();
     this.#text = text;
   }
 
   get template() {
     return createFilmsListTitleTemplate(this.#text);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

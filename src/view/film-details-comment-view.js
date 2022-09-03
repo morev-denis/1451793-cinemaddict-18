@@ -1,28 +1,16 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 import { createFilmDetailsCommentTemplate } from './film-details-comment-template.js';
 
-export default class FilmDetailsCommentView {
-  #element = null;
+export default class FilmDetailsCommentView extends AbstractView {
   #comment = null;
 
   constructor(comment) {
+    super();
     this.#comment = comment;
   }
 
   get template() {
     return createFilmDetailsCommentTemplate(this.#comment);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

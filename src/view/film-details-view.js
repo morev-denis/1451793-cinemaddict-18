@@ -1,12 +1,14 @@
-import { createElement } from '../render.js';
+import { Selectors } from '../constants.js';
+
+import AbstractView from '../framework/view/abstract-view.js';
 
 import { createFilmDetailsTemplate } from './film-details-template.js';
 
-export default class FilmDetailsView {
-  #element = null;
+export default class FilmDetailsView extends AbstractView {
   #film = null;
 
   constructor(film) {
+    super();
     this.#film = film;
   }
 
@@ -14,15 +16,14 @@ export default class FilmDetailsView {
     return createFilmDetailsTemplate(this.#film);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element
+      .querySelector(Selectors.FILM_DETAILS_CLOSE_BTN)
+      .addEventListener('click', this.#clickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #clickHandler = () => {
+    this._callback.click();
+  };
 }

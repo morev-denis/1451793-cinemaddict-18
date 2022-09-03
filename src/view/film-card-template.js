@@ -1,4 +1,4 @@
-import { formatISOStringToYear, formatMinutesToTime } from '../utils.js';
+import { formatISOStringToYear, formatMinutesToTime } from '../utils/film.js';
 import { DescriptionLength } from '../constants.js';
 
 export const createFilmCardTemplate = (film) => {

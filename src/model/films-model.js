@@ -1,5 +1,5 @@
 import { FILMS_COUNT, MAX_COMMENTS_ON_FILM } from '../constants.js';
-import { getRandomInteger } from '../utils.js';
+import { getRandomInteger } from '../utils/common.js';
 
 import { generateFilm } from '../mock/film.js';
 
