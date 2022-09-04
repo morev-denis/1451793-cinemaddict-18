@@ -23,7 +23,8 @@ export default class FilmsModel {
             String(totalCommentsCount - commentIndex),
           )
           : [],
-        filmInfo: film,
+        filmInfo: film.filmInfo,
+        userDetails: film.userDetails,
       };
     });
   };

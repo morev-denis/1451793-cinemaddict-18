@@ -117,6 +117,13 @@ const CommentMockData = {
   EMOTIONS: ['smile', 'sleeping', 'puke', 'angry'],
 };
 
+const FilterType = {
+  ALL: 'all',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites',
+};
+
 export {
   FILMS_COUNT,
   FILMS_COUNT_PER_STEP,
@@ -129,4 +136,5 @@ export {
   CommentMockData,
   DescriptionLength,
   FilmsListTitle,
+  FilterType,
 };
