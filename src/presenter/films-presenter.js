@@ -13,24 +13,14 @@ import FilmsView from '../view/films-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListTitleView from '../view/films-list-title-view';
 import FilmsListContainerView from '../view/films-list-container-view.js';
-import FilmCardView from '../view/film-card-view.js';
+
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
-import FilmDetailsView from '../view/film-details-view.js';
-import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 
-const bodyElement = document.querySelector('body');
+import FilmCardPresenter from './film-card-presenter.js';
+
 const siteMainElement = document.querySelector('.main');
-const siteFooterElement = document.querySelector('.footer');
-
-const hideOverflow = () => {
-  bodyElement.classList.add(Classes.HIDE_OVERFLOW_CLASS);
-};
-
-const showOverflow = () => {
-  bodyElement.classList.remove(Classes.HIDE_OVERFLOW_CLASS);
-};
 
 export default class FilmsPresenter {
   #filmsComponent = new FilmsView();
@@ -56,52 +46,8 @@ export default class FilmsPresenter {
   }
 
   #renderFilmCard = (film, container) => {
-    const filmCardComponent = new FilmCardView(film);
-    const filmDetailsComponent = new FilmDetailsView(film);
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        remove(filmDetailsComponent);
-        document.removeEventListener('keydown', onEscKeyDown);
-        showOverflow();
-      }
-    };
-
-    const onFilmDetailsCloseBtnClick = () => {
-      remove(filmDetailsComponent);
-      showOverflow();
-      document.removeEventListener('keydown', onEscKeyDown);
-    };
-
-    const renderFilmComments = () => {
-      const comments = [...this.#commentsModel.getComments(film)];
-      const filmCommentsContainer = filmDetailsComponent.element.querySelector(
-        '.film-details__comments-list',
-      );
-
-      filmCommentsContainer.innerHTML = '';
-
-      for (let i = 0; i < comments.length; i++) {
-        render(new FilmDetailsCommentView(comments[i]), filmCommentsContainer);
-      }
-    };
-
-    const renderFilmDetails = () => {
-      hideOverflow();
-      render(filmDetailsComponent, siteFooterElement, 'afterend');
-      renderFilmComments();
-
-      document.addEventListener('keydown', onEscKeyDown);
-    };
-
-    const onFilmCardLinkClick = () => renderFilmDetails();
-
-    filmDetailsComponent.setClickHandler(onFilmDetailsCloseBtnClick);
-
-    render(filmCardComponent, container);
-
-    filmCardComponent.setClickHandler(onFilmCardLinkClick);
+    const filmCardPresenter = new FilmCardPresenter(this.#commentsModel);
+    filmCardPresenter.init(film, container);
   };
 
   #onShowMoreButtonClick = () => {
