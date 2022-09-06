@@ -37,6 +37,7 @@ export default class FilmsPresenter {
   #films = [];
   #commentsModel = null;
   #renderedFilmCount = FILMS_COUNT_PER_STEP;
+  #filmCardPresenter = new Map();
 
   constructor(filmsContainer, filmsModel, commentsModel) {
     this.#filmsContainer = filmsContainer;
@@ -48,6 +49,7 @@ export default class FilmsPresenter {
   #renderFilmCard = (film, container) => {
     const filmCardPresenter = new FilmCardPresenter(this.#commentsModel);
     filmCardPresenter.init(film, container);
+    this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
   };
 
   #onShowMoreButtonClick = () => {
@@ -107,6 +109,13 @@ export default class FilmsPresenter {
     if (this.#films.length > FILMS_COUNT_PER_STEP) {
       this.#renderShowMoreButton();
     }
+  };
+
+  #clearFilmsList = () => {
+    this.#filmCardPresenter.forEach((presenter) => presenter.destroy());
+    this.#filmCardPresenter.clear();
+    this.#renderedFilmCount = FILMS_COUNT_PER_STEP;
+    remove(this.#showMoreButtonComponent);
   };
 
   #renderFilmsListTopRated = () => {

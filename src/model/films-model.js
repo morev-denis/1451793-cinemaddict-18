@@ -17,6 +17,7 @@ export default class FilmsModel {
       totalCommentsCount += filmCommentsCount;
 
       return {
+        uniqId: film.uniqId,
         id: String(index + 1),
         comments: hasComments
           ? Array.from({ length: filmCommentsCount }, (_value, commentIndex) =>
