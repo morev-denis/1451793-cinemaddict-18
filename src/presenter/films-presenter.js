@@ -6,6 +6,8 @@ import {
   FilmsListTitle,
 } from '../constants.js';
 
+import { updateItem } from '../utils/common.js';
+
 import { render, remove } from '../framework/render.js';
 
 import SortView from '../view/sort-view.js';
@@ -116,6 +118,11 @@ export default class FilmsPresenter {
     this.#filmCardPresenter.clear();
     this.#renderedFilmCount = FILMS_COUNT_PER_STEP;
     remove(this.#showMoreButtonComponent);
+  };
+
+  #handleFilmCardChange = (updatedFilmCard, container) => {
+    this.#films = updateItem(this.#films, updatedFilmCard);
+    this.#filmCardPresenter.get(updatedFilmCard.id).init(updatedFilmCard, container);
   };
 
   #renderFilmsListTopRated = () => {
