@@ -1,6 +1,6 @@
 import { Classes } from '../constants.js';
 
-import { render, remove } from '../framework/render.js';
+import { render, remove, replace } from '../framework/render.js';
 
 import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
@@ -32,14 +32,26 @@ export default class FilmCardPresenter {
     this.#film = film;
     this.#container = container;
 
+    const prevFilmCardComponent = this.#filmCardComponent;
+
     this.#filmCardComponent = new FilmCardView(this.#film);
     this.#filmDetailsComponent = new FilmDetailsView(this.#film);
 
+    this.#filmCardComponent.setClickHandler(this.#onFilmCardLinkClick);
     this.#filmDetailsComponent.setClickHandler(this.#onFilmDetailsCloseBtnClick);
 
-    render(this.#filmCardComponent, this.#container);
+    if (prevFilmCardComponent === null) {
+      render(this.#filmCardComponent, this.#container);
+    } else {
+      replace(this.#filmCardComponent, prevFilmCardComponent);
+    }
 
-    this.#filmCardComponent.setClickHandler(this.#onFilmCardLinkClick);
+    remove(prevFilmCardComponent);
+  };
+
+  destroy = () => {
+    remove(this.#filmCardComponent);
+    remove(this.#filmDetailsComponent);
   };
 
   #onEscKeyDown = (evt) => {
