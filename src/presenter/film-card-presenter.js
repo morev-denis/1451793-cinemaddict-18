@@ -1,4 +1,4 @@
-import { Classes } from '../constants.js';
+import { Classes, Selectors } from '../constants.js';
 
 import { render, remove, replace } from '../framework/render.js';
 
@@ -23,9 +23,11 @@ export default class FilmCardPresenter {
   #filmCardComponent = null;
   #filmDetailsComponent = null;
   #commentsModel = null;
+  #changeData = null;
 
-  constructor(commentsModel) {
+  constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
+    this.#changeData = changeData;
   }
 
   init = (film, container) => {
@@ -37,8 +39,10 @@ export default class FilmCardPresenter {
     this.#filmCardComponent = new FilmCardView(this.#film);
     this.#filmDetailsComponent = new FilmDetailsView(this.#film);
 
-    this.#filmCardComponent.setClickHandler(this.#onFilmCardLinkClick);
-    this.#filmDetailsComponent.setClickHandler(this.#onFilmDetailsCloseBtnClick);
+    this.#filmCardComponent.setClickHandler(this.#handleFilmCardLinkClick);
+    this.#filmCardComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
+    this.#filmCardComponent.setAlreadyWatchedClickHandler(this.#handleAlreadyWatchedClick);
+    this.#filmCardComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
 
     if (prevFilmCardComponent === null) {
       render(this.#filmCardComponent, this.#container);
@@ -54,6 +58,45 @@ export default class FilmCardPresenter {
     remove(this.#filmDetailsComponent);
   };
 
+  #handleWatchlistClick = () => {
+    remove(this.#filmDetailsComponent);
+    this.#changeData(
+      {
+        ...this.#film,
+        userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
+      },
+      this.#container,
+    );
+    this.#renderFilmDetails();
+  };
+
+  #handleAlreadyWatchedClick = () => {
+    remove(this.#filmDetailsComponent);
+    this.#changeData(
+      {
+        ...this.#film,
+        userDetails: {
+          ...this.#film.userDetails,
+          alreadyWatched: !this.#film.userDetails.alreadyWatched,
+        },
+      },
+      this.#container,
+    );
+    this.#renderFilmDetails();
+  };
+
+  #handleFavoriteClick = () => {
+    remove(this.#filmDetailsComponent);
+    this.#changeData(
+      {
+        ...this.#film,
+        userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
+      },
+      this.#container,
+    );
+    this.#renderFilmDetails();
+  };
+
   #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
@@ -63,7 +106,7 @@ export default class FilmCardPresenter {
     }
   };
 
-  #onFilmDetailsCloseBtnClick = () => {
+  #handleFilmDetailsCloseBtnClick = () => {
     remove(this.#filmDetailsComponent);
     showOverflow();
     document.removeEventListener('keydown', this.#onEscKeyDown);
@@ -72,7 +115,7 @@ export default class FilmCardPresenter {
   #renderFilmComments = () => {
     const comments = [...this.#commentsModel.getComments(this.#film)];
     const filmCommentsContainer = this.#filmDetailsComponent.element.querySelector(
-      '.film-details__comments-list',
+      Selectors.FILM_DETAILS_COMMENTS_LIST,
     );
 
     filmCommentsContainer.innerHTML = '';
@@ -87,8 +130,12 @@ export default class FilmCardPresenter {
     render(this.#filmDetailsComponent, siteFooterElement, 'afterend');
     this.#renderFilmComments();
 
+    this.#filmDetailsComponent.setClickHandler(this.#handleFilmDetailsCloseBtnClick);
+    this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
+    this.#filmDetailsComponent.setAlreadyWatchedClickHandler(this.#handleAlreadyWatchedClick);
+    this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     document.addEventListener('keydown', this.#onEscKeyDown);
   };
 
-  #onFilmCardLinkClick = () => this.#renderFilmDetails();
+  #handleFilmCardLinkClick = () => this.#renderFilmDetails();
 }

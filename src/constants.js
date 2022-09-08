@@ -12,12 +12,21 @@ const DescriptionLength = {
 const Classes = {
   VISUALLY_HIDDEN_CLASS: 'visually-hidden',
   HIDE_OVERFLOW_CLASS: 'hide-overflow',
+  CONTROL_BUTTON_ACTIVE_CLASS: 'film-card__controls-item--active',
+  POPUP_CONTROL_BUTTON_ACTIVE_CLASS: 'film-details__control-button--active',
 };
 
 const Selectors = {
   FILM_CARD_LINK_SELECTOR: '.film-card__link',
   FOOTER_STATISTICS: '.footer__statistics',
   FILM_DETAILS_CLOSE_BTN: '.film-details__close-btn',
+  ADD_TO_WATCHLIST_BTN: '.film-card__controls-item--add-to-watchlist',
+  MARK_AS_WATCHED_BTN: '.film-card__controls-item--mark-as-watched',
+  ADD_TO_FAVORITE_BTN: '.film-card__controls-item--favorite',
+  POPUP_ADD_TO_WATCHLIST_BTN: '.film-details__control-button--watchlist',
+  POPUP_MARK_AS_WATCHED_BTN: '.film-details__control-button--watched',
+  POPUP_ADD_TO_FAVORITE_BTN: '.film-details__control-button--favorite',
+  FILM_DETAILS_COMMENTS_LIST: '.film-details__comments-list',
 };
 
 const FilmsListTitle = {

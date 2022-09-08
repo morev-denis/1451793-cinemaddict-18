@@ -49,7 +49,10 @@ export default class FilmsPresenter {
   }
 
   #renderFilmCard = (film, container) => {
-    const filmCardPresenter = new FilmCardPresenter(this.#commentsModel);
+    const filmCardPresenter = new FilmCardPresenter(
+      this.#commentsModel,
+      this.#handleFilmCardChange,
+    );
     filmCardPresenter.init(film, container);
     this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
   };
@@ -122,7 +125,7 @@ export default class FilmsPresenter {
 
   #handleFilmCardChange = (updatedFilmCard, container) => {
     this.#films = updateItem(this.#films, updatedFilmCard);
-    this.#filmCardPresenter.get(updatedFilmCard.id).init(updatedFilmCard, container);
+    this.#filmCardPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
   };
 
   #renderFilmsListTopRated = () => {

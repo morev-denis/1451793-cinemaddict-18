@@ -1,5 +1,5 @@
 import { formatISOStringToYear, formatMinutesToTime } from '../utils/film.js';
-import { DescriptionLength } from '../constants.js';
+import { DescriptionLength, Classes } from '../constants.js';
 
 export const createFilmCardTemplate = (film) => {
   const {
@@ -13,7 +13,12 @@ export const createFilmCardTemplate = (film) => {
       genre,
       description,
     },
+    userDetails: { watchlist, alreadyWatched, favorite },
   } = film;
+
+  const watchlistClassName = watchlist ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const watchedClassName = alreadyWatched ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const favoriteClassName = favorite ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
 
   return `
     <article class="film-card">
@@ -34,13 +39,13 @@ export const createFilmCardTemplate = (film) => {
         <span class="film-card__comments">${comments.length} comments</span>
       </a>
       <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" type="button">
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${watchlistClassName}" type="button">
           Add to watchlist
         </button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" type="button">
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${watchedClassName}" type="button">
           Mark as watched
         </button>
-        <button class="film-card__controls-item film-card__controls-item--favorite" type="button">
+        <button class="film-card__controls-item film-card__controls-item--favorite ${favoriteClassName}" type="button">
           Mark as favorite
         </button>
       </div>
