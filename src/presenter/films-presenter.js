@@ -52,6 +52,7 @@ export default class FilmsPresenter {
     const filmCardPresenter = new FilmCardPresenter(
       this.#commentsModel,
       this.#handleFilmCardChange,
+      this.#handleModeChange,
     );
     filmCardPresenter.init(film, container);
     this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
@@ -114,6 +115,10 @@ export default class FilmsPresenter {
     if (this.#films.length > FILMS_COUNT_PER_STEP) {
       this.#renderShowMoreButton();
     }
+  };
+
+  #handleModeChange = () => {
+    this.#filmCardPresenter.forEach((presenter) => presenter.resetView());
   };
 
   #clearFilmsList = () => {
