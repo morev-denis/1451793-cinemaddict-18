@@ -1,4 +1,5 @@
 import { convertMinutesToHours, formatISOStringToDate } from '../utils/film.js';
+import { Classes } from '../constants.js';
 
 export const createFilmDetailsTemplate = (film) => {
   const {
@@ -17,7 +18,12 @@ export const createFilmDetailsTemplate = (film) => {
       genre,
       description,
     },
+    userDetails: { watchlist, alreadyWatched, favorite },
   } = film;
+
+  const popupWatchlistClassName = watchlist ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const popupWatchedClassName = alreadyWatched ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const popupFavoriteClassName = favorite ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
 
   const createGenresListTemplate = (genresList) => {
     let genresListTemplate = '';
@@ -90,9 +96,9 @@ export const createFilmDetailsTemplate = (film) => {
         </div>
 
         <section class="film-details__controls">
-          <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-          <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-          <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+          <button type="button" class="film-details__control-button film-details__control-button--watchlist ${popupWatchlistClassName}" id="watchlist" name="watchlist">Add to watchlist</button>
+          <button type="button" class="film-details__control-button film-details__control-button--watched ${popupWatchedClassName}" id="watched" name="watched">Already watched</button>
+          <button type="button" class="film-details__control-button film-details__control-button--favorite ${popupFavoriteClassName}" id="favorite" name="favorite">Add to favorites</button>
         </section>
       </div>
 

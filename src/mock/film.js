@@ -1,8 +1,11 @@
+import { nanoid } from 'nanoid';
+
 import { getRandomInteger, getRandomItem, getRandomBoolean } from '../utils/common.js';
 
 import { FilmMockData } from '../constants.js';
 
 export const generateFilm = () => ({
+  uniqId: nanoid(),
   filmInfo: {
     title: getRandomItem(FilmMockData.TITLES),
     alternativeTitle: getRandomItem(FilmMockData.TITLES),
