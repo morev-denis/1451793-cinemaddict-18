@@ -133,6 +133,12 @@ const FilterType = {
   FAVORITES: 'favorites',
 };
 
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
+
 export {
   FILMS_COUNT,
   FILMS_COUNT_PER_STEP,
@@ -146,4 +152,5 @@ export {
   DescriptionLength,
   FilmsListTitle,
   FilterType,
+  SortType
 };
