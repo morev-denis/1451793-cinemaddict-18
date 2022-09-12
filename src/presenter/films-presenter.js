@@ -40,6 +40,8 @@ export default class FilmsPresenter {
   #commentsModel = null;
   #renderedFilmCount = FILMS_COUNT_PER_STEP;
   #filmCardPresenter = new Map();
+  #filmCardTopRatedPresenter = new Map();
+  #filmCardMostCommentedPresenter = new Map();
 
   constructor(filmsContainer, filmsModel, commentsModel) {
     this.#filmsContainer = filmsContainer;
@@ -55,7 +57,16 @@ export default class FilmsPresenter {
       this.#handleModeChange,
     );
     filmCardPresenter.init(film, container);
-    this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
+    switch (container) {
+      case this.#filmsListTopRatedContainerComponent.element:
+        this.#filmCardTopRatedPresenter.set(film.uniqId, filmCardPresenter);
+        break;
+      case this.#filmsListMostCommentedContainerComponent.element:
+        this.#filmCardMostCommentedPresenter.set(film.uniqId, filmCardPresenter);
+        break;
+      default:
+        this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
+    }
   };
 
   #onShowMoreButtonClick = () => {
@@ -131,6 +142,14 @@ export default class FilmsPresenter {
   #handleFilmCardChange = (updatedFilmCard, container) => {
     this.#films = updateItem(this.#films, updatedFilmCard);
     this.#filmCardPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
+    if (this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId)) {
+      this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
+    }
+    if (this.#filmCardMostCommentedPresenter.get(updatedFilmCard.uniqId)) {
+      this.#filmCardMostCommentedPresenter
+        .get(updatedFilmCard.uniqId)
+        .init(updatedFilmCard, container);
+    }
   };
 
   #renderFilmsListTopRated = () => {
