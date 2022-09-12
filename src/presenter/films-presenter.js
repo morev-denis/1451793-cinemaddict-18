@@ -36,6 +36,7 @@ export default class FilmsPresenter {
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
   #showMoreButtonComponent = new ShowMoreButtonView();
+  #sortComponent = new SortView();
 
   #filmsContainer = null;
   #filmsModel = null;
@@ -109,8 +110,15 @@ export default class FilmsPresenter {
     render(filmsListTitleComponent, titleContainer);
   };
 
+  #handleSortTypeChange = (sortType) => {
+    // 1 сортируем фильмы
+    // 2 очищаем список
+    // 3 ренедерим список заново
+  };
+
   #renderSort = () => {
-    render(new SortView(), siteMainElement);
+    render(this.#sortComponent, siteMainElement);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #renderFilmsList = () => {
