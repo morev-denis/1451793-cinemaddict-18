@@ -8,8 +8,11 @@ import {
 
 import { updateItem } from '../utils/common.js';
 
-import { render, remove } from '../framework/render.js';
+import { generateFilter } from '../mock/filter.js';
 
+import { render, remove, replace } from '../framework/render.js';
+
+import MainNavigationView from '../view/main-navigation-view.js';
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
 import FilmsListView from '../view/films-list-view.js';
@@ -38,6 +41,8 @@ export default class FilmsPresenter {
   #filmsModel = null;
   #films = [];
   #commentsModel = null;
+  #filters = null;
+  #mainNavigationComponent = null;
   #renderedFilmCount = FILMS_COUNT_PER_STEP;
   #filmCardPresenter = new Map();
   #filmCardTopRatedPresenter = new Map();
@@ -48,6 +53,8 @@ export default class FilmsPresenter {
     this.#filmsModel = filmsModel;
     this.#films = [...this.#filmsModel.films];
     this.#commentsModel = commentsModel;
+    this.#filters = generateFilter(this.#films);
+    this.#mainNavigationComponent = new MainNavigationView(this.#filters);
   }
 
   #renderFilmCard = (film, container) => {
@@ -150,6 +157,12 @@ export default class FilmsPresenter {
         .get(updatedFilmCard.uniqId)
         .init(updatedFilmCard, container);
     }
+
+    this.#filters = generateFilter(this.#films);
+    const prevMainNavigationComponent = this.#mainNavigationComponent;
+    this.#mainNavigationComponent = new MainNavigationView(this.#filters);
+
+    replace(this.#mainNavigationComponent, prevMainNavigationComponent);
   };
 
   #renderFilmsListTopRated = () => {
@@ -196,6 +209,8 @@ export default class FilmsPresenter {
   };
 
   init = () => {
+    render(this.#mainNavigationComponent, siteMainElement);
+
     this.#renderFilms();
   };
 }
