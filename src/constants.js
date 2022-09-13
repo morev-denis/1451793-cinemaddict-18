@@ -14,6 +14,7 @@ const Classes = {
   HIDE_OVERFLOW_CLASS: 'hide-overflow',
   CONTROL_BUTTON_ACTIVE_CLASS: 'film-card__controls-item--active',
   POPUP_CONTROL_BUTTON_ACTIVE_CLASS: 'film-details__control-button--active',
+  SORT_BUTTON_ACTIVE_CLASS: 'sort__button--active',
 };
 
 const Selectors = {
@@ -152,5 +153,5 @@ export {
   DescriptionLength,
   FilmsListTitle,
   FilterType,
-  SortType
+  SortType,
 };

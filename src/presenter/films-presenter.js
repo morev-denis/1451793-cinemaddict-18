@@ -38,7 +38,7 @@ export default class FilmsPresenter {
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
   #showMoreButtonComponent = new ShowMoreButtonView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
 
   #filmsContainer = null;
   #filmsModel = null;
@@ -142,8 +142,16 @@ export default class FilmsPresenter {
   };
 
   #renderSort = () => {
-    render(this.#sortComponent, siteMainElement);
-    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
+    if (this.#sortComponent) {
+      const prevSortComponent = this.#sortComponent;
+      this.#sortComponent = new SortView(this.#currentSortType);
+      this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
+      replace(this.#sortComponent, prevSortComponent);
+    } else {
+      this.#sortComponent = new SortView(this.#currentSortType);
+      render(this.#sortComponent, siteMainElement);
+      this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
+    }
   };
 
   #renderFilmsList = () => {
