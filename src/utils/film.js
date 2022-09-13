@@ -21,6 +21,8 @@ const formatMinutesToTime = (minutes) => dayjs.duration(minutes, 'minutes').form
 const getFilteredFilmsCount = (filters, name) =>
   filters.find((filter) => filter.name === name).count;
 
+const sortByDate = (dateA, dateB) => dayjs(dateA).diff(dayjs(dateB));
+
 export {
   convertMinutesToHours,
   formatISOStringToDate,
@@ -28,4 +30,5 @@ export {
   formatMinutesToTime,
   formatISOStringToDateWithTime,
   getFilteredFilmsCount,
+  sortByDate,
 };
