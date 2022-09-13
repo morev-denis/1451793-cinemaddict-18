@@ -147,8 +147,6 @@ export default class FilmsPresenter {
   };
 
   #renderFilmsList = () => {
-    this.#renderSort();
-
     this.#renderFilmsListTitle(
       FilmsListTitle.MAIN_TITLE,
       this.#filmsListComponent.element,
@@ -235,6 +233,8 @@ export default class FilmsPresenter {
   };
 
   #renderFilms = () => {
+    this.#renderSort();
+
     render(this.#filmsComponent, this.#filmsContainer);
 
     render(this.#filmsListComponent, this.#filmsComponent.element);
