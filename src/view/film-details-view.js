@@ -5,9 +5,9 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { createFilmDetailsTemplate } from './film-details-template.js';
 
 export default class FilmDetailsView extends AbstractStatefulView {
-  constructor(film) {
+  constructor(film, commentsModel) {
     super();
-    this._state = FilmDetailsView.parseFilmToState(film);
+    this._state = FilmDetailsView.parseFilmToState(film, commentsModel);
   }
 
   get template() {
@@ -61,7 +61,16 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this._callback.favoriteClick();
   };
 
-  static parseFilmToState = (film) => ({ ...film });
+  static parseFilmToState = (film, commentsModel) => {
+    const filmComments = [...commentsModel.getComments(film)];
+    return { ...film, filmComments: filmComments };
+  };
 
-  static parseStateToFilm = (state) => ({ ...state });
+  static parseStateToFilm = (state) => {
+    const film = { ...state };
+
+    delete film.filmComments;
+
+    return film;
+  };
 }

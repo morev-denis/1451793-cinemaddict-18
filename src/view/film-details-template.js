@@ -1,8 +1,42 @@
-import { convertMinutesToHours, formatISOStringToDate } from '../utils/film.js';
+import {
+  convertMinutesToHours,
+  formatISOStringToDate,
+  formatISOStringToDateWithTime,
+} from '../utils/film.js';
 import { Classes } from '../constants.js';
+
+const createFilmDetailsCommentTemplate = (commentObj) => {
+  const { author, comment, date, emotion } = commentObj;
+
+  return `
+    <li class="film-details__comment">
+      <span class="film-details__comment-emoji">
+      <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-smile">
+      </span>
+      <div>
+        <p class="film-details__comment-text">${comment}</p>
+        <p class="film-details__comment-info">
+          <span class="film-details__comment-author">${author}</span>
+          <span class="film-details__comment-day">${formatISOStringToDateWithTime(date)}</span>
+          <button class="film-details__comment-delete">Delete</button>
+        </p>
+      </div>
+    </li>`;
+};
+
+const createFilmCommentsTemplate = (comments) => {
+  let filmCommentsTemplate = '';
+
+  for (let i = 0; i < comments.length; i++) {
+    filmCommentsTemplate += createFilmDetailsCommentTemplate(comments[i]);
+  }
+
+  return filmCommentsTemplate;
+};
 
 export const createFilmDetailsTemplate = (data) => {
   const {
+    filmComments,
     comments,
     filmInfo: {
       title,
@@ -104,9 +138,11 @@ export const createFilmDetailsTemplate = (data) => {
 
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
+          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span>
+          </h3>
 
           <ul class="film-details__comments-list">
+          ${createFilmCommentsTemplate(filmComments)}
           </ul>
 
           <form class="film-details__new-comment" action="" method="get">

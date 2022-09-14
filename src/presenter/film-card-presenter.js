@@ -1,10 +1,9 @@
-import { Classes, Selectors } from '../constants.js';
+import { Classes } from '../constants.js';
 
 import { render, remove, replace } from '../framework/render.js';
 
 import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
-import FilmDetailsCommentView from '../view/film-details-comment-view.js';
 
 const bodyElement = document.querySelector('body');
 const siteFooterElement = document.querySelector('.footer');
@@ -46,7 +45,7 @@ export default class FilmCardPresenter {
     const prevFilmCardComponent = this.#filmCardComponent;
 
     this.#filmCardComponent = new FilmCardView(this.#film);
-    this.#filmDetailsComponent = new FilmDetailsView(this.#film);
+    this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#commentsModel);
 
     this.#filmCardComponent.setClickHandler(this.#handleFilmCardLinkClick);
     this.#filmCardComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
@@ -154,19 +153,6 @@ export default class FilmCardPresenter {
     document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 
-  #renderFilmComments = () => {
-    const comments = [...this.#commentsModel.getComments(this.#film)];
-    const filmCommentsContainer = this.#filmDetailsComponent.element.querySelector(
-      Selectors.FILM_DETAILS_COMMENTS_LIST,
-    );
-
-    filmCommentsContainer.innerHTML = '';
-
-    for (let i = 0; i < comments.length; i++) {
-      render(new FilmDetailsCommentView(comments[i]), filmCommentsContainer);
-    }
-  };
-
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
       remove(this.#filmDetailsComponent);
@@ -177,7 +163,7 @@ export default class FilmCardPresenter {
   #renderFilmDetails = () => {
     hideOverflow();
     render(this.#filmDetailsComponent, siteFooterElement, 'afterend');
-    this.#renderFilmComments();
+    // this.#renderFilmComments();
 
     this.#filmDetailsComponent.setClickHandler(this.#handleFilmDetailsCloseBtnClick);
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleDetailWatchlistClick);
