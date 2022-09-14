@@ -1,19 +1,17 @@
 import { Selectors } from '../constants.js';
 
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 import { createFilmDetailsTemplate } from './film-details-template.js';
 
-export default class FilmDetailsView extends AbstractView {
-  #film = null;
-
+export default class FilmDetailsView extends AbstractStatefulView {
   constructor(film) {
     super();
-    this.#film = film;
+    this._state = FilmDetailsView.parseFilmToState(film);
   }
 
   get template() {
-    return createFilmDetailsTemplate(this.#film);
+    return createFilmDetailsTemplate(this._state);
   }
 
   setClickHandler = (callback) => {
@@ -62,4 +60,8 @@ export default class FilmDetailsView extends AbstractView {
     evt.preventDefault();
     this._callback.favoriteClick();
   };
+
+  static parseFilmToState = (film) => ({ ...film });
+
+  static parseStateToFilm = (state) => ({ ...state });
 }

@@ -1,7 +1,7 @@
 import { convertMinutesToHours, formatISOStringToDate } from '../utils/film.js';
 import { Classes } from '../constants.js';
 
-export const createFilmDetailsTemplate = (film) => {
+export const createFilmDetailsTemplate = (data) => {
   const {
     comments,
     filmInfo: {
@@ -19,7 +19,7 @@ export const createFilmDetailsTemplate = (film) => {
       description,
     },
     userDetails: { watchlist, alreadyWatched, favorite },
-  } = film;
+  } = data;
 
   const popupWatchlistClassName = watchlist ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
   const popupWatchedClassName = alreadyWatched ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
