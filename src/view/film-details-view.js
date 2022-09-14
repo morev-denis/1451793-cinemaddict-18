@@ -8,21 +8,22 @@ export default class FilmDetailsView extends AbstractStatefulView {
   constructor(film, commentsModel) {
     super();
     this._state = FilmDetailsView.parseFilmToState(film, commentsModel);
+    this.#setInnerHandlers();
   }
 
   get template() {
     return createFilmDetailsTemplate(this._state);
   }
 
-  setClickHandler = (callback) => {
-    this._callback.click = callback;
+  setCloseButtonClickHandler = (callback) => {
+    this._callback.closeButtonClick = callback;
     this.element
       .querySelector(Selectors.FILM_DETAILS_CLOSE_BTN)
-      .addEventListener('click', this.#clickHandler);
+      .addEventListener('click', this.#clickCloseButtonHandler);
   };
 
-  #clickHandler = () => {
-    this._callback.click();
+  #clickCloseButtonHandler = () => {
+    this._callback.closeButtonClick();
   };
 
   setWatchlistClickHandler = (callback) => {
@@ -61,15 +62,33 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this._callback.favoriteClick();
   };
 
+  #emojiClickHandler = (evt) => {
+    evt.preventDefault();
+    if (evt.target.matches('img')) {
+      const inputId = evt.target.closest('label').getAttribute('for');
+      const input = this.element.querySelector(`#${inputId}`);
+      const inputValue = input.value;
+
+      this._state = { ...this._state, selectedEmoji: inputValue };
+    }
+  };
+
+  #setInnerHandlers = () => {
+    this.element
+      .querySelector(Selectors.FILM_DETAILS_EMOJI_LIST)
+      .addEventListener('click', this.#emojiClickHandler);
+  };
+
   static parseFilmToState = (film, commentsModel) => {
     const filmComments = [...commentsModel.getComments(film)];
-    return { ...film, filmComments: filmComments };
+    return { ...film, filmComments: filmComments, selectedEmoji: null };
   };
 
   static parseStateToFilm = (state) => {
     const film = { ...state };
 
     delete film.filmComments;
+    delete film.selectedEmoji;
 
     return film;
   };

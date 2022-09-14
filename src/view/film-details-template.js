@@ -36,6 +36,7 @@ const createFilmCommentsTemplate = (comments) => {
 
 export const createFilmDetailsTemplate = (data) => {
   const {
+    selectedEmoji,
     filmComments,
     comments,
     filmInfo: {
@@ -68,6 +69,11 @@ export const createFilmDetailsTemplate = (data) => {
 
     return genresListTemplate;
   };
+
+  const showSelectedEmoji = (emoji) =>
+    emoji
+      ? `<img src="images/emoji/${emoji}.png" width="70" height="70" alt="emoji-${emoji}"></img>`
+      : '';
 
   return `
   <section class="film-details">
@@ -138,7 +144,9 @@ export const createFilmDetailsTemplate = (data) => {
 
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span>
+          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${
+  comments.length
+}</span>
           </h3>
 
           <ul class="film-details__comments-list">
@@ -146,7 +154,7 @@ export const createFilmDetailsTemplate = (data) => {
           </ul>
 
           <form class="film-details__new-comment" action="" method="get">
-            <div class="film-details__add-emoji-label"></div>
+            <div class="film-details__add-emoji-label">${showSelectedEmoji(selectedEmoji)}</div>
 
             <label class="film-details__comment-label">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>

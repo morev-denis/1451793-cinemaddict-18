@@ -163,9 +163,8 @@ export default class FilmCardPresenter {
   #renderFilmDetails = () => {
     hideOverflow();
     render(this.#filmDetailsComponent, siteFooterElement, 'afterend');
-    // this.#renderFilmComments();
 
-    this.#filmDetailsComponent.setClickHandler(this.#handleFilmDetailsCloseBtnClick);
+    this.#filmDetailsComponent.setCloseButtonClickHandler(this.#handleFilmDetailsCloseBtnClick);
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleDetailWatchlistClick);
     this.#filmDetailsComponent.setAlreadyWatchedClickHandler(
       this.#handleDetailsAlreadyWatchedClick,
