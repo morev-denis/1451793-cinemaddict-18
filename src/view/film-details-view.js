@@ -78,18 +78,41 @@ export default class FilmDetailsView extends AbstractStatefulView {
       const inputValue = input.value;
 
       this.updateElement({ selectedEmoji: inputValue });
+      this.element.querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT).value =
+        this._state.currentComment;
+      this.element.scrollTop = this._state.scrollTop;
     }
+  };
+
+  #scrollHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({ scrollTop: evt.target.scrollTop });
+  };
+
+  #inputHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({ currentComment: evt.target.value });
   };
 
   #setInnerHandlers = () => {
     this.element
       .querySelector(Selectors.FILM_DETAILS_EMOJI_LIST)
       .addEventListener('click', this.#emojiClickHandler);
+    this.element.addEventListener('scroll', this.#scrollHandler);
+    this.element
+      .querySelector('.film-details__comment-input')
+      .addEventListener('input', this.#inputHandler);
   };
 
   static parseFilmToState = (film, commentsModel) => {
     const filmComments = [...commentsModel.getComments(film)];
-    return { ...film, filmComments: filmComments, selectedEmoji: null };
+    return {
+      ...film,
+      filmComments: filmComments,
+      selectedEmoji: null,
+      scrollTop: 0,
+      currentComment: null,
+    };
   };
 
   static parseStateToFilm = (state) => {
@@ -97,6 +120,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
     delete film.filmComments;
     delete film.selectedEmoji;
+    delete film.scrollTop;
+    delete film.currentComment;
 
     return film;
   };
