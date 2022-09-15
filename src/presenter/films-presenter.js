@@ -5,6 +5,7 @@ import {
   Classes,
   FilmsListTitle,
   SortType,
+  Selectors,
 } from '../constants.js';
 
 import { updateItem } from '../utils/common.js';
@@ -14,6 +15,7 @@ import { generateFilter } from '../mock/filter.js';
 
 import { render, remove, replace } from '../framework/render.js';
 
+import HeaderProfileView from '../view/header-profile-view.js';
 import MainNavigationView from '../view/main-navigation-view.js';
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
@@ -26,10 +28,15 @@ import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
 
 import FilmCardPresenter from './film-card-presenter.js';
+import FooterStatisticsView from '../view/footer-statistics-view.js';
 
+const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
+const siteFooterElement = document.querySelector('.footer');
+const footerStatisticsElement = siteFooterElement.querySelector(Selectors.FOOTER_STATISTICS);
 
 export default class FilmsPresenter {
+  #headerProfileComponent = new HeaderProfileView();
   #filmsComponent = new FilmsView();
   #filmsListComponent = new FilmsListView();
   #filmsListContainerComponent = new FilmsListContainerView();
@@ -47,6 +54,7 @@ export default class FilmsPresenter {
   #commentsModel = null;
   #filters = null;
   #mainNavigationComponent = null;
+  #footerStatisticsComponent = null;
   #renderedFilmCount = FILMS_COUNT_PER_STEP;
   #currentSortType = SortType.DEFAULT;
   #filmCardPresenter = new Map();
@@ -62,6 +70,7 @@ export default class FilmsPresenter {
     this.#commentsModel = commentsModel;
     this.#filters = generateFilter(this.#films);
     this.#mainNavigationComponent = new MainNavigationView(this.#filters);
+    this.#footerStatisticsComponent = new FooterStatisticsView(this.#films);
   }
 
   #renderFilmCard = (film, container) => {
@@ -240,6 +249,14 @@ export default class FilmsPresenter {
     );
   };
 
+  #renderHeaderProfile = () => {
+    render(this.#headerProfileComponent, siteHeaderElement);
+  };
+
+  #renderFooterStatistics = () => {
+    render(this.#footerStatisticsComponent, footerStatisticsElement);
+  };
+
   #renderFilms = () => {
     this.#renderSort();
 
@@ -250,11 +267,15 @@ export default class FilmsPresenter {
     if (this.#films.length === 0) {
       this.#renderFilmsListTitle(FilmsListTitle.EMPTY_LIST, this.#filmsListComponent.element);
     } else {
+      this.#renderHeaderProfile();
+
       this.#renderFilmsList();
 
       this.#renderFilmsListTopRated();
 
       this.#renderFilmsListMostCommented();
+
+      this.#renderFooterStatistics();
     }
   };
 
