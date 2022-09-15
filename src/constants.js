@@ -28,6 +28,8 @@ const Selectors = {
   POPUP_MARK_AS_WATCHED_BTN: '.film-details__control-button--watched',
   POPUP_ADD_TO_FAVORITE_BTN: '.film-details__control-button--favorite',
   FILM_DETAILS_COMMENTS_LIST: '.film-details__comments-list',
+  FILM_DETAILS_EMOJI_LIST: '.film-details__emoji-list',
+  FILM_DETAILS_COMMENT_INPUT: '.film-details__comment-input',
 };
 
 const FilmsListTitle = {
@@ -138,6 +140,7 @@ const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
   RATING: 'rating',
+  COMMENTS_COUNT: 'comments-count',
 };
 
 export {
