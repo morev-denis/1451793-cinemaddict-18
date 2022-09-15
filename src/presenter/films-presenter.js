@@ -103,9 +103,9 @@ export default class FilmsPresenter {
     }
   };
 
-  #renderFilmCards = (from, to, container) => {
+  #renderFilmCards = (films, from, to, container) => {
     for (let i = from; i < to; i++) {
-      this.#renderFilmCard(this.#films[i], container);
+      this.#renderFilmCard(films[i], container);
     }
   };
 
@@ -125,13 +125,16 @@ export default class FilmsPresenter {
     render(filmsListTitleComponent, titleContainer);
   };
 
-  #sortFilms = (sortType) => {
+  #sortFilms = (films, sortType) => {
     switch (sortType) {
       case SortType.DATE:
-        this.#films.sort((a, b) => sortByDate(b.filmInfo.release.date, a.filmInfo.release.date));
+        films.sort((a, b) => sortByDate(b.filmInfo.release.date, a.filmInfo.release.date));
         break;
       case SortType.RATING:
-        this.#films.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
+        films.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
+        break;
+      case SortType.COMMENTS_COUNT:
+        films.sort((a, b) => b.comments.length - a.comments.length);
         break;
       default:
         this.#films = [...this.#sourcedFilms];
@@ -145,7 +148,7 @@ export default class FilmsPresenter {
       return;
     }
 
-    this.#sortFilms(sortType);
+    this.#sortFilms(this.#films, sortType);
     this.#clearFilms();
     this.#renderFilms();
   };
@@ -173,6 +176,7 @@ export default class FilmsPresenter {
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
     this.#renderFilmCards(
+      this.#films,
       0,
       Math.min(this.#films.length, FILMS_COUNT_PER_STEP),
       this.#filmsListContainerComponent.element,
@@ -204,7 +208,9 @@ export default class FilmsPresenter {
     this.#films = updateItem(this.#films, updatedFilmCard);
     this.#sourcedFilms = updateItem(this.#sourcedFilms, updatedFilmCard);
 
-    this.#filmCardPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
+    if (this.#filmCardPresenter.get(updatedFilmCard.uniqId)) {
+      this.#filmCardPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
+    }
 
     if (this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId)) {
       this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
@@ -227,7 +233,11 @@ export default class FilmsPresenter {
 
     render(this.#filmsListTopRatedContainerComponent, this.#filmsListTopRatedComponent.element);
 
+    const topRatedFilms = [...this.#films];
+    this.#sortFilms(topRatedFilms, SortType.RATING);
+
     this.#renderFilmCards(
+      topRatedFilms,
       0,
       TOP_RATED_FILMS_COUNT,
       this.#filmsListTopRatedContainerComponent.element,
@@ -242,7 +252,11 @@ export default class FilmsPresenter {
       this.#filmsListMostCommentedComponent.element,
     );
 
+    const mostCommentedFilms = [...this.#films];
+    this.#sortFilms(mostCommentedFilms, SortType.COMMENTS_COUNT);
+
     this.#renderFilmCards(
+      mostCommentedFilms,
       0,
       MOST_COMMENTED_FILMS_COUNT,
       this.#filmsListMostCommentedContainerComponent.element,
