@@ -1,7 +1,7 @@
 import {
   convertMinutesToHours,
   formatISOStringToDate,
-  formatISOStringToDateWithTime,
+  formatISOStringToRelativeTime,
 } from '../utils/film.js';
 import { Classes } from '../constants.js';
 
@@ -17,7 +17,7 @@ const createFilmDetailsCommentTemplate = (commentObj) => {
         <p class="film-details__comment-text">${comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${formatISOStringToDateWithTime(date)}</span>
+          <span class="film-details__comment-day">${formatISOStringToRelativeTime(date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>

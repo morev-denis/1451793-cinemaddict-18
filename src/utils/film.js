@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 const convertMinutesToHours = (minutesDuration) => {
   const hours = Math.floor(minutesDuration / 60);
@@ -12,7 +14,7 @@ const convertMinutesToHours = (minutesDuration) => {
 
 const formatISOStringToDate = (ISOString) => dayjs(ISOString).format('DD MMMM YYYY');
 
-const formatISOStringToDateWithTime = (ISOString) => dayjs(ISOString).format('YYYY/MM/DD HH:MM');
+const formatISOStringToRelativeTime = (ISOString) => dayjs().to(dayjs(ISOString));
 
 const formatISOStringToYear = (ISOString) => dayjs(ISOString).format('YYYY');
 
@@ -28,7 +30,7 @@ export {
   formatISOStringToDate,
   formatISOStringToYear,
   formatMinutesToTime,
-  formatISOStringToDateWithTime,
+  formatISOStringToRelativeTime,
   getFilteredFilmsCount,
   sortByDate,
 };
