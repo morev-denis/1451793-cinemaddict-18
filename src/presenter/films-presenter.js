@@ -293,6 +293,10 @@ export default class FilmsPresenter {
     }
   };
 
+  get films() {
+    return this.#filmsModel.films;
+  }
+
   init = () => {
     render(this.#mainNavigationComponent, siteMainElement);
 
