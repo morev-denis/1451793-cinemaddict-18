@@ -6,6 +6,8 @@ import {
   FilmsListTitle,
   SortType,
   Selectors,
+  UpdateType,
+  UserAction,
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
@@ -163,12 +165,33 @@ export default class FilmsPresenter {
     remove(this.#showMoreButtonComponent);
   };
 
-  #handleViewAction = (actionType, updatedType, update) => {
-    console.log(actionType, updatedType, update);
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        this.#filmsModel.updateFilm(updateType, update);
+        break;
+      case UserAction.ADD_FILM:
+        this.#filmsModel.addFilm(updateType, update);
+        break;
+      case UserAction.DELETE_FILM:
+        this.#filmsModel.deleteFilm(updateType, update);
+        break;
+    }
   };
 
-  #handleModelEvent = (updatedType, data) => {
-    console.log(updatedType, data);
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
+
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#filmCardPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        break;
+      case UpdateType.MAJOR:
+        break;
+    }
   };
 
   #renderHeaderProfile = () => {
