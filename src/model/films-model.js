@@ -1,4 +1,4 @@
-import { FILMS_COUNT, MAX_COMMENTS_ON_FILM } from '../constants.js';
+import { FILM_COUNT, MAX_COMMENTS_ON_FILM } from '../constants.js';
 import { getRandomInteger } from '../utils/common.js';
 
 import Observable from '../framework/observable.js';
@@ -6,7 +6,7 @@ import { generateFilm } from '../mock/film.js';
 
 export default class FilmsModel extends Observable {
   #generateFilms = () => {
-    const films = Array.from({ length: FILMS_COUNT }, generateFilm);
+    const films = Array.from({ length: FILM_COUNT }, generateFilm);
 
     let totalCommentsCount = 0;
 
