@@ -143,6 +143,18 @@ const SortType = {
   COMMENTS_COUNT: 'comments-count',
 };
 
+const UserAction = {
+  UPDATE_FILM: 'UPDATE_FILM',
+  ADD_FILM: 'ADD_FILM',
+  DELETE_FILM: 'DELETE_FILM',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 export {
   FILMS_COUNT,
   FILMS_COUNT_PER_STEP,
@@ -157,4 +169,6 @@ export {
   FilmsListTitle,
   FilterType,
   SortType,
+  UserAction,
+  UpdateType,
 };

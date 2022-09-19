@@ -1,4 +1,4 @@
-import { Classes } from '../constants.js';
+import { Classes, UserAction, UpdateType } from '../constants.js';
 
 import { render, remove, replace } from '../framework/render.js';
 
@@ -68,6 +68,8 @@ export default class FilmCardPresenter {
 
   #handleWatchlistClick = () => {
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
@@ -79,6 +81,8 @@ export default class FilmCardPresenter {
   #handleDetailWatchlistClick = () => {
     remove(this.#filmDetailsComponent);
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
@@ -90,6 +94,8 @@ export default class FilmCardPresenter {
 
   #handleAlreadyWatchedClick = () => {
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: {
@@ -104,6 +110,8 @@ export default class FilmCardPresenter {
   #handleDetailsAlreadyWatchedClick = () => {
     remove(this.#filmDetailsComponent);
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: {
@@ -118,6 +126,8 @@ export default class FilmCardPresenter {
 
   #handleFavoriteClick = () => {
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
@@ -129,6 +139,8 @@ export default class FilmCardPresenter {
   #handleDetailsFavoriteClick = () => {
     remove(this.#filmDetailsComponent);
     this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
       {
         ...this.#film,
         userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },

@@ -66,12 +66,14 @@ export default class FilmsPresenter {
     this.#filters = generateFilter(this.films);
     this.#mainNavigationComponent = new MainNavigationView(this.#filters);
     this.#footerStatisticsComponent = new FooterStatisticsView(this.films);
+
+    this.#filmsModel.addObserver(this.#handleModelEvent);
   }
 
   #renderFilmCard = (film, container) => {
     const filmCardPresenter = new FilmCardPresenter(
       this.#commentsModel,
-      this.#handleFilmCardChange,
+      this.#handleViewAction,
       this.#handleModeChange,
     );
     filmCardPresenter.init(film, container);
@@ -161,27 +163,12 @@ export default class FilmsPresenter {
     remove(this.#showMoreButtonComponent);
   };
 
-  #handleFilmCardChange = (updatedFilmCard, container) => {
-    const prevMainNavigationComponent = this.#mainNavigationComponent;
+  #handleViewAction = (actionType, updatedType, update) => {
+    console.log(actionType, updatedType, update);
+  };
 
-    if (this.#filmCardPresenter.get(updatedFilmCard.uniqId)) {
-      this.#filmCardPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
-    }
-
-    if (this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId)) {
-      this.#filmCardTopRatedPresenter.get(updatedFilmCard.uniqId).init(updatedFilmCard, container);
-    }
-    if (this.#filmCardMostCommentedPresenter.get(updatedFilmCard.uniqId)) {
-      this.#filmCardMostCommentedPresenter
-        .get(updatedFilmCard.uniqId)
-        .init(updatedFilmCard, container);
-    }
-
-    this.#filters = generateFilter(this.films);
-
-    this.#mainNavigationComponent = new MainNavigationView(this.#filters);
-
-    replace(this.#mainNavigationComponent, prevMainNavigationComponent);
+  #handleModelEvent = (updatedType, data) => {
+    console.log(updatedType, data);
   };
 
   #renderHeaderProfile = () => {
