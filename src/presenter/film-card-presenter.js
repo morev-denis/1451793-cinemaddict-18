@@ -67,86 +67,56 @@ export default class FilmCardPresenter {
   };
 
   #handleWatchlistClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
-      },
-      this.#container,
-    );
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
+    });
   };
 
   #handleDetailWatchlistClick = () => {
     remove(this.#filmDetailsComponent);
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
-      },
-      this.#container,
-    );
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
+    });
     this.#renderFilmDetails();
   };
 
   #handleAlreadyWatchedClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: {
-          ...this.#film.userDetails,
-          alreadyWatched: !this.#film.userDetails.alreadyWatched,
-        },
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
-      this.#container,
-    );
+    });
   };
 
   #handleDetailsAlreadyWatchedClick = () => {
     remove(this.#filmDetailsComponent);
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: {
-          ...this.#film.userDetails,
-          alreadyWatched: !this.#film.userDetails.alreadyWatched,
-        },
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
-      this.#container,
-    );
+    });
     this.#renderFilmDetails();
   };
 
   #handleFavoriteClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
-      },
-      this.#container,
-    );
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
+    });
   };
 
   #handleDetailsFavoriteClick = () => {
     remove(this.#filmDetailsComponent);
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
-      },
-      this.#container,
-    );
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+      ...this.#film,
+      userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
+    });
     this.#renderFilmDetails();
   };
 
