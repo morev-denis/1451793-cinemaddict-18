@@ -129,6 +129,11 @@ const CommentMockData = {
   EMOTIONS: ['smile', 'sleeping', 'puke', 'angry'],
 };
 
+const Mode = {
+  DEFAULT: 'default',
+  POPUP: 'popup',
+};
+
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -147,6 +152,7 @@ const UserAction = {
   UPDATE_FILM: 'UPDATE_FILM',
   ADD_FILM: 'ADD_FILM',
   DELETE_FILM: 'DELETE_FILM',
+  UPDATE_FILM_DETAILS: 'UPDATE_FILM_DETAILS',
 };
 
 const UpdateType = {
@@ -171,4 +177,5 @@ export {
   SortType,
   UserAction,
   UpdateType,
+  Mode,
 };

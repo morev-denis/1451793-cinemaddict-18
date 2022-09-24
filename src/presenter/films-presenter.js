@@ -29,6 +29,7 @@ import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
 
 import FilmCardPresenter from './film-card-presenter.js';
+import FilmDetailsPresenter from './film-details-presenter.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
 
 const siteHeaderElement = document.querySelector('.header');
@@ -174,15 +175,19 @@ export default class FilmsPresenter {
   };
 
   #handleViewAction = (actionType, updateType, update) => {
+    const filmDetailsPresenter = new FilmDetailsPresenter(
+      this.#commentsModel,
+      this.#handleViewAction,
+      this.#handleModeChange,
+    );
+
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, update);
         break;
-      case UserAction.ADD_FILM:
-        this.#filmsModel.addFilm(updateType, update);
-        break;
-      case UserAction.DELETE_FILM:
-        this.#filmsModel.deleteFilm(updateType, update);
+      case UserAction.UPDATE_FILM_DETAILS:
+        filmDetailsPresenter.init(update);
+        this.#filmsModel.updateFilm(updateType, update);
         break;
     }
   };
