@@ -13,8 +13,6 @@ import {
 
 import { sortByDate } from '../utils/film.js';
 
-import { generateFilter } from '../mock/filter.js';
-
 import { render, remove, RenderPosition } from '../framework/render.js';
 
 import HeaderProfileView from '../view/header-profile-view.js';
@@ -55,6 +53,7 @@ export default class FilmsPresenter {
   #filmsModel = null;
   #commentsModel = null;
   #filters = null;
+  #currentFilterType = null;
   #mainNavigationComponent = null;
   #footerStatisticsComponent = null;
   #renderedFilmCount = FILM_COUNT_PER_STEP;
@@ -63,13 +62,14 @@ export default class FilmsPresenter {
   #filmCardTopRatedPresenter = new Map();
   #filmCardMostCommentedPresenter = new Map();
 
-  constructor(filmsContainer, filmsModel, commentsModel) {
+  constructor(filmsContainer, filmsModel, commentsModel, filters, currentFilterType) {
     this.#filmsContainer = filmsContainer;
     this.#filmsModel = filmsModel;
 
     this.#commentsModel = commentsModel;
-    this.#filters = generateFilter(this.films);
-    this.#mainNavigationComponent = new MainNavigationView(this.#filters);
+    this.#filters = filters;
+    this.#currentFilterType = currentFilterType;
+    this.#mainNavigationComponent = new MainNavigationView(this.#filters, this.#currentFilterType);
     this.#footerStatisticsComponent = new FooterStatisticsView(this.films);
     this.#filmDetailsPresenter = new FilmDetailsPresenter(
       this.#commentsModel,

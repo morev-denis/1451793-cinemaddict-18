@@ -1,33 +1,60 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { getFilteredFilmsCount } from '../utils/film.js';
-import { FilterType } from '../constants.js';
+import { Classes } from '../constants.js';
 
-const createMainNavigationTemplate = (filters) =>
+const createMainNavigationTemplate = (filters, currentFilterType) =>
   `<nav class="main-navigation">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">${getFilteredFilmsCount(
-    filters,
-    FilterType.WATCHLIST,
-  )}</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">${getFilteredFilmsCount(
-    filters,
-    FilterType.HISTORY,
-  )}</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">${getFilteredFilmsCount(
-    filters,
-    FilterType.FAVORITES,
-  )}</span></a>
-  </nav>`;
+      <a href="#all" class="main-navigation__item ${
+  currentFilterType === 'all' ? Classes.MAIN_NAVIGATION_ACTIVE_CLASS : ''
+}" data-type="all">
+        All movies
+      </a>
+      <a href="#watchlist" class="main-navigation__item ${
+  currentFilterType === 'watchlist' ? Classes.MAIN_NAVIGATION_ACTIVE_CLASS : ''
+}" data-type="watchlist">
+        Watchlist
+        <span class="main-navigation__item-count">
+          ${getFilteredFilmsCount(filters, 'WATCHLIST')}
+        </span>
+      </a>
+      <a href="#history" class="main-navigation__item ${
+  currentFilterType === 'history' ? Classes.MAIN_NAVIGATION_ACTIVE_CLASS : ''
+}" data-type="history">
+        History
+        <span class="main-navigation__item-count">
+          ${getFilteredFilmsCount(filters, 'HISTORY')}
+        </span></a>
+      <a href="#favorites" class="main-navigation__item ${
+  currentFilterType === 'favorites' ? Classes.MAIN_NAVIGATION_ACTIVE_CLASS : ''
+}" data-type="favorites">
+        Favorites
+        <span class="main-navigation__item-count">
+          ${getFilteredFilmsCount(filters, 'FAVORITES')}
+        </span>
+      </a>
+    </nav>`;
 
 export default class MainNavigationView extends AbstractView {
   #filters = null;
+  #currentFilterType = null;
 
-  constructor(filters) {
+  constructor(filters, currentFilterType) {
     super();
     this.#filters = filters;
+    this.#currentFilterType = currentFilterType;
   }
 
   get template() {
-    return createMainNavigationTemplate(this.#filters);
+    return createMainNavigationTemplate(this.#filters, this.#currentFilterType);
   }
+
+  setFilterTypeChangeHandler = (callback) => {
+    this._callback.filterTypeChange = callback;
+    this.element.addEventListener('click', this.#filterTypeChangeHandler);
+  };
+
+  #filterTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.dataset.type);
+  };
 }

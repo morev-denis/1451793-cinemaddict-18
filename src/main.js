@@ -10,6 +10,35 @@ const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel(filmsModel);
 const filterModel = new FilterModel();
 
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
+const filters = [
+  {
+    type: 'all',
+    name: 'ALL',
+    count: 0,
+  },
+  {
+    type: 'watchlist',
+    name: 'WATCHLIST',
+    count: 0,
+  },
+  {
+    type: 'history',
+    name: 'HISTORY',
+    count: 0,
+  },
+  {
+    type: 'favorites',
+    name: 'FAVORITES',
+    count: 0,
+  },
+];
+
+const filmsPresenter = new FilmsPresenter(
+  siteMainElement,
+  filmsModel,
+  commentsModel,
+  filters,
+  'all',
+);
 
 filmsPresenter.init();
