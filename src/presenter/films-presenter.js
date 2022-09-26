@@ -8,6 +8,7 @@ import {
   Selectors,
   UpdateType,
   UserAction,
+  Mode,
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
@@ -46,6 +47,7 @@ export default class FilmsPresenter {
   #filmsListMostCommentedContainerComponent = new FilmsListContainerView();
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
+  #filmDetailsPresenter = null;
   #showMoreButtonComponent = null;
   #sortComponent = null;
 
@@ -69,6 +71,10 @@ export default class FilmsPresenter {
     this.#filters = generateFilter(this.films);
     this.#mainNavigationComponent = new MainNavigationView(this.#filters);
     this.#footerStatisticsComponent = new FooterStatisticsView(this.films);
+    this.#filmDetailsPresenter = new FilmDetailsPresenter(
+      this.#commentsModel,
+      this.#handleViewAction,
+    );
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
   }
@@ -77,7 +83,7 @@ export default class FilmsPresenter {
     const filmCardPresenter = new FilmCardPresenter(
       this.#commentsModel,
       this.#handleViewAction,
-      this.#handleModeChange,
+      this.#filmDetailsPresenter,
     );
     filmCardPresenter.init(film, container);
     switch (container) {
@@ -144,10 +150,6 @@ export default class FilmsPresenter {
     render(this.#sortComponent, this.#mainNavigationComponent.element, RenderPosition.AFTEREND);
   };
 
-  #handleModeChange = () => {
-    this.#filmCardPresenter.forEach((presenter) => presenter.resetView());
-  };
-
   #clearFilms = ({ resetRenderedFilmCount = false, resetSortType = false } = {}) => {
     const filmCount = this.films.length;
 
@@ -175,27 +177,33 @@ export default class FilmsPresenter {
   };
 
   #handleViewAction = (actionType, updateType, update) => {
-    const filmDetailsPresenter = new FilmDetailsPresenter(
-      this.#commentsModel,
-      this.#handleViewAction,
-      this.#handleModeChange,
-    );
-
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.UPDATE_FILM_DETAILS:
-        filmDetailsPresenter.init(update);
+        this.#filmDetailsPresenter.init(update, Mode.POPUP);
         this.#filmsModel.updateFilm(updateType, update);
         break;
+      case UserAction.DELETE_COMMENT:
+        this.#commentsModel.deleteComment(updateType, update);
+        this.#filmsModel.updateComments(updateType, update);
     }
   };
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#filmCardPresenter.get(data.id).init(data);
+        this.#filmCardPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+
+        if (this.#filmCardTopRatedPresenter.get(data.uniqId)) {
+          this.#filmCardTopRatedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        }
+
+        if (this.#filmCardMostCommentedPresenter.get(data.uniqId)) {
+          this.#filmCardMostCommentedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        }
+
         break;
       case UpdateType.MINOR:
         this.#clearFilms();

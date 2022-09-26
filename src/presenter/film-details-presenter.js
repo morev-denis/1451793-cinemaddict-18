@@ -1,6 +1,6 @@
-import { Classes, UserAction, UpdateType } from '../constants.js';
+import { Classes, UserAction, UpdateType, Mode } from '../constants.js';
 
-import { render, remove } from '../framework/render.js';
+import { render, remove, replace } from '../framework/render.js';
 
 import FilmDetailsView from '../view/film-details-view.js';
 
@@ -20,14 +20,20 @@ export default class FilmDetailsPresenter {
   #filmDetailsComponent = null;
   #commentsModel = null;
   #changeData = null;
+  #mode = Mode.DEFAULT;
 
   constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
     this.#changeData = changeData;
+
+    this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
-  init = (film) => {
+  init = (film, mode) => {
     this.#film = film;
+    this.#mode = mode;
+
+    const preventFilmDetailsComponent = this.#filmDetailsComponent;
 
     this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#commentsModel);
 
@@ -37,17 +43,25 @@ export default class FilmDetailsPresenter {
       this.#handleDetailsAlreadyWatchedClick,
     );
     this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleDetailsFavoriteClick);
+    this.#filmDetailsComponent.setDeleteClickHandler(this.#handleDeleteClick);
     document.addEventListener('keydown', this.#onEscKeyDown);
 
-    this.#renderFilmDetails();
+    if (preventFilmDetailsComponent === null || this.#mode === Mode.DEFAULT) {
+      this.#renderFilmDetails();
+    } else {
+      replace(this.#filmDetailsComponent, preventFilmDetailsComponent);
+    }
   };
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
   };
 
+  #handleDeleteClick = (payload) => {
+    this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, payload);
+  };
+
   #handleDetailWatchlistClick = () => {
-    remove(this.#filmDetailsComponent);
     this.#changeData(UserAction.UPDATE_FILM_DETAILS, UpdateType.MINOR, {
       ...this.#film,
       userDetails: { ...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist },
@@ -55,7 +69,6 @@ export default class FilmDetailsPresenter {
   };
 
   #handleDetailsAlreadyWatchedClick = () => {
-    remove(this.#filmDetailsComponent);
     this.#changeData(UserAction.UPDATE_FILM_DETAILS, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
@@ -66,7 +79,6 @@ export default class FilmDetailsPresenter {
   };
 
   #handleDetailsFavoriteClick = () => {
-    remove(this.#filmDetailsComponent);
     this.#changeData(UserAction.UPDATE_FILM_DETAILS, UpdateType.MINOR, {
       ...this.#film,
       userDetails: { ...this.#film.userDetails, favorite: !this.#film.userDetails.favorite },
@@ -91,5 +103,16 @@ export default class FilmDetailsPresenter {
   #renderFilmDetails = () => {
     hideOverflow();
     render(this.#filmDetailsComponent, siteFooterElement, 'afterend');
+  };
+
+  #handleModelEvent = (event, payload) => {
+    switch (event) {
+      case UpdateType.PATCH:
+        this.init(payload);
+        break;
+      case UpdateType.MINOR:
+        this.init(payload);
+        break;
+    }
   };
 }

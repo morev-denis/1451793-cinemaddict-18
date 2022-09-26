@@ -57,17 +57,31 @@ export default class FilmDetailsView extends AbstractStatefulView {
       .addEventListener('click', this.#favoriteClickHandler);
   };
 
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  };
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    const deleteElements = this.element.querySelectorAll(Selectors.FILM_DETAILS_COMMENT_DELETE);
+    deleteElements.forEach((elem, index) =>
+      elem.addEventListener('click', (evt) => this.#commentDeleteClickHandler(evt, index)),
+    );
+  };
+
+  #commentDeleteClickHandler = (evt, index) => {
+    evt.preventDefault();
+    this._callback.deleteClick({ film: FilmDetailsView.parseStateToFilm(this._state), index });
+  };
+
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setCloseButtonClickHandler(this._callback.closeButtonClick);
     this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
-  };
-
-  #favoriteClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.favoriteClick();
+    this.setDeleteClickHandler(this._callback.deleteClick);
   };
 
   #emojiClickHandler = (evt) => {

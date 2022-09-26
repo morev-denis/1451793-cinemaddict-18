@@ -30,6 +30,7 @@ const Selectors = {
   FILM_DETAILS_COMMENTS_LIST: '.film-details__comments-list',
   FILM_DETAILS_EMOJI_LIST: '.film-details__emoji-list',
   FILM_DETAILS_COMMENT_INPUT: '.film-details__comment-input',
+  FILM_DETAILS_COMMENT_DELETE: '.film-details__comment-delete',
 };
 
 const FilmsListTitle = {
@@ -150,9 +151,8 @@ const SortType = {
 
 const UserAction = {
   UPDATE_FILM: 'UPDATE_FILM',
-  ADD_FILM: 'ADD_FILM',
-  DELETE_FILM: 'DELETE_FILM',
   UPDATE_FILM_DETAILS: 'UPDATE_FILM_DETAILS',
+  DELETE_COMMENT: 'DELETE_COMMENT',
 };
 
 const UpdateType = {

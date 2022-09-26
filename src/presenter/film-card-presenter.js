@@ -4,24 +4,18 @@ import { render, remove, replace } from '../framework/render.js';
 
 import FilmCardView from '../view/film-card-view.js';
 
-import FilmDetailsPresenter from './film-details-presenter.js';
-
 export default class FilmCardPresenter {
   #film = null;
   #container = null;
   #filmCardComponent = null;
   #commentsModel = null;
   #changeData = null;
-  #changeMode = null;
+  #filmDetailsPresenter = null;
 
-  #mode = Mode.DEFAULT;
-
-  #filmDetailsPresenter = new Map();
-
-  constructor(commentsModel, changeData, changeMode) {
+  constructor(commentsModel, changeData, filmDetailsPresenter) {
     this.#commentsModel = commentsModel;
     this.#changeData = changeData;
-    this.#changeMode = changeMode;
+    this.#filmDetailsPresenter = filmDetailsPresenter;
   }
 
   init = (film, container) => {
@@ -74,17 +68,7 @@ export default class FilmCardPresenter {
     });
   };
 
-  resetView = () => {
-    this.#filmDetailsPresenter.forEach((presenter) => presenter.destroy());
-    this.#filmDetailsPresenter.clear();
-  };
-
   #handleFilmCardLinkClick = () => {
-    this.#changeMode();
-    const filmDetailsPresenter = new FilmDetailsPresenter(this.#commentsModel, this.#changeData);
-    filmDetailsPresenter.init(this.#film);
-    this.#filmDetailsPresenter.set(this.#film.uniqId, filmDetailsPresenter);
-
-    this.#mode = Mode.POPUP;
+    this.#filmDetailsPresenter.init(this.#film, Mode.DEFAULT);
   };
 }
