@@ -54,6 +54,9 @@ export default class MainNavigationView extends AbstractView {
   };
 
   #filterTypeChangeHandler = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.dataset.type);
   };

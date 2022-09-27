@@ -34,7 +34,7 @@ const Selectors = {
   FILM_DETAILS_COMMENT_DELETE: '.film-details__comment-delete',
 };
 
-const FilmsListTitle = {
+const FilmsListTitleText = {
   MAIN_TITLE: 'All movies. Upcoming',
   EMPTY_LIST: 'There are no movies in our database',
   EMPTY_WATCHLIST: 'There are no movies to watch now',
@@ -173,7 +173,7 @@ export {
   FilmMockData,
   CommentMockData,
   DescriptionLength,
-  FilmsListTitle,
+  FilmsListTitleText,
   FilterType,
   SortType,
   UserAction,

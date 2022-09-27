@@ -1,16 +1,29 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import { FilterType, FilmsListTitleText } from '../constants.js';
 
-const createFilmsListTitleTemplate = (text) => `<h2 class="films-list__title">${text}</h2>`;
+const filmsListTitle = {
+  [FilterType.ALL]: FilmsListTitleText.MAIN_TITLE,
+  [FilterType.WATCHLIST]: FilmsListTitleText.EMPTY_WATCHLIST,
+  [FilterType.HISTORY]: FilmsListTitleText.EMPTY_HISTORY,
+  [FilterType.FAVORITES]: FilmsListTitleText.EMPTY_FAVORITES,
+};
 
-export default class FilmsListContainerView extends AbstractView {
-  #text = '';
+const createFilmsListTitleTemplate = (filterType) => {
+  const filmsListTitleValue = filmsListTitle[filterType];
 
-  constructor(text) {
+  return `
+    <h2 class="films-list__title">${filmsListTitleValue}</h2>`;
+};
+
+export default class FilmsListTitleView extends AbstractView {
+  #filterType = null;
+
+  constructor(filterType) {
     super();
-    this.#text = text;
+    this.#filterType = filterType;
   }
 
   get template() {
-    return createFilmsListTitleTemplate(this.#text);
+    return createFilmsListTitleTemplate(this.#filterType);
   }
 }

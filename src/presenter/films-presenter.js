@@ -3,7 +3,7 @@ import {
   MOST_COMMENTED_FILM_COUNT,
   TOP_RATED_FILM_COUNT,
   Classes,
-  FilmsListTitle,
+  FilterType,
   SortType,
   Selectors,
   UpdateType,
@@ -20,7 +20,7 @@ import HeaderProfileView from '../view/header-profile-view.js';
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
 import FilmsListView from '../view/films-list-view.js';
-import FilmsListTitleView from '../view/films-list-title-view';
+import FilmsListTitleView from '../view/films-list-title-view.js';
 import FilmsListContainerView from '../view/films-list-container-view.js';
 
 import ShowMoreButtonView from '../view/show-more-button-view.js';
@@ -50,6 +50,7 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = null;
   #sortComponent = null;
   #filterPresenter = null;
+  #filterType = FilterType.ALL;
 
   #filmsContainer = null;
   #filmsModel = null;
@@ -61,6 +62,7 @@ export default class FilmsPresenter {
   #filmCardPresenter = new Map();
   #filmCardTopRatedPresenter = new Map();
   #filmCardMostCommentedPresenter = new Map();
+  #filmsListTitleComponent = null;
 
   constructor(filmsContainer, filmsModel, commentsModel, filterModel) {
     this.#filmsContainer = filmsContainer;
@@ -129,14 +131,18 @@ export default class FilmsPresenter {
     render(this.#showMoreButtonComponent, this.#filmsListComponent.element);
   };
 
-  #renderFilmsListTitle = (titleText, titleContainer, titleClass = '') => {
-    const filmsListTitleComponent = new FilmsListTitleView(titleText);
-
-    if (titleClass) {
-      filmsListTitleComponent.element.classList.add(titleClass);
+  #renderFilmsListTitle = (titleContainer, titleClass = '') => {
+    if (this.#filmsListComponent) {
+      remove(this.#filmsListTitleComponent);
     }
 
-    render(filmsListTitleComponent, titleContainer);
+    this.#filmsListTitleComponent = new FilmsListTitleView(this.#filterType);
+
+    if (titleClass) {
+      this.#filmsListTitleComponent.element.classList.add(titleClass);
+    }
+
+    render(this.#filmsListTitleComponent, titleContainer);
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -153,7 +159,7 @@ export default class FilmsPresenter {
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
 
-    render(this.#sortComponent, siteMainElement, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#filmsComponent.element, RenderPosition.AFTERBEGIN);
   };
 
   #clearFilms = ({ resetRenderedFilmCount = false, resetSortType = false } = {}) => {
@@ -264,24 +270,22 @@ export default class FilmsPresenter {
 
     render(this.#filmsListComponent, this.#filmsComponent.element);
 
-    this.#renderSort();
-
     this.#filterPresenter.init();
+
+    this.#renderSort();
 
     this.#renderFooterStatistics();
 
-    if (filmCount === 0) {
-      this.#renderFilmsListTitle(FilmsListTitle.EMPTY_LIST, this.#filmsListComponent.element);
-      return;
+    if (filmCount !== 0 && this.#filterType === FilterType.ALL) {
+      this.#renderFilmsListTitle(this.#filmsListComponent.element, Classes.VISUALLY_HIDDEN_CLASS);
+    } else {
+      remove(this.#filmsListTitleComponent);
+      if (filmCount === 0) {
+        this.#renderFilmsListTitle(this.#filmsListComponent.element);
+      }
     }
 
     this.#renderHeaderProfile();
-
-    this.#renderFilmsListTitle(
-      FilmsListTitle.MAIN_TITLE,
-      this.#filmsListComponent.element,
-      Classes.VISUALLY_HIDDEN_CLASS,
-    );
 
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
@@ -300,9 +304,9 @@ export default class FilmsPresenter {
   };
 
   get films() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const films = this.#filmsModel.films;
-    const filteredFilms = filter[filterType](films);
+    const filteredFilms = filter[this.#filterType](films);
 
     switch (this.#currentSortType) {
       case SortType.DATE:
