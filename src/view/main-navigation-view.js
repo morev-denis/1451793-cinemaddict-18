@@ -14,7 +14,7 @@ const createMainNavigationTemplate = (filters, currentFilterType) =>
 }" data-type="watchlist">
         Watchlist
         <span class="main-navigation__item-count">
-          ${getFilteredFilmsCount(filters, 'WATCHLIST')}
+          ${getFilteredFilmsCount(filters, 'Watchlist')}
         </span>
       </a>
       <a href="#history" class="main-navigation__item ${
@@ -22,14 +22,14 @@ const createMainNavigationTemplate = (filters, currentFilterType) =>
 }" data-type="history">
         History
         <span class="main-navigation__item-count">
-          ${getFilteredFilmsCount(filters, 'HISTORY')}
+          ${getFilteredFilmsCount(filters, 'History')}
         </span></a>
       <a href="#favorites" class="main-navigation__item ${
   currentFilterType === 'favorites' ? Classes.MAIN_NAVIGATION_ACTIVE_CLASS : ''
 }" data-type="favorites">
         Favorites
         <span class="main-navigation__item-count">
-          ${getFilteredFilmsCount(filters, 'FAVORITES')}
+          ${getFilteredFilmsCount(filters, 'Favorites')}
         </span>
       </a>
     </nav>`;
