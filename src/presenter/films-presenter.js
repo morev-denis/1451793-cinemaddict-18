@@ -12,6 +12,7 @@ import {
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
+import { filter } from '../utils/filter.js';
 
 import { render, remove, RenderPosition } from '../framework/render.js';
 
@@ -81,6 +82,7 @@ export default class FilmsPresenter {
     );
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   #renderFilmCard = (film, container) => {
@@ -298,20 +300,22 @@ export default class FilmsPresenter {
   };
 
   get films() {
+    const filterType = this.#filterModel.filter;
+    const films = this.#filmsModel.films;
+    const filteredFilms = filter[filterType](films);
+
     switch (this.#currentSortType) {
       case SortType.DATE:
-        return [...this.#filmsModel.films].sort((a, b) =>
+        return filteredFilms.sort((a, b) =>
           sortByDate(b.filmInfo.release.date, a.filmInfo.release.date),
         );
       case SortType.RATING:
-        return [...this.#filmsModel.films].sort(
-          (a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating,
-        );
+        return filteredFilms.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
       case SortType.COMMENTS_COUNT:
-        return [...this.#filmsModel.films].sort((a, b) => b.comments.length - a.comments.length);
+        return filteredFilms.sort((a, b) => b.comments.length - a.comments.length);
     }
 
-    return this.#filmsModel.films;
+    return filteredFilms;
   }
 
   init = () => {
