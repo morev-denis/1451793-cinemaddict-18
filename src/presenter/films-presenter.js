@@ -241,7 +241,9 @@ export default class FilmsPresenter {
 
     render(this.#filmsListTopRatedContainerComponent, this.#filmsListTopRatedComponent.element);
 
-    const topRatedFilms = [...this.films].slice(0, TOP_RATED_FILM_COUNT);
+    const topRatedFilms = [...this.films]
+      .sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating)
+      .slice(0, TOP_RATED_FILM_COUNT);
 
     this.#renderFilmCards(topRatedFilms, this.#filmsListTopRatedContainerComponent.element);
   };
@@ -254,7 +256,9 @@ export default class FilmsPresenter {
       this.#filmsListMostCommentedComponent.element,
     );
 
-    const mostCommentedFilms = [...this.films].slice(0, MOST_COMMENTED_FILM_COUNT);
+    const mostCommentedFilms = [...this.films]
+      .sort((a, b) => b.comments.length - a.comments.length)
+      .slice(0, MOST_COMMENTED_FILM_COUNT);
 
     this.#renderFilmCards(
       mostCommentedFilms,
@@ -276,16 +280,17 @@ export default class FilmsPresenter {
 
     this.#filterPresenter.init();
 
-    this.#renderSort();
-
     this.#renderFooterStatistics();
 
     if (filmCount !== 0 && this.#filterType === FilterType.ALL) {
+      this.#renderSort();
       this.#renderFilmsListTitle(this.#filmsListComponent.element, Classes.VISUALLY_HIDDEN_CLASS);
     } else {
       remove(this.#filmsListTitleComponent);
       if (filmCount === 0) {
         this.#renderFilmsListTitle(this.#filmsListComponent.element);
+      } else {
+        this.#renderSort();
       }
     }
 
@@ -319,8 +324,6 @@ export default class FilmsPresenter {
         );
       case SortType.RATING:
         return filteredFilms.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
-      case SortType.COMMENTS_COUNT:
-        return filteredFilms.sort((a, b) => b.comments.length - a.comments.length);
     }
 
     return filteredFilms;

@@ -147,7 +147,6 @@ const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
   RATING: 'rating',
-  COMMENTS_COUNT: 'comments-count',
 };
 
 const UserAction = {
