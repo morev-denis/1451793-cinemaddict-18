@@ -1,7 +1,7 @@
-const FILMS_COUNT = 12;
-const FILMS_COUNT_PER_STEP = 5;
-const MOST_COMMENTED_FILMS_COUNT = 2;
-const TOP_RATED_FILMS_COUNT = 2;
+const FILM_COUNT = 12;
+const FILM_COUNT_PER_STEP = 5;
+const MOST_COMMENTED_FILM_COUNT = 2;
+const TOP_RATED_FILM_COUNT = 2;
 const MAX_COMMENTS_ON_FILM = 5;
 
 const DescriptionLength = {
@@ -15,6 +15,7 @@ const Classes = {
   CONTROL_BUTTON_ACTIVE_CLASS: 'film-card__controls-item--active',
   POPUP_CONTROL_BUTTON_ACTIVE_CLASS: 'film-details__control-button--active',
   SORT_BUTTON_ACTIVE_CLASS: 'sort__button--active',
+  MAIN_NAVIGATION_ACTIVE_CLASS: 'main-navigation__item--active',
 };
 
 const Selectors = {
@@ -30,9 +31,10 @@ const Selectors = {
   FILM_DETAILS_COMMENTS_LIST: '.film-details__comments-list',
   FILM_DETAILS_EMOJI_LIST: '.film-details__emoji-list',
   FILM_DETAILS_COMMENT_INPUT: '.film-details__comment-input',
+  FILM_DETAILS_COMMENT_DELETE: '.film-details__comment-delete',
 };
 
-const FilmsListTitle = {
+const FilmsListTitleText = {
   MAIN_TITLE: 'All movies. Upcoming',
   EMPTY_LIST: 'There are no movies in our database',
   EMPTY_WATCHLIST: 'There are no movies to watch now',
@@ -129,6 +131,11 @@ const CommentMockData = {
   EMOTIONS: ['smile', 'sleeping', 'puke', 'angry'],
 };
 
+const Mode = {
+  DEFAULT: 'default',
+  POPUP: 'popup',
+};
+
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -140,21 +147,36 @@ const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
   RATING: 'rating',
-  COMMENTS_COUNT: 'comments-count',
+};
+
+const UserAction = {
+  UPDATE_FILM: 'UPDATE_FILM',
+  UPDATE_FILM_DETAILS: 'UPDATE_FILM_DETAILS',
+  DELETE_COMMENT: 'DELETE_COMMENT',
+  ADD_COMMENT: 'ADD_COMMENT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
 };
 
 export {
-  FILMS_COUNT,
-  FILMS_COUNT_PER_STEP,
-  MOST_COMMENTED_FILMS_COUNT,
-  TOP_RATED_FILMS_COUNT,
+  FILM_COUNT,
+  FILM_COUNT_PER_STEP,
+  MOST_COMMENTED_FILM_COUNT,
+  TOP_RATED_FILM_COUNT,
   MAX_COMMENTS_ON_FILM,
   Classes,
   Selectors,
   FilmMockData,
   CommentMockData,
   DescriptionLength,
-  FilmsListTitle,
+  FilmsListTitleText,
   FilterType,
   SortType,
+  UserAction,
+  UpdateType,
+  Mode,
 };

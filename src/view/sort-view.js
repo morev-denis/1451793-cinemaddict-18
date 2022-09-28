@@ -1,12 +1,13 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { SortType, Classes } from '../constants.js';
 
-const createSortTemplate = (sortType) => {
+const createSortTemplate = (currentSortType) => {
   const sortByDefaultClassName =
-    sortType === SortType.DEFAULT ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
-  const sortByDateClassName = sortType === SortType.DATE ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+    currentSortType === SortType.DEFAULT ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+  const sortByDateClassName =
+    currentSortType === SortType.DATE ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
   const sortByRatingClassName =
-    sortType === SortType.RATING ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+    currentSortType === SortType.RATING ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
 
   return `
     <ul class="sort">
@@ -17,15 +18,15 @@ const createSortTemplate = (sortType) => {
 };
 
 export default class ShowMoreButtonView extends AbstractView {
-  #sortType = SortType.DEFAULT;
+  #currentSortType = SortType.DEFAULT;
 
-  constructor(sortType) {
+  constructor(currentSortType) {
     super();
-    this.#sortType = sortType;
+    this.#currentSortType = currentSortType;
   }
 
   get template() {
-    return createSortTemplate(this.#sortType);
+    return createSortTemplate(this.#currentSortType);
   }
 
   setSortTypeChangeHandler = (callback) => {

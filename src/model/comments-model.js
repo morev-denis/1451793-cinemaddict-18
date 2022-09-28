@@ -1,11 +1,14 @@
 import { generateComment } from '../mock/comment.js';
 
-export default class CommentsModel {
+import Observable from '../framework/observable.js';
+
+export default class CommentsModel extends Observable {
   #filmsModel = null;
   #allComments = [];
   #filmComments = [];
 
   constructor(filmsModel) {
+    super();
     this.#filmsModel = filmsModel;
     this.#generateAllComments();
   }
@@ -35,5 +38,30 @@ export default class CommentsModel {
     );
 
     return this.#filmComments;
+  };
+
+  addComment = (updateType, update) => {
+    const comments = [...update.film.comments, update.сomment.id];
+
+    this.#allComments = [...this.#allComments, update.сomment];
+
+    this._notify(updateType, { ...update.film, comments });
+  };
+
+  deleteComment = (updateType, update) => {
+    this.#filmComments = [
+      ...this.#filmComments.slice(0, update.index),
+      ...this.#filmComments.slice(update.index + 1),
+    ];
+
+    const commentId = update.film.comments[update.index];
+    this.#allComments = this.#allComments.filter((comment) => comment.id !== commentId);
+
+    const comments = [
+      ...update.film.comments.slice(0, update.index),
+      ...update.film.comments.slice(update.index + 1),
+    ];
+
+    this._notify(updateType, { ...update.film, filmComments: this.#filmComments, comments });
   };
 }
