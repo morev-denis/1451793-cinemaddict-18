@@ -5,6 +5,17 @@ import Observable from '../framework/observable.js';
 import { generateFilm } from '../mock/film.js';
 
 export default class FilmsModel extends Observable {
+  #filmsApiService = null;
+
+  constructor(filmsApiService) {
+    super();
+    this.#filmsApiService = filmsApiService;
+
+    filmsApiService.films.then((films) => {
+      console.log(films);
+    });
+  }
+
   #generateFilms = () => {
     const films = Array.from({ length: FILM_COUNT }, generateFilm);
 

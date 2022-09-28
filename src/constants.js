@@ -167,6 +167,9 @@ const Method = {
   PUT: 'PUT',
 };
 
+const AUTHORIZATION = 'Basic Jd3ekS36qot8nf5v';
+const END_POINT = 'https://18.ecmascript.pages.academy/cinemaddict/';
+
 export {
   FILM_COUNT,
   FILM_COUNT_PER_STEP,
@@ -185,4 +188,6 @@ export {
   UpdateType,
   Mode,
   Method,
+  AUTHORIZATION,
+  END_POINT,
 };
