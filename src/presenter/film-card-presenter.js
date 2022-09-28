@@ -1,4 +1,4 @@
-import { UserAction, UpdateType, Mode } from '../constants.js';
+import { UserAction, UpdateType } from '../constants.js';
 
 import { render, remove, replace } from '../framework/render.js';
 
@@ -69,6 +69,6 @@ export default class FilmCardPresenter {
   };
 
   #handleFilmCardLinkClick = () => {
-    this.#filmDetailsPresenter.init(this.#film, Mode.DEFAULT);
+    this.#filmDetailsPresenter.init(this.#film);
   };
 }

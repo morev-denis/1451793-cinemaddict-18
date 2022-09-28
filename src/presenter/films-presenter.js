@@ -8,7 +8,6 @@ import {
   Selectors,
   UpdateType,
   UserAction,
-  Mode,
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
@@ -194,12 +193,17 @@ export default class FilmsPresenter {
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.UPDATE_FILM_DETAILS:
-        this.#filmDetailsPresenter.init(update, Mode.POPUP);
+        this.#filmDetailsPresenter.init(update);
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
         this.#commentsModel.deleteComment(updateType, update);
-        this.#filmsModel.updateComments(updateType, update);
+        this.#filmsModel.updateCommentsAfterDelComment(updateType, update);
+        break;
+      case UserAction.ADD_COMMENT:
+        this.#commentsModel.addComment(updateType, update);
+        this.#filmsModel.updateCommentsAfterAddComment(updateType, update);
+        break;
     }
   };
 

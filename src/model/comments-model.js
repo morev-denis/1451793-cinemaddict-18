@@ -40,12 +40,12 @@ export default class CommentsModel extends Observable {
     return this.#filmComments;
   };
 
-  addComment = (updateType, payload) => {
-    this.#filmComments = [...this.#filmComments, payload];
+  addComment = (updateType, update) => {
+    const comments = [...update.film.comments, update.сomment.id];
 
-    this.#allComments.push(payload);
+    this.#allComments = [...this.#allComments, update.сomment];
 
-    this._notify(updateType, this.#filmComments);
+    this._notify(updateType, { ...update.film, comments });
   };
 
   deleteComment = (updateType, update) => {

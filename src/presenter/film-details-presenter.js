@@ -20,7 +20,7 @@ export default class FilmDetailsPresenter {
   #filmDetailsComponent = null;
   #commentsModel = null;
   #changeData = null;
-  #mode = Mode.DEFAULT;
+  mode = Mode.DEFAULT;
 
   constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
@@ -29,11 +29,10 @@ export default class FilmDetailsPresenter {
     this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
-  init = (film, mode) => {
+  init = (film) => {
     this.#film = film;
-    this.#mode = mode;
 
-    const preventFilmDetailsComponent = this.#filmDetailsComponent;
+    const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
     this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#commentsModel);
 
@@ -44,17 +43,23 @@ export default class FilmDetailsPresenter {
     );
     this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleDetailsFavoriteClick);
     this.#filmDetailsComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#filmDetailsComponent.setFormSubmitHandler(this.#handleFormSubmit);
     document.addEventListener('keydown', this.#onEscKeyDown);
 
-    if (preventFilmDetailsComponent === null || this.#mode === Mode.DEFAULT) {
+    if (prevFilmDetailsComponent === null || this.mode === Mode.DEFAULT) {
       this.#renderFilmDetails();
+      this.mode = 'popup';
     } else {
-      replace(this.#filmDetailsComponent, preventFilmDetailsComponent);
+      replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
     }
   };
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
+  };
+
+  #handleFormSubmit = (payload) => {
+    this.#changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, payload);
   };
 
   #handleDeleteClick = (payload) => {
@@ -91,6 +96,7 @@ export default class FilmDetailsPresenter {
       remove(this.#filmDetailsComponent);
       document.removeEventListener('keydown', this.#onEscKeyDown);
       showOverflow();
+      this.mode = Mode.DEFAULT;
     }
   };
 
@@ -98,6 +104,7 @@ export default class FilmDetailsPresenter {
     remove(this.#filmDetailsComponent);
     showOverflow();
     document.removeEventListener('keydown', this.#onEscKeyDown);
+    this.mode = Mode.DEFAULT;
   };
 
   #renderFilmDetails = () => {

@@ -49,11 +49,17 @@ export default class FilmsModel extends Observable {
     this._notify(updateType, update);
   };
 
-  updateComments = (updateType, update) => {
+  updateCommentsAfterDelComment = (updateType, update) => {
     const comments = [
       ...update.film.comments.slice(0, update.index),
       ...update.film.comments.slice(update.index + 1),
     ];
+
+    this._notify(updateType, { ...update.film, comments });
+  };
+
+  updateCommentsAfterAddComment = (updateType, update) => {
+    const comments = [...update.film.comments, update.сomment.id];
 
     this._notify(updateType, { ...update.film, comments });
   };

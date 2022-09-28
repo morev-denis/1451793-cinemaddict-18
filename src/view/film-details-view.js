@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { Selectors } from '../constants.js';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
@@ -14,6 +15,10 @@ export default class FilmDetailsView extends AbstractStatefulView {
   get template() {
     return createFilmDetailsTemplate(this._state);
   }
+
+  #restoreScrollPosition = () => {
+    document.querySelector('.film-details').scrollTop = this._state.scrollTop;
+  };
 
   setCloseButtonClickHandler = (callback) => {
     this._callback.closeButtonClick = callback;
@@ -36,6 +41,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #watchlistClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.watchlistClick();
+
+    this.#restoreScrollPosition();
   };
 
   setAlreadyWatchedClickHandler = (callback) => {
@@ -48,6 +55,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #alreadyWatchedClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.alreadyWatchedClick();
+
+    this.#restoreScrollPosition();
   };
 
   setFavoriteClickHandler = (callback) => {
@@ -60,6 +69,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.favoriteClick();
+
+    this.#restoreScrollPosition();
   };
 
   setDeleteClickHandler = (callback) => {
@@ -73,15 +84,33 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #commentDeleteClickHandler = (evt, index) => {
     evt.preventDefault();
     this._callback.deleteClick({ film: FilmDetailsView.parseStateToFilm(this._state), index });
+
+    this.#restoreScrollPosition();
   };
 
-  _restoreHandlers = () => {
-    this.#setInnerHandlers();
-    this.setCloseButtonClickHandler(this._callback.closeButtonClick);
-    this.setWatchlistClickHandler(this._callback.watchlistClick);
-    this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
-    this.setFavoriteClickHandler(this._callback.favoriteClick);
-    this.setDeleteClickHandler(this._callback.deleteClick);
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element
+      .querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT)
+      .addEventListener('keydown', this.#formSubmitHandler);
+  };
+
+  #formSubmitHandler = (evt) => {
+    if (evt.key === 'Enter') {
+      const сomment = {
+        id: nanoid(),
+        author: 'Ilya Reilly',
+        comment: this._state.currentComment || '',
+        date: new Date(),
+        emotion: this._state.selectedEmoji || 'smile',
+      };
+      this._callback.formSubmit({
+        film: FilmDetailsView.parseStateToFilm(this._state),
+        сomment: сomment,
+      });
+
+      this.#restoreScrollPosition();
+    }
   };
 
   #emojiClickHandler = (evt) => {
@@ -112,10 +141,22 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.element
       .querySelector(Selectors.FILM_DETAILS_EMOJI_LIST)
       .addEventListener('click', this.#emojiClickHandler);
+
     this.element.addEventListener('scroll', this.#scrollHandler);
+
     this.element
-      .querySelector('.film-details__comment-input')
+      .querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT)
       .addEventListener('input', this.#inputHandler);
+  };
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setCloseButtonClickHandler(this._callback.closeButtonClick);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
+    this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setFormSubmitHandler(this._callback.formSubmit);
   };
 
   static parseFilmToState = (film, commentsModel) => {
@@ -123,7 +164,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     return {
       ...film,
       filmComments: filmComments,
-      selectedEmoji: null,
+      selectedEmoji: 'smile',
       scrollTop: 0,
       currentComment: null,
     };
