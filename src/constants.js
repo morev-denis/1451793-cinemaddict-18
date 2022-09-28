@@ -162,6 +162,11 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+};
+
 export {
   FILM_COUNT,
   FILM_COUNT_PER_STEP,
@@ -179,4 +184,5 @@ export {
   UserAction,
   UpdateType,
   Mode,
+  Method,
 };
