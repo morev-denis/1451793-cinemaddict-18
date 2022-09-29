@@ -26,6 +26,7 @@ import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
+import LoadingView from '../view/loading-view.js';
 
 import FilmCardPresenter from './film-card-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
@@ -45,6 +46,7 @@ export default class FilmsPresenter {
   #filmsListMostCommentedContainerComponent = new FilmsListContainerView();
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
+  #loadingComponent = new LoadingView();
   #filmDetailsPresenter = null;
   #showMoreButtonComponent = null;
   #sortComponent = null;
@@ -62,6 +64,7 @@ export default class FilmsPresenter {
   #filmCardTopRatedPresenter = new Map();
   #filmCardMostCommentedPresenter = new Map();
   #filmsListTitleComponent = null;
+  #isLoading = true;
 
   constructor(filmsContainer, filmsModel, commentsModel, filterModel) {
     this.#filmsContainer = filmsContainer;
@@ -174,6 +177,7 @@ export default class FilmsPresenter {
     this.#filmCardMostCommentedPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#showMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
@@ -229,6 +233,11 @@ export default class FilmsPresenter {
         this.#clearFilms({ resetRenderedFilmCount: true, resetSortType: true });
         this.#renderFilms();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderFilms();
+        break;
     }
   };
 
@@ -270,11 +279,20 @@ export default class FilmsPresenter {
     render(this.#footerStatisticsComponent, footerStatisticsElement);
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#filmsComponent.element, RenderPosition.AFTERBEGIN);
+  };
+
   #renderFilms = () => {
+    render(this.#filmsComponent, this.#filmsContainer);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const films = this.films;
     const filmCount = films.length;
-
-    render(this.#filmsComponent, this.#filmsContainer);
 
     render(this.#filmsListComponent, this.#filmsComponent.element);
 
