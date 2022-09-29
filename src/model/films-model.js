@@ -1,3 +1,4 @@
+import { UpdateType } from '../constants.js';
 import Observable from '../framework/observable.js';
 
 export default class FilmsModel extends Observable {
@@ -16,6 +17,8 @@ export default class FilmsModel extends Observable {
     } catch (err) {
       this.#films = [];
     }
+
+    this._notify(UpdateType.INIT);
   };
 
   get films() {
