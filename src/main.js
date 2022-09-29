@@ -16,3 +16,4 @@ const filterModel = new FilterModel();
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel, filterModel);
 
 filmsPresenter.init();
+filmsModel.init();
