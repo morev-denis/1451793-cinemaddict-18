@@ -98,13 +98,13 @@ export default class FilmsPresenter {
     filmCardPresenter.init(film, container);
     switch (container) {
       case this.#filmsListTopRatedContainerComponent.element:
-        this.#filmCardTopRatedPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardTopRatedPresenter.set(film.id, filmCardPresenter);
         break;
       case this.#filmsListMostCommentedContainerComponent.element:
-        this.#filmCardMostCommentedPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardMostCommentedPresenter.set(film.id, filmCardPresenter);
         break;
       default:
-        this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardPresenter.set(film.id, filmCardPresenter);
     }
   };
 
@@ -214,14 +214,14 @@ export default class FilmsPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#filmCardPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
 
-        if (this.#filmCardTopRatedPresenter.get(data.uniqId)) {
-          this.#filmCardTopRatedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        if (this.#filmCardTopRatedPresenter.get(data.id)) {
+          this.#filmCardTopRatedPresenter.get(data.id).init(data, this.#filmsContainer);
         }
 
-        if (this.#filmCardMostCommentedPresenter.get(data.uniqId)) {
-          this.#filmCardMostCommentedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        if (this.#filmCardMostCommentedPresenter.get(data.id)) {
+          this.#filmCardMostCommentedPresenter.get(data.id).init(data, this.#filmsContainer);
         }
 
         break;
