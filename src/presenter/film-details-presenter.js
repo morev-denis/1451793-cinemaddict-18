@@ -17,6 +17,7 @@ const showOverflow = () => {
 
 export default class FilmDetailsPresenter {
   #film = null;
+  #filmComments = null;
   #filmDetailsComponent = null;
   #commentsModel = null;
   #changeData = null;
@@ -29,12 +30,17 @@ export default class FilmDetailsPresenter {
     this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
-  init = (film) => {
+  init = (film, filmComments) => {
     this.#film = film;
+    this.#filmComments = filmComments;
 
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
-    this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#commentsModel);
+    this.#filmDetailsComponent = new FilmDetailsView(
+      this.#film,
+      this.#commentsModel,
+      this.#filmComments,
+    );
 
     this.#filmDetailsComponent.setCloseButtonClickHandler(this.#handleFilmDetailsCloseBtnClick);
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleDetailWatchlistClick);

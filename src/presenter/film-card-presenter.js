@@ -69,6 +69,8 @@ export default class FilmCardPresenter {
   };
 
   #handleFilmCardLinkClick = () => {
-    this.#filmDetailsPresenter.init(this.#film);
+    this.#commentsModel.init(this.#film.id).finally(() => {
+      this.#filmDetailsPresenter.init(this.#film, this.#commentsModel.comments());
+    });
   };
 }

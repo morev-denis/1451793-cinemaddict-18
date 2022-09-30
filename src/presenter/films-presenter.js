@@ -197,7 +197,7 @@ export default class FilmsPresenter {
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.UPDATE_FILM_DETAILS:
-        this.#filmDetailsPresenter.init(update);
+        this.#filmDetailsPresenter.init(update, this.#commentsModel.comments());
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
