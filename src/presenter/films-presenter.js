@@ -26,6 +26,7 @@ import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsListTopRatedView from '../view/films-list-top-rated-view.js';
 import FilmsListMostCommentedView from '../view/films-list-most-commented-view.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
+import LoadingView from '../view/loading-view.js';
 
 import FilmCardPresenter from './film-card-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
@@ -45,6 +46,7 @@ export default class FilmsPresenter {
   #filmsListMostCommentedContainerComponent = new FilmsListContainerView();
   #filmsListTopRatedComponent = new FilmsListTopRatedView();
   #filmsListMostCommentedComponent = new FilmsListMostCommentedView();
+  #loadingComponent = new LoadingView();
   #filmDetailsPresenter = null;
   #showMoreButtonComponent = null;
   #sortComponent = null;
@@ -62,6 +64,7 @@ export default class FilmsPresenter {
   #filmCardTopRatedPresenter = new Map();
   #filmCardMostCommentedPresenter = new Map();
   #filmsListTitleComponent = null;
+  #isLoading = true;
 
   constructor(filmsContainer, filmsModel, commentsModel, filterModel) {
     this.#filmsContainer = filmsContainer;
@@ -95,13 +98,13 @@ export default class FilmsPresenter {
     filmCardPresenter.init(film, container);
     switch (container) {
       case this.#filmsListTopRatedContainerComponent.element:
-        this.#filmCardTopRatedPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardTopRatedPresenter.set(film.id, filmCardPresenter);
         break;
       case this.#filmsListMostCommentedContainerComponent.element:
-        this.#filmCardMostCommentedPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardMostCommentedPresenter.set(film.id, filmCardPresenter);
         break;
       default:
-        this.#filmCardPresenter.set(film.uniqId, filmCardPresenter);
+        this.#filmCardPresenter.set(film.id, filmCardPresenter);
     }
   };
 
@@ -174,6 +177,7 @@ export default class FilmsPresenter {
     this.#filmCardMostCommentedPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#showMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
@@ -193,7 +197,7 @@ export default class FilmsPresenter {
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.UPDATE_FILM_DETAILS:
-        this.#filmDetailsPresenter.init(update);
+        this.#filmDetailsPresenter.init(update, this.#commentsModel.comments());
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
@@ -210,14 +214,14 @@ export default class FilmsPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#filmCardPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
 
-        if (this.#filmCardTopRatedPresenter.get(data.uniqId)) {
-          this.#filmCardTopRatedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        if (this.#filmCardTopRatedPresenter.get(data.id)) {
+          this.#filmCardTopRatedPresenter.get(data.id).init(data, this.#filmsContainer);
         }
 
-        if (this.#filmCardMostCommentedPresenter.get(data.uniqId)) {
-          this.#filmCardMostCommentedPresenter.get(data.uniqId).init(data, this.#filmsContainer);
+        if (this.#filmCardMostCommentedPresenter.get(data.id)) {
+          this.#filmCardMostCommentedPresenter.get(data.id).init(data, this.#filmsContainer);
         }
 
         break;
@@ -227,6 +231,11 @@ export default class FilmsPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearFilms({ resetRenderedFilmCount: true, resetSortType: true });
+        this.#renderFilms();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderFilms();
         break;
     }
@@ -270,11 +279,20 @@ export default class FilmsPresenter {
     render(this.#footerStatisticsComponent, footerStatisticsElement);
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#filmsComponent.element, RenderPosition.AFTERBEGIN);
+  };
+
   #renderFilms = () => {
+    render(this.#filmsComponent, this.#filmsContainer);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const films = this.films;
     const filmCount = films.length;
-
-    render(this.#filmsComponent, this.#filmsContainer);
 
     render(this.#filmsListComponent, this.#filmsComponent.element);
 

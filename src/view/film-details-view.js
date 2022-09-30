@@ -6,9 +6,9 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { createFilmDetailsTemplate } from './film-details-template.js';
 
 export default class FilmDetailsView extends AbstractStatefulView {
-  constructor(film, commentsModel) {
+  constructor(film, commentsModel, filmComments) {
     super();
-    this._state = FilmDetailsView.parseFilmToState(film, commentsModel);
+    this._state = FilmDetailsView.parseFilmToState(film, filmComments);
     this.#setInnerHandlers();
   }
 
@@ -159,16 +159,13 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setFormSubmitHandler(this._callback.formSubmit);
   };
 
-  static parseFilmToState = (film, commentsModel) => {
-    const filmComments = [...commentsModel.getComments(film)];
-    return {
-      ...film,
-      filmComments: filmComments,
-      selectedEmoji: 'smile',
-      scrollTop: 0,
-      currentComment: null,
-    };
-  };
+  static parseFilmToState = (film, filmComments) => ({
+    ...film,
+    filmComments: filmComments,
+    selectedEmoji: 'smile',
+    scrollTop: 0,
+    currentComment: null,
+  });
 
   static parseStateToFilm = (state) => {
     const film = { ...state };
