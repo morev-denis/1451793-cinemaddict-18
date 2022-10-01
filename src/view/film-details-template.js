@@ -25,11 +25,11 @@ const createFilmDetailsCommentTemplate = (commentObj) => {
     </li>`;
 };
 
-const createFilmCommentsTemplate = (comments) => {
+const createFilmCommentsTemplate = (filmComments) => {
   let filmCommentsTemplate = '';
 
-  for (let i = 0; i < comments.length; i++) {
-    filmCommentsTemplate += createFilmDetailsCommentTemplate(comments[i]);
+  for (let i = 0; i < filmComments.length; i++) {
+    filmCommentsTemplate += createFilmDetailsCommentTemplate(filmComments[i]);
   }
 
   return filmCommentsTemplate;

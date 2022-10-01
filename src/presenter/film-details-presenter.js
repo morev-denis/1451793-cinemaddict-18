@@ -36,11 +36,7 @@ export default class FilmDetailsPresenter {
 
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
-    this.#filmDetailsComponent = new FilmDetailsView(
-      this.#film,
-      this.#commentsModel,
-      this.#filmComments,
-    );
+    this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#filmComments);
 
     this.#filmDetailsComponent.setCloseButtonClickHandler(this.#handleFilmDetailsCloseBtnClick);
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleDetailWatchlistClick);
@@ -121,10 +117,9 @@ export default class FilmDetailsPresenter {
   #handleModelEvent = (event, payload) => {
     switch (event) {
       case UpdateType.PATCH:
-        this.init(payload);
-        break;
-      case UpdateType.MINOR:
-        this.init(payload);
+        this.#commentsModel.init(payload.id).finally(() => {
+          this.init(payload, this.#commentsModel.comments);
+        });
         break;
     }
   };

@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { Selectors } from '../constants.js';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
@@ -6,7 +5,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { createFilmDetailsTemplate } from './film-details-template.js';
 
 export default class FilmDetailsView extends AbstractStatefulView {
-  constructor(film, commentsModel, filmComments) {
+  constructor(film, filmComments) {
     super();
     this._state = FilmDetailsView.parseFilmToState(film, filmComments);
     this.#setInnerHandlers();
@@ -96,17 +95,14 @@ export default class FilmDetailsView extends AbstractStatefulView {
   };
 
   #formSubmitHandler = (evt) => {
-    if (evt.key === 'Enter') {
-      const сomment = {
-        id: nanoid(),
-        author: 'Ilya Reilly',
-        comment: this._state.currentComment || '',
-        date: new Date(),
+    if (evt.ctrlKey === true && evt.key === 'Enter') {
+      const comment = {
+        comment: this._state.currentComment || ' ',
         emotion: this._state.selectedEmoji || 'smile',
       };
       this._callback.formSubmit({
         film: FilmDetailsView.parseStateToFilm(this._state),
-        сomment: сomment,
+        comment: comment,
       });
 
       this.#restoreScrollPosition();

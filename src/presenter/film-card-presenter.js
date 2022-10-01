@@ -70,7 +70,7 @@ export default class FilmCardPresenter {
 
   #handleFilmCardLinkClick = () => {
     this.#commentsModel.init(this.#film.id).finally(() => {
-      this.#filmDetailsPresenter.init(this.#film, this.#commentsModel.comments());
+      this.#filmDetailsPresenter.init(this.#film, this.#commentsModel.comments);
     });
   };
 }

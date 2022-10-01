@@ -87,6 +87,7 @@ export default class FilmsPresenter {
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
   #renderFilmCard = (film, container) => {
@@ -197,16 +198,14 @@ export default class FilmsPresenter {
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.UPDATE_FILM_DETAILS:
-        this.#filmDetailsPresenter.init(update, this.#commentsModel.comments());
+        this.#filmDetailsPresenter.init(update, this.#commentsModel.comments);
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
         this.#commentsModel.deleteComment(updateType, update);
-        this.#filmsModel.updateCommentsAfterDelComment(updateType, update);
         break;
       case UserAction.ADD_COMMENT:
         this.#commentsModel.addComment(updateType, update);
-        this.#filmsModel.updateCommentsAfterAddComment(updateType, update);
         break;
     }
   };
@@ -223,7 +222,6 @@ export default class FilmsPresenter {
         if (this.#filmCardMostCommentedPresenter.get(data.id)) {
           this.#filmCardMostCommentedPresenter.get(data.id).init(data, this.#filmsContainer);
         }
-
         break;
       case UpdateType.MINOR:
         this.#clearFilms();

@@ -1,9 +1,11 @@
 import { UpdateType } from '../constants.js';
 import Observable from '../framework/observable.js';
+import { adaptToClient } from '../adapter/adapt-to-client.js';
 
 export default class FilmsModel extends Observable {
   #filmsApiService = null;
   #films = [];
+  #adaptToClient = null;
 
   constructor(filmsApiService) {
     super();
@@ -11,6 +13,8 @@ export default class FilmsModel extends Observable {
   }
 
   init = async () => {
+    this.#adaptToClient = adaptToClient;
+
     try {
       const films = await this.#filmsApiService.films;
       this.#films = films.map(this.#adaptToClient);
@@ -55,27 +59,5 @@ export default class FilmsModel extends Observable {
     ];
 
     this._notify(updateType, { ...update.film, comments });
-  };
-
-  #adaptToClient = (film) => {
-    const adaptedFilm = {
-      ...film,
-      filmInfo: {
-        ...film['film_info'],
-        alternativeTitle: film['film_info']['alternative_title'],
-        totalRating: film['film_info']['total_rating'],
-        ageRating: film['film_info']['age_rating'],
-      },
-      userDetails: {
-        ...film['user_details'],
-        alreadyWatched: film['user_details']['already_watched'],
-        watchingDate: film['user_details']['watching_date'],
-      },
-    };
-
-    delete adaptedFilm['film_info'];
-    delete adaptedFilm['user_details'];
-
-    return adaptedFilm;
   };
 }

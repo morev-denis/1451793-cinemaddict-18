@@ -75,6 +75,8 @@ const UpdateType = {
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const AUTHORIZATION = 'Basic Jd3ekS36qot8nf5v';
