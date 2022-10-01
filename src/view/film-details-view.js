@@ -164,6 +164,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     isDeleting: false,
     isDisabled: false,
     isSubmitting: false,
+    commentIdForDelete: null,
   });
 
   static parseStateToFilm = (state) => {
@@ -176,6 +177,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     delete film.isDeleting;
     delete film.isDisabled;
     delete film.isSubmitting;
+    delete film.commentIdForDelete;
 
     return film;
   };

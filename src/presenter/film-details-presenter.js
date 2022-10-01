@@ -60,6 +60,25 @@ export default class FilmDetailsPresenter {
     remove(this.#filmDetailsComponent);
   };
 
+  setUpdatingUserDetails = () => {
+    this.#filmDetailsComponent.updateElement({
+      isDisabled: true,
+    });
+  };
+
+  setSubmitting = () => {
+    this.#filmDetailsComponent.updateElement({
+      isSubmitting: true,
+    });
+  };
+
+  setDeleting = (commentIdForDelete) => {
+    this.#filmDetailsComponent.updateElement({
+      isDeleting: true,
+      commentIdForDelete
+    });
+  };
+
   #handleFormSubmit = (payload) => {
     this.#changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, payload);
   };

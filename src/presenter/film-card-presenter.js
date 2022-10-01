@@ -40,6 +40,12 @@ export default class FilmCardPresenter {
     remove(prevFilmCardComponent);
   };
 
+  setUpdatingUserDetails = () => {
+    this.#filmCardComponent.updateElement({
+      isDisabled: true,
+    });
+  };
+
   destroy = () => {
     remove(this.#filmCardComponent);
   };

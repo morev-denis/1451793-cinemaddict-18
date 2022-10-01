@@ -6,7 +6,7 @@ import {
 } from '../utils/film.js';
 import { Classes } from '../constants.js';
 
-const createFilmDetailsCommentTemplate = (commentObj, isDeleting) => {
+const createFilmDetailsCommentTemplate = (commentObj, isDeleting, commentIdForDelete) => {
   const { author, comment, date, emotion } = commentObj;
 
   return `
@@ -19,17 +19,23 @@ const createFilmDetailsCommentTemplate = (commentObj, isDeleting) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${formatISOStringToRelativeTime(date)}</span>
-          <button class="film-details__comment-delete" ${isDeleting ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+          <button class="film-details__comment-delete" ${isDeleting ? 'disabled' : ''}>${
+  isDeleting && (commentObj.id === commentIdForDelete) ? 'Deleting...' : 'Delete'
+}</button>
         </p>
       </div>
     </li>`;
 };
 
-const createFilmCommentsTemplate = (filmComments, isDeleting) => {
+const createFilmCommentsTemplate = (filmComments, isDeleting, commentIdForDelete) => {
   let filmCommentsTemplate = '';
 
   for (let i = 0; i < filmComments.length; i++) {
-    filmCommentsTemplate += createFilmDetailsCommentTemplate(filmComments[i], isDeleting);
+    filmCommentsTemplate += createFilmDetailsCommentTemplate(
+      filmComments[i],
+      isDeleting,
+      commentIdForDelete,
+    );
   }
 
   return filmCommentsTemplate;
@@ -40,6 +46,7 @@ export const createFilmDetailsTemplate = (data) => {
     isDeleting,
     isDisabled,
     isSubmitting,
+    commentIdForDelete,
     selectedEmoji,
     filmComments,
     comments,
@@ -156,7 +163,7 @@ export const createFilmDetailsTemplate = (data) => {
           </h3>
 
           <ul class="film-details__comments-list">
-          ${createFilmCommentsTemplate(filmComments, isDeleting)}
+          ${createFilmCommentsTemplate(filmComments, isDeleting, commentIdForDelete)}
           </ul>
 
           <form class="film-details__new-comment" action="" method="get">

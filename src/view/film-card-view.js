@@ -1,19 +1,17 @@
 import { Selectors } from '../constants.js';
 
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
 import { createFilmCardTemplate } from './film-card-template.js';
 
-export default class FilmCardView extends AbstractView {
-  #film = null;
-
+export default class FilmCardView extends AbstractStatefulView {
   constructor(film) {
     super();
-    this.#film = film;
+    this._state = FilmCardView.parseFilmToState(film);
   }
 
   get template() {
-    return createFilmCardTemplate(this.#film);
+    return createFilmCardTemplate(this._state);
   }
 
   setClickHandler = (callback) => {
@@ -62,5 +60,25 @@ export default class FilmCardView extends AbstractView {
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.favoriteClick();
+  };
+
+  _restoreHandlers = () => {
+    this.setClickHandler(this._callback.click);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
+    this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+  };
+
+  static parseFilmToState = (film) => ({
+    ...film,
+    isDisabled: false,
+  });
+
+  static parseStateToFilm = (state) => {
+    const film = { ...state };
+
+    delete film.isDisabled;
+
+    return film;
   };
 }
