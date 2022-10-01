@@ -6,7 +6,7 @@ import {
 } from '../utils/film.js';
 import { Classes } from '../constants.js';
 
-const createFilmDetailsCommentTemplate = (commentObj) => {
+const createFilmDetailsCommentTemplate = (commentObj, isDeleting) => {
   const { author, comment, date, emotion } = commentObj;
 
   return `
@@ -19,17 +19,17 @@ const createFilmDetailsCommentTemplate = (commentObj) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${formatISOStringToRelativeTime(date)}</span>
-          <button class="film-details__comment-delete">Delete</button>
+          <button class="film-details__comment-delete" ${isDeleting ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
         </p>
       </div>
     </li>`;
 };
 
-const createFilmCommentsTemplate = (filmComments) => {
+const createFilmCommentsTemplate = (filmComments, isDeleting) => {
   let filmCommentsTemplate = '';
 
   for (let i = 0; i < filmComments.length; i++) {
-    filmCommentsTemplate += createFilmDetailsCommentTemplate(filmComments[i]);
+    filmCommentsTemplate += createFilmDetailsCommentTemplate(filmComments[i], isDeleting);
   }
 
   return filmCommentsTemplate;
@@ -37,6 +37,9 @@ const createFilmCommentsTemplate = (filmComments) => {
 
 export const createFilmDetailsTemplate = (data) => {
   const {
+    isDeleting,
+    isDisabled,
+    isSubmitting,
     selectedEmoji,
     filmComments,
     comments,
@@ -139,9 +142,9 @@ export const createFilmDetailsTemplate = (data) => {
         </div>
 
         <section class="film-details__controls">
-          <button type="button" class="film-details__control-button film-details__control-button--watchlist ${popupWatchlistClassName}" id="watchlist" name="watchlist">Add to watchlist</button>
-          <button type="button" class="film-details__control-button film-details__control-button--watched ${popupWatchedClassName}" id="watched" name="watched">Already watched</button>
-          <button type="button" class="film-details__control-button film-details__control-button--favorite ${popupFavoriteClassName}" id="favorite" name="favorite">Add to favorites</button>
+          <button type="button" class="film-details__control-button film-details__control-button--watchlist ${popupWatchlistClassName}" id="watchlist" name="watchlist" ${isDisabled ? 'disabled' : '' }>Add to watchlist</button>
+          <button type="button" class="film-details__control-button film-details__control-button--watched ${popupWatchedClassName}" id="watched" name="watched" ${isDisabled ? 'disabled' : '' }>Already watched</button>
+          <button type="button" class="film-details__control-button film-details__control-button--favorite ${popupFavoriteClassName}" id="favorite" name="favorite" ${isDisabled ? 'disabled' : '' }>Add to favorites</button>
         </section>
       </div>
 
@@ -153,18 +156,18 @@ export const createFilmDetailsTemplate = (data) => {
           </h3>
 
           <ul class="film-details__comments-list">
-          ${createFilmCommentsTemplate(filmComments)}
+          ${createFilmCommentsTemplate(filmComments, isDeleting)}
           </ul>
 
           <form class="film-details__new-comment" action="" method="get">
             <div class="film-details__add-emoji-label">${showSelectedEmoji(selectedEmoji)}</div>
 
             <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+              <textarea class="film-details__comment-input" placeholder=${isSubmitting ? 'Submitting...' : 'Select reaction below and write comment here'} name="comment" ${isSubmitting ? 'disabled' : ''}></textarea>
             </label>
 
             <div class="film-details__emoji-list">
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${isCheckedEmoji(
+              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile"  ${isCheckedEmoji(
     selectedEmoji,
     'smile',
   )}>

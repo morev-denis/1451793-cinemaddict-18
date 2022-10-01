@@ -161,6 +161,9 @@ export default class FilmDetailsView extends AbstractStatefulView {
     selectedEmoji: 'smile',
     scrollTop: 0,
     currentComment: null,
+    isDeleting: false,
+    isDisabled: false,
+    isSubmitting: false,
   });
 
   static parseStateToFilm = (state) => {
@@ -170,6 +173,9 @@ export default class FilmDetailsView extends AbstractStatefulView {
     delete film.selectedEmoji;
     delete film.scrollTop;
     delete film.currentComment;
+    delete film.isDeleting;
+    delete film.isDisabled;
+    delete film.isSubmitting;
 
     return film;
   };
