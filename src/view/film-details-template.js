@@ -1,54 +1,7 @@
-import he from 'he';
-import {
-  convertMinutesToHours,
-  formatISOStringToDate,
-  formatISOStringToRelativeTime,
-} from '../utils/film.js';
-import { Classes } from '../constants.js';
-
-const createFilmDetailsCommentTemplate = (commentObj, isDeleting, commentIdForDelete) => {
-  const { author, comment, date, emotion } = commentObj;
-
-  return `
-    <li class="film-details__comment">
-      <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-smile">
-      </span>
-      <div>
-        <p class="film-details__comment-text">${he.encode(comment)}</p>
-        <p class="film-details__comment-info">
-          <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${formatISOStringToRelativeTime(date)}</span>
-          <button class="film-details__comment-delete" ${isDeleting ? 'disabled' : ''}>${
-  isDeleting && (commentObj.id === commentIdForDelete) ? 'Deleting...' : 'Delete'
-}</button>
-        </p>
-      </div>
-    </li>`;
-};
-
-const createFilmCommentsTemplate = (filmComments, isDeleting, commentIdForDelete) => {
-  let filmCommentsTemplate = '';
-
-  for (let i = 0; i < filmComments.length; i++) {
-    filmCommentsTemplate += createFilmDetailsCommentTemplate(
-      filmComments[i],
-      isDeleting,
-      commentIdForDelete,
-    );
-  }
-
-  return filmCommentsTemplate;
-};
+import { convertMinutesToHours, formatISOStringToDate } from '../utils/film.js';
 
 export const createFilmDetailsTemplate = (data) => {
   const {
-    isDeleting,
-    isDisabled,
-    isSubmitting,
-    commentIdForDelete,
-    selectedEmoji,
-    filmComments,
     comments,
     filmInfo: {
       title,
@@ -64,12 +17,7 @@ export const createFilmDetailsTemplate = (data) => {
       genre,
       description,
     },
-    userDetails: { watchlist, alreadyWatched, favorite },
   } = data;
-
-  const popupWatchlistClassName = watchlist ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const popupWatchedClassName = alreadyWatched ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const popupFavoriteClassName = favorite ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
 
   const createGenresListTemplate = (genresList) => {
     let genresListTemplate = '';
@@ -80,13 +28,6 @@ export const createFilmDetailsTemplate = (data) => {
 
     return genresListTemplate;
   };
-
-  const showSelectedEmoji = (emoji) =>
-    emoji
-      ? `<img src="images/emoji/${emoji}.png" width="70" height="70" alt="emoji-${emoji}"></img>`
-      : '';
-
-  const isCheckedEmoji = (currentEmoji, emoji) => (currentEmoji === emoji ? 'checked' : '');
 
   return `
   <section class="film-details">
@@ -147,66 +88,15 @@ export const createFilmDetailsTemplate = (data) => {
             <p class="film-details__film-description">${description}</p>
           </div>
         </div>
-
-        <section class="film-details__controls">
-          <button type="button" class="film-details__control-button film-details__control-button--watchlist ${popupWatchlistClassName}" id="watchlist" name="watchlist" ${isDisabled ? 'disabled' : '' }>Add to watchlist</button>
-          <button type="button" class="film-details__control-button film-details__control-button--watched ${popupWatchedClassName}" id="watched" name="watched" ${isDisabled ? 'disabled' : '' }>Already watched</button>
-          <button type="button" class="film-details__control-button film-details__control-button--favorite ${popupFavoriteClassName}" id="favorite" name="favorite" ${isDisabled ? 'disabled' : '' }>Add to favorites</button>
-        </section>
       </div>
 
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${
-  comments.length
-}</span>
+          <h3 class="film-details__comments-title">Comments
+            <span class="film-details__comments-count">
+              ${comments.length}
+            </span>
           </h3>
-
-          <ul class="film-details__comments-list">
-          ${createFilmCommentsTemplate(filmComments, isDeleting, commentIdForDelete)}
-          </ul>
-
-          <form class="film-details__new-comment" action="" method="get">
-            <div class="film-details__add-emoji-label">${showSelectedEmoji(selectedEmoji)}</div>
-
-            <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder=${isSubmitting ? 'Submitting...' : 'Select reaction below and write comment here'} name="comment" ${isSubmitting ? 'disabled' : ''}></textarea>
-            </label>
-
-            <div class="film-details__emoji-list">
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile"  ${isCheckedEmoji(
-    selectedEmoji,
-    'smile',
-  )}>
-              <label class="film-details__emoji-label" for="emoji-smile">
-                <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-              </label>
-
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${isCheckedEmoji(
-    selectedEmoji,
-    'sleeping',
-  )}>
-              <label class="film-details__emoji-label" for="emoji-sleeping">
-                <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-              </label>
-
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${isCheckedEmoji(
-    selectedEmoji,
-    'puke',
-  )}>
-              <label class="film-details__emoji-label" for="emoji-puke">
-                <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-              </label>
-
-              <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${isCheckedEmoji(
-    selectedEmoji,
-    'angry',
-  )}>
-              <label class="film-details__emoji-label" for="emoji-angry">
-                <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-              </label>
-            </div>
-          </form>
         </section>
       </div>
     </div>
