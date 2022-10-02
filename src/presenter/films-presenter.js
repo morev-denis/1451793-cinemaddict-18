@@ -192,7 +192,7 @@ export default class FilmsPresenter {
     }
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         if (this.#filmCardPresenter.get(update.id)) {
@@ -204,20 +204,38 @@ export default class FilmsPresenter {
         if (this.#filmCardMostCommentedPresenter.get(update.id)) {
           this.#filmCardMostCommentedPresenter.get(update.id).setUpdatingUserDetails();
         }
-        this.#filmsModel.updateFilm(updateType, update);
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch (err) {
+          this.#filmCardPresenter.get(update.id).setAborting();
+          this.#filmCardTopRatedPresenter.get(update.id).setAborting();
+          this.#filmCardMostCommentedPresenter.get(update.id).setAborting();
+        }
         break;
       case UserAction.UPDATE_FILM_DETAILS:
         this.#filmDetailsPresenter.setUpdatingUserDetails();
         this.#filmDetailsPresenter.init(update, this.#commentsModel.comments);
-        this.#filmsModel.updateFilm(updateType, update);
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch (err) {
+          this.#filmDetailsPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_COMMENT:
         this.#filmDetailsPresenter.setDeleting(update.film.comments[update.index]);
-        this.#commentsModel.deleteComment(updateType, update);
+        try {
+          await this.#commentsModel.deleteComment(updateType, update);
+        } catch (err) {
+          this.#filmDetailsPresenter.setAborting();
+        }
         break;
       case UserAction.ADD_COMMENT:
         this.#filmDetailsPresenter.setSubmitting();
-        this.#commentsModel.addComment(updateType, update);
+        try {
+          await this.#commentsModel.addComment(updateType, update);
+        } catch (err) {
+          this.#filmDetailsPresenter.setAborting();
+        }
         break;
     }
   };

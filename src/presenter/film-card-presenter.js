@@ -46,6 +46,18 @@ export default class FilmCardPresenter {
     });
   };
 
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#filmCardComponent.updateElement({
+        isDisabled: false,
+        isSubmitting: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#filmCardComponent.shake(resetFormState);
+  };
+
   destroy = () => {
     remove(this.#filmCardComponent);
   };

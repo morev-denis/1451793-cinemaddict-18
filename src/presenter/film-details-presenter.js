@@ -75,8 +75,20 @@ export default class FilmDetailsPresenter {
   setDeleting = (commentIdForDelete) => {
     this.#filmDetailsComponent.updateElement({
       isDeleting: true,
-      commentIdForDelete
+      commentIdForDelete,
     });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#filmDetailsComponent.updateElement({
+        isDisabled: false,
+        isSubmitting: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#filmDetailsComponent.shake(resetFormState);
   };
 
   #handleFormSubmit = (payload) => {
