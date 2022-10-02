@@ -1,13 +1,15 @@
 import Observable from '../framework/observable.js';
+import { adaptToClient } from '../adapter/adapt-to-client.js';
 
 export default class CommentsModel extends Observable {
-  #allComments = [];
   #filmComments = [];
   #commentsApiService = null;
+  #adaptToClient = null;
 
   constructor(commentsApiService) {
     super();
     this.#commentsApiService = commentsApiService;
+    this.#adaptToClient = adaptToClient;
   }
 
   init = async (filmId) => {
@@ -18,30 +20,34 @@ export default class CommentsModel extends Observable {
     }
   };
 
-  comments = () => this.#filmComments;
+  get comments() {
+    return this.#filmComments;
+  }
 
-  addComment = (updateType, update) => {
-    const comments = [...update.film.comments, update.сomment.id];
+  deleteComment = async (updateType, update) => {
+    const deletedCommentId = update.film.comments[update.index];
 
-    this.#allComments = [...this.#allComments, update.сomment];
+    try {
+      await this.#commentsApiService.deleteComment(deletedCommentId);
 
-    this._notify(updateType, { ...update.film, comments });
+      const comments = [
+        ...update.film.comments.slice(0, update.index),
+        ...update.film.comments.slice(update.index + 1),
+      ];
+
+      this._notify(updateType, { ...update.film, comments });
+    } catch (err) {
+      throw new Error('Can\'t delete comment');
+    }
   };
 
-  deleteComment = (updateType, update) => {
-    this.#filmComments = [
-      ...this.#filmComments.slice(0, update.index),
-      ...this.#filmComments.slice(update.index + 1),
-    ];
-
-    const commentId = update.film.comments[update.index];
-    this.#allComments = this.#allComments.filter((comment) => comment.id !== commentId);
-
-    const comments = [
-      ...update.film.comments.slice(0, update.index),
-      ...update.film.comments.slice(update.index + 1),
-    ];
-
-    this._notify(updateType, { ...update.film, filmComments: this.#filmComments, comments });
+  addComment = async (updateType, update) => {
+    try {
+      const response = await this.#commentsApiService.addComment(update.comment, update.film.id);
+      const updatedFilm = this.#adaptToClient(response.movie);
+      this._notify(updateType, updatedFilm);
+    } catch (err) {
+      throw new Error('Can\'t add comment');
+    }
   };
 }

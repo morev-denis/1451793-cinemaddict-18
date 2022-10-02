@@ -30,6 +30,9 @@ const Selectors = {
   FILM_DETAILS_EMOJI_LIST: '.film-details__emoji-list',
   FILM_DETAILS_COMMENT_INPUT: '.film-details__comment-input',
   FILM_DETAILS_COMMENT_DELETE: '.film-details__comment-delete',
+  FILM_DETAILS_INFO_WRAP: '.film-details__info-wrap',
+  FILM_DETAILS_COMMENTS_WRAP: '.film-details__comments-wrap',
+  FILM_DETAILS_COMMENTS_TITLE: '.film-details__comments-title',
 };
 
 const FilmsListTitleText = {
@@ -75,10 +78,17 @@ const UpdateType = {
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const AUTHORIZATION = 'Basic Jd3ekS36qot8nf5v';
 const END_POINT = 'https://18.ecmascript.pages.academy/cinemaddict/';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export {
   FILM_COUNT_PER_STEP,
@@ -96,4 +106,5 @@ export {
   Method,
   AUTHORIZATION,
   END_POINT,
+  TimeLimit,
 };

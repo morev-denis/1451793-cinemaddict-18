@@ -40,6 +40,24 @@ export default class FilmCardPresenter {
     remove(prevFilmCardComponent);
   };
 
+  setUpdatingUserDetails = () => {
+    this.#filmCardComponent.updateElement({
+      isDisabled: true,
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#filmCardComponent.updateElement({
+        isDisabled: false,
+        isSubmitting: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#filmCardComponent.shake(resetFormState);
+  };
+
   destroy = () => {
     remove(this.#filmCardComponent);
   };
@@ -70,7 +88,7 @@ export default class FilmCardPresenter {
 
   #handleFilmCardLinkClick = () => {
     this.#commentsModel.init(this.#film.id).finally(() => {
-      this.#filmDetailsPresenter.init(this.#film, this.#commentsModel.comments());
+      this.#filmDetailsPresenter.init(this.#film, this.#commentsModel.comments);
     });
   };
 }
