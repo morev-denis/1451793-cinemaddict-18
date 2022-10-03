@@ -91,10 +91,33 @@ const TimeLimit = {
 };
 
 const Rank = {
-  WITHOUT_RANK: '',
-  NOVICE: 'novice',
-  FAN: 'fan',
-  MOVIE_BUFF: 'movie buff',
+  WithoutRank: {
+    NAME: '',
+    Range: {
+      MIN: 0,
+      MAX: 1,
+    },
+  },
+  Novice: {
+    NAME: 'novice',
+    Range: {
+      MIN: 1,
+      MAX: 10,
+    },
+  },
+  Fan: {
+    NAME: 'fan',
+    Range: {
+      MIN: 11,
+      MAX: 20,
+    },
+  },
+  MovieBuff: {
+    NAME: 'movie buff',
+    Range: {
+      MIN: 21,
+    },
+  },
 };
 
 export {

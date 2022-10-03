@@ -293,17 +293,23 @@ export default class FilmsPresenter {
     const alreadyWatchedFilmsCount = this.#filmsModel.films.filter(
       (film) => film.userDetails.alreadyWatched,
     ).length;
-    let rank = Rank.WITHOUT_RANK;
+    let rank = Rank.WithoutRank.NAME;
 
-    if (alreadyWatchedFilmsCount >= 1 && alreadyWatchedFilmsCount <= 10) {
-      rank = Rank.NOVICE;
+    if (
+      alreadyWatchedFilmsCount >= Rank.Novice.Range.MIN &&
+      alreadyWatchedFilmsCount <= Rank.Novice.Range.MAX
+    ) {
+      rank = Rank.Novice.NAME;
     }
 
-    if (alreadyWatchedFilmsCount >= 11 && alreadyWatchedFilmsCount <= 20) {
-      rank = Rank.FAN;
+    if (
+      alreadyWatchedFilmsCount >= Rank.Fan.Range.MIN &&
+      alreadyWatchedFilmsCount <= Rank.Fan.Range.MAX
+    ) {
+      rank = Rank.Fan.NAME;
     }
-    if (alreadyWatchedFilmsCount >= 21) {
-      rank = Rank.MOVIE_BUFF;
+    if (alreadyWatchedFilmsCount >= Rank.MovieBuff.Range.MAX) {
+      rank = Rank.MovieBuff.NAME;
     }
 
     const prevHeaderProfileComponent = this.#headerProfileComponent;
