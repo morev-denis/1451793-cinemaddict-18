@@ -40,7 +40,7 @@ const siteFooterElement = document.querySelector('.footer');
 const footerStatisticsElement = siteFooterElement.querySelector(Selectors.FOOTER_STATISTICS);
 
 export default class FilmsPresenter {
-  #headerProfileComponent = new HeaderProfileView();
+  #headerProfileComponent = null;
   #filmsComponent = new FilmsView();
   #filmsListComponent = new FilmsListView();
   #filmsListContainerComponent = new FilmsListContainerView();
@@ -282,7 +282,31 @@ export default class FilmsPresenter {
   };
 
   #renderHeaderProfile = () => {
-    render(this.#headerProfileComponent, siteHeaderElement);
+    const alreadyWatchedFilmsCount = this.#filmsModel.films.filter(
+      (film) => film.userDetails['already_watched'],
+    ).length;
+    let rank = '';
+
+    if (alreadyWatchedFilmsCount >= 1 && alreadyWatchedFilmsCount <= 10) {
+      rank = 'novice';
+    }
+
+    if (alreadyWatchedFilmsCount >= 11 && alreadyWatchedFilmsCount <= 20) {
+      rank = 'fan';
+    }
+    if (alreadyWatchedFilmsCount >= 21) {
+      rank = 'movie buff';
+    }
+
+    const prevHeaderProfileComponent = this.#headerProfileComponent;
+    this.#headerProfileComponent = new HeaderProfileView(rank);
+
+    if (prevHeaderProfileComponent === null) {
+      render(this.#headerProfileComponent, siteHeaderElement);
+    } else {
+      replace(this.#headerProfileComponent, prevHeaderProfileComponent);
+      remove(prevHeaderProfileComponent);
+    }
   };
 
   #renderFilmsListTopRated = () => {
@@ -322,11 +346,10 @@ export default class FilmsPresenter {
 
     if (prevFooterStatisticsComponent === null) {
       render(this.#footerStatisticsComponent, footerStatisticsElement);
-      return;
+    } else {
+      replace(this.#footerStatisticsComponent, prevFooterStatisticsComponent);
+      remove(prevFooterStatisticsComponent);
     }
-
-    replace(this.#footerStatisticsComponent, prevFooterStatisticsComponent);
-    remove(prevFooterStatisticsComponent);
   };
 
   #renderLoading = () => {
