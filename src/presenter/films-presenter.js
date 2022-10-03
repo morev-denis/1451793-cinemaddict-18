@@ -9,6 +9,7 @@ import {
   UpdateType,
   UserAction,
   TimeLimit,
+  Rank,
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
@@ -234,7 +235,9 @@ export default class FilmsPresenter {
       case UserAction.DELETE_COMMENT:
         this.#filmDetailsPresenter.setDeleting(update.film.comments[update.index]);
         try {
-          await this.#commentsModel.deleteComment(updateType, update);
+          await this.#commentsModel.deleteComment(updateType, update).finally(() => {
+            this.#filmsModel.init();
+          });
         } catch (err) {
           this.#filmDetailsPresenter.setAbortingDeleteComment();
         }
@@ -242,7 +245,9 @@ export default class FilmsPresenter {
       case UserAction.ADD_COMMENT:
         this.#filmDetailsPresenter.setSubmitting();
         try {
-          await this.#commentsModel.addComment(updateType, update);
+          await this.#commentsModel.addComment(updateType, update).finally(() => {
+            this.#filmsModel.init();
+          });
         } catch (err) {
           this.#filmDetailsPresenter.setAbortingAddComment();
         }
@@ -255,7 +260,9 @@ export default class FilmsPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
+        if (this.#filmCardPresenter.get(data.id)) {
+          this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
+        }
 
         if (this.#filmCardTopRatedPresenter.get(data.id)) {
           this.#filmCardTopRatedPresenter.get(data.id).init(data, this.#filmsContainer);
@@ -276,6 +283,7 @@ export default class FilmsPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        this.#clearFilms();
         this.#renderFilms();
         break;
     }
@@ -283,19 +291,19 @@ export default class FilmsPresenter {
 
   #renderHeaderProfile = () => {
     const alreadyWatchedFilmsCount = this.#filmsModel.films.filter(
-      (film) => film.userDetails['already_watched'],
+      (film) => film.userDetails.alreadyWatched,
     ).length;
-    let rank = '';
+    let rank = Rank.WITHOUT_RANK;
 
     if (alreadyWatchedFilmsCount >= 1 && alreadyWatchedFilmsCount <= 10) {
-      rank = 'novice';
+      rank = Rank.NOVICE;
     }
 
     if (alreadyWatchedFilmsCount >= 11 && alreadyWatchedFilmsCount <= 20) {
-      rank = 'fan';
+      rank = Rank.FAN;
     }
     if (alreadyWatchedFilmsCount >= 21) {
-      rank = 'movie buff';
+      rank = Rank.MOVIE_BUFF;
     }
 
     const prevHeaderProfileComponent = this.#headerProfileComponent;

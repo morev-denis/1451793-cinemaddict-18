@@ -66,7 +66,7 @@ export default class FilmDetailsPresenter {
 
     if (prevFilmDetailsComponent === null || this.mode === Mode.DEFAULT) {
       this.#renderFilmDetails();
-      this.mode = 'popup';
+      this.mode = Mode.POPUP;
     } else {
       replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
       this.#renderFilmDetailsControls();
