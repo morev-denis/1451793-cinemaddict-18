@@ -9,6 +9,7 @@ import {
   UpdateType,
   UserAction,
   TimeLimit,
+  Rank,
 } from '../constants.js';
 
 import { sortByDate } from '../utils/film.js';
@@ -40,7 +41,7 @@ const siteFooterElement = document.querySelector('.footer');
 const footerStatisticsElement = siteFooterElement.querySelector(Selectors.FOOTER_STATISTICS);
 
 export default class FilmsPresenter {
-  #headerProfileComponent = new HeaderProfileView();
+  #headerProfileComponent = null;
   #filmsComponent = new FilmsView();
   #filmsListComponent = new FilmsListView();
   #filmsListContainerComponent = new FilmsListContainerView();
@@ -234,7 +235,9 @@ export default class FilmsPresenter {
       case UserAction.DELETE_COMMENT:
         this.#filmDetailsPresenter.setDeleting(update.film.comments[update.index]);
         try {
-          await this.#commentsModel.deleteComment(updateType, update);
+          await this.#commentsModel.deleteComment(updateType, update).finally(() => {
+            this.#filmsModel.init();
+          });
         } catch (err) {
           this.#filmDetailsPresenter.setAbortingDeleteComment();
         }
@@ -242,7 +245,9 @@ export default class FilmsPresenter {
       case UserAction.ADD_COMMENT:
         this.#filmDetailsPresenter.setSubmitting();
         try {
-          await this.#commentsModel.addComment(updateType, update);
+          await this.#commentsModel.addComment(updateType, update).finally(() => {
+            this.#filmsModel.init();
+          });
         } catch (err) {
           this.#filmDetailsPresenter.setAbortingAddComment();
         }
@@ -255,7 +260,9 @@ export default class FilmsPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
+        if (this.#filmCardPresenter.get(data.id)) {
+          this.#filmCardPresenter.get(data.id).init(data, this.#filmsContainer);
+        }
 
         if (this.#filmCardTopRatedPresenter.get(data.id)) {
           this.#filmCardTopRatedPresenter.get(data.id).init(data, this.#filmsContainer);
@@ -276,13 +283,38 @@ export default class FilmsPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        this.#clearFilms();
         this.#renderFilms();
         break;
     }
   };
 
   #renderHeaderProfile = () => {
-    render(this.#headerProfileComponent, siteHeaderElement);
+    const alreadyWatchedFilmsCount = this.#filmsModel.films.filter(
+      (film) => film.userDetails.alreadyWatched,
+    ).length;
+    let rank = Rank.WITHOUT_RANK;
+
+    if (alreadyWatchedFilmsCount >= 1 && alreadyWatchedFilmsCount <= 10) {
+      rank = Rank.NOVICE;
+    }
+
+    if (alreadyWatchedFilmsCount >= 11 && alreadyWatchedFilmsCount <= 20) {
+      rank = Rank.FAN;
+    }
+    if (alreadyWatchedFilmsCount >= 21) {
+      rank = Rank.MOVIE_BUFF;
+    }
+
+    const prevHeaderProfileComponent = this.#headerProfileComponent;
+    this.#headerProfileComponent = new HeaderProfileView(rank);
+
+    if (prevHeaderProfileComponent === null) {
+      render(this.#headerProfileComponent, siteHeaderElement);
+    } else {
+      replace(this.#headerProfileComponent, prevHeaderProfileComponent);
+      remove(prevHeaderProfileComponent);
+    }
   };
 
   #renderFilmsListTopRated = () => {
@@ -322,11 +354,10 @@ export default class FilmsPresenter {
 
     if (prevFooterStatisticsComponent === null) {
       render(this.#footerStatisticsComponent, footerStatisticsElement);
-      return;
+    } else {
+      replace(this.#footerStatisticsComponent, prevFooterStatisticsComponent);
+      remove(prevFooterStatisticsComponent);
     }
-
-    replace(this.#footerStatisticsComponent, prevFooterStatisticsComponent);
-    remove(prevFooterStatisticsComponent);
   };
 
   #renderLoading = () => {

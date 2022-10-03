@@ -90,6 +90,13 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+const Rank = {
+  WITHOUT_RANK: '',
+  NOVICE: 'novice',
+  FAN: 'fan',
+  MOVIE_BUFF: 'movie buff',
+};
+
 export {
   FILM_COUNT_PER_STEP,
   MOST_COMMENTED_FILM_COUNT,
@@ -107,4 +114,5 @@ export {
   AUTHORIZATION,
   END_POINT,
   TimeLimit,
+  Rank,
 };
