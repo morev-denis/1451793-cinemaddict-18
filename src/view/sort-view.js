@@ -1,13 +1,13 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { SortType, Classes } from '../constants.js';
+import { SortType, Class } from '../constants.js';
 
 const createSortTemplate = (currentSortType) => {
   const sortByDefaultClassName =
-    currentSortType === SortType.DEFAULT ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+    currentSortType === SortType.DEFAULT ? Class.SORT_BUTTON_ACTIVE_CLASS : '';
   const sortByDateClassName =
-    currentSortType === SortType.DATE ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+    currentSortType === SortType.DATE ? Class.SORT_BUTTON_ACTIVE_CLASS : '';
   const sortByRatingClassName =
-    currentSortType === SortType.RATING ? Classes.SORT_BUTTON_ACTIVE_CLASS : '';
+    currentSortType === SortType.RATING ? Class.SORT_BUTTON_ACTIVE_CLASS : '';
 
   return `
     <ul class="sort">
@@ -17,7 +17,7 @@ const createSortTemplate = (currentSortType) => {
     </ul>`;
 };
 
-export default class ShowMoreButtonView extends AbstractView {
+export default class SortView extends AbstractView {
   #currentSortType = SortType.DEFAULT;
 
   constructor(currentSortType) {

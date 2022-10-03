@@ -7,7 +7,7 @@ const DescriptionLength = {
   MAX: 140,
 };
 
-const Classes = {
+const Class = {
   VISUALLY_HIDDEN_CLASS: 'visually-hidden',
   HIDE_OVERFLOW_CLASS: 'hide-overflow',
   CONTROL_BUTTON_ACTIVE_CLASS: 'film-card__controls-item--active',
@@ -16,7 +16,7 @@ const Classes = {
   MAIN_NAVIGATION_ACTIVE_CLASS: 'main-navigation__item--active',
 };
 
-const Selectors = {
+const Selector = {
   FILM_CARD_LINK_SELECTOR: '.film-card__link',
   FOOTER_STATISTICS: '.footer__statistics',
   FILM_DETAILS_CLOSE_BTN: '.film-details__close-btn',
@@ -124,8 +124,8 @@ export {
   FILM_COUNT_PER_STEP,
   MOST_COMMENTED_FILM_COUNT,
   TOP_RATED_FILM_COUNT,
-  Classes,
-  Selectors,
+  Class,
+  Selector,
   DescriptionLength,
   FilmsListTitleText,
   FilterType,

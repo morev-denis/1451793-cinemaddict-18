@@ -1,5 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { Selectors } from '../constants.js';
+import { Selector } from '../constants.js';
 
 const createFilmDetailsNewCommentTemplate = (data) => {
   const { isSubmitting, selectedEmoji } = data;
@@ -73,7 +73,7 @@ export default class FilmDetailsNewCommentView extends AbstractStatefulView {
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element
-      .querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT)
+      .querySelector(Selector.FILM_DETAILS_COMMENT_INPUT)
       .addEventListener('keydown', this.#formSubmitHandler);
   };
 
@@ -98,7 +98,7 @@ export default class FilmDetailsNewCommentView extends AbstractStatefulView {
       const inputValue = input.value;
 
       this.updateElement({ selectedEmoji: inputValue });
-      this.element.querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT).value =
+      this.element.querySelector(Selector.FILM_DETAILS_COMMENT_INPUT).value =
         this._state.currentComment;
       this.element.scrollTop = this._state.scrollTop;
     }
@@ -111,11 +111,11 @@ export default class FilmDetailsNewCommentView extends AbstractStatefulView {
 
   #setInnerHandlers = () => {
     this.element
-      .querySelector(Selectors.FILM_DETAILS_EMOJI_LIST)
+      .querySelector(Selector.FILM_DETAILS_EMOJI_LIST)
       .addEventListener('click', this.#emojiClickHandler);
 
     this.element
-      .querySelector(Selectors.FILM_DETAILS_COMMENT_INPUT)
+      .querySelector(Selector.FILM_DETAILS_COMMENT_INPUT)
       .addEventListener('input', this.#inputHandler);
   };
 

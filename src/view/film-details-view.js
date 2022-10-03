@@ -1,4 +1,4 @@
-import { Selectors } from '../constants.js';
+import { Selector } from '../constants.js';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
@@ -18,7 +18,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
   setCloseButtonClickHandler = (callback) => {
     this._callback.closeButtonClick = callback;
     this.element
-      .querySelector(Selectors.FILM_DETAILS_CLOSE_BTN)
+      .querySelector(Selector.FILM_DETAILS_CLOSE_BTN)
       .addEventListener('click', this.#clickCloseButtonHandler);
   };
 

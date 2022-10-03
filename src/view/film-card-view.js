@@ -1,4 +1,4 @@
-import { Selectors } from '../constants.js';
+import { Selector } from '../constants.js';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
@@ -17,7 +17,7 @@ export default class FilmCardView extends AbstractStatefulView {
   setClickHandler = (callback) => {
     this._callback.click = callback;
     this.element
-      .querySelector(Selectors.FILM_CARD_LINK_SELECTOR)
+      .querySelector(Selector.FILM_CARD_LINK_SELECTOR)
       .addEventListener('click', this.#clickHandler);
   };
 
@@ -29,7 +29,7 @@ export default class FilmCardView extends AbstractStatefulView {
   setWatchlistClickHandler = (callback) => {
     this._callback.watchlistClick = callback;
     this.element
-      .querySelector(Selectors.ADD_TO_WATCHLIST_BTN)
+      .querySelector(Selector.ADD_TO_WATCHLIST_BTN)
       .addEventListener('click', this.#watchlistClickHandler);
   };
 
@@ -41,7 +41,7 @@ export default class FilmCardView extends AbstractStatefulView {
   setAlreadyWatchedClickHandler = (callback) => {
     this._callback.alreadyWatchedClick = callback;
     this.element
-      .querySelector(Selectors.MARK_AS_WATCHED_BTN)
+      .querySelector(Selector.MARK_AS_WATCHED_BTN)
       .addEventListener('click', this.#alreadyWatchedClickHandler);
   };
 
@@ -53,7 +53,7 @@ export default class FilmCardView extends AbstractStatefulView {
   setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element
-      .querySelector(Selectors.ADD_TO_FAVORITE_BTN)
+      .querySelector(Selector.ADD_TO_FAVORITE_BTN)
       .addEventListener('click', this.#favoriteClickHandler);
   };
 

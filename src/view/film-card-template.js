@@ -1,5 +1,5 @@
 import { formatISOStringToYear, formatMinutesToTime } from '../utils/film.js';
-import { DescriptionLength, Classes } from '../constants.js';
+import { DescriptionLength, Class } from '../constants.js';
 
 export const createFilmCardTemplate = (data) => {
   const {
@@ -17,9 +17,9 @@ export const createFilmCardTemplate = (data) => {
     userDetails: { watchlist, alreadyWatched, favorite },
   } = data;
 
-  const watchlistClassName = watchlist ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const watchedClassName = alreadyWatched ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const favoriteClassName = favorite ? Classes.CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const watchlistClassName = watchlist ? Class.CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const watchedClassName = alreadyWatched ? Class.CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const favoriteClassName = favorite ? Class.CONTROL_BUTTON_ACTIVE_CLASS : '';
 
   return `
     <article class="film-card">

@@ -1,5 +1,4 @@
-
-import { Selectors } from '../constants.js';
+import { Selector } from '../constants.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import he from 'he';
 import { formatISOStringToRelativeTime } from '../utils/film.js';
@@ -10,8 +9,8 @@ const createFilmDetailsCommentsListTemplate = (data) => {
   const createFilmCommentsTemplate = () => {
     let filmCommentsTemplate = '';
 
-    const createFilmDetailsCommentTemplate = (commentObj) => {
-      const { author, comment, date, emotion } = commentObj;
+    const createFilmDetailsCommentTemplate = (filmComment) => {
+      const { author, comment, date, emotion } = filmComment;
 
       return `
         <li class="film-details__comment">
@@ -24,15 +23,15 @@ const createFilmDetailsCommentsListTemplate = (data) => {
               <span class="film-details__comment-author">${author}</span>
               <span class="film-details__comment-day">${formatISOStringToRelativeTime(date)}</span>
               <button class="film-details__comment-delete" ${isDeleting ? 'disabled' : ''}>
-                ${isDeleting && commentObj.id === commentIdForDelete ? 'Deleting...' : 'Delete'}
+                ${isDeleting && filmComment.id === commentIdForDelete ? 'Deleting...' : 'Delete'}
               </button>
             </p>
           </div>
         </li>`;
     };
 
-    for (let i = 0; i < filmComments.length; i++) {
-      filmCommentsTemplate += createFilmDetailsCommentTemplate(filmComments[i]);
+    for (const comment of filmComments) {
+      filmCommentsTemplate += createFilmDetailsCommentTemplate(comment);
     }
 
     return filmCommentsTemplate;
@@ -56,7 +55,7 @@ export default class FilmDetailsCommentsListView extends AbstractStatefulView {
 
   setDeleteClickHandler = (callback) => {
     this._callback.deleteClick = callback;
-    const deleteElements = this.element.querySelectorAll(Selectors.FILM_DETAILS_COMMENT_DELETE);
+    const deleteElements = this.element.querySelectorAll(Selector.FILM_DETAILS_COMMENT_DELETE);
     deleteElements.forEach((elem, index) =>
       elem.addEventListener('click', (evt) => this.#commentDeleteClickHandler(evt, index)),
     );
@@ -64,7 +63,10 @@ export default class FilmDetailsCommentsListView extends AbstractStatefulView {
 
   #commentDeleteClickHandler = (evt, index) => {
     evt.preventDefault();
-    this._callback.deleteClick({ film: FilmDetailsCommentsListView.parseStateToFilm(this._state), index });
+    this._callback.deleteClick({
+      film: FilmDetailsCommentsListView.parseStateToFilm(this._state),
+      index,
+    });
   };
 
   _restoreHandlers = () => {

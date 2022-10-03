@@ -1,5 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { Classes, Selectors } from '../constants.js';
+import { Class, Selector } from '../constants.js';
 
 const createFilmDetailsControlsTemplate = (data) => {
   const {
@@ -7,9 +7,9 @@ const createFilmDetailsControlsTemplate = (data) => {
     userDetails: { watchlist, alreadyWatched, favorite },
   } = data;
 
-  const popupWatchlistClassName = watchlist ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const popupWatchedClassName = alreadyWatched ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
-  const popupFavoriteClassName = favorite ? Classes.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const popupWatchlistClassName = watchlist ? Class.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const popupWatchedClassName = alreadyWatched ? Class.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
+  const popupFavoriteClassName = favorite ? Class.POPUP_CONTROL_BUTTON_ACTIVE_CLASS : '';
 
   return `
     <section class="film-details__controls">
@@ -38,7 +38,7 @@ export default class FilmDetailsControlsView extends AbstractStatefulView {
   setWatchlistClickHandler = (callback) => {
     this._callback.watchlistClick = callback;
     this.element
-      .querySelector(Selectors.POPUP_ADD_TO_WATCHLIST_BTN)
+      .querySelector(Selector.POPUP_ADD_TO_WATCHLIST_BTN)
       .addEventListener('click', this.#watchlistClickHandler);
   };
 
@@ -50,7 +50,7 @@ export default class FilmDetailsControlsView extends AbstractStatefulView {
   setAlreadyWatchedClickHandler = (callback) => {
     this._callback.alreadyWatchedClick = callback;
     this.element
-      .querySelector(Selectors.POPUP_MARK_AS_WATCHED_BTN)
+      .querySelector(Selector.POPUP_MARK_AS_WATCHED_BTN)
       .addEventListener('click', this.#alreadyWatchedClickHandler);
   };
 
@@ -62,7 +62,7 @@ export default class FilmDetailsControlsView extends AbstractStatefulView {
   setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element
-      .querySelector(Selectors.POPUP_ADD_TO_FAVORITE_BTN)
+      .querySelector(Selector.POPUP_ADD_TO_FAVORITE_BTN)
       .addEventListener('click', this.#favoriteClickHandler);
   };
 

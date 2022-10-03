@@ -22,8 +22,8 @@ export const createFilmDetailsTemplate = (data) => {
   const createGenresListTemplate = (genresList) => {
     let genresListTemplate = '';
 
-    for (let i = 0; i < genresList.length; i++) {
-      genresListTemplate += `<span class="film-details__genre">${genresList[i]}</span>`;
+    for (const genreOfList of genresList) {
+      genresListTemplate += `<span class="film-details__genre">${genreOfList}</span>`;
     }
 
     return genresListTemplate;

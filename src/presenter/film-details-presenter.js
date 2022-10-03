@@ -1,4 +1,4 @@
-import { Classes, Selectors, UserAction, UpdateType, Mode } from '../constants.js';
+import { Class, Selector, UserAction, UpdateType, Mode } from '../constants.js';
 
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 
@@ -11,11 +11,11 @@ const bodyElement = document.querySelector('body');
 const siteFooterElement = document.querySelector('.footer');
 
 const hideOverflow = () => {
-  bodyElement.classList.add(Classes.HIDE_OVERFLOW_CLASS);
+  bodyElement.classList.add(Class.HIDE_OVERFLOW_CLASS);
 };
 
 const showOverflow = () => {
-  bodyElement.classList.remove(Classes.HIDE_OVERFLOW_CLASS);
+  bodyElement.classList.remove(Class.HIDE_OVERFLOW_CLASS);
 };
 
 export default class FilmDetailsPresenter {
@@ -62,7 +62,7 @@ export default class FilmDetailsPresenter {
     this.#filmDetailsCommentsListComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     this.#filmDetailsNewCommentComponent.setFormSubmitHandler(this.#handleFormSubmit);
-    document.addEventListener('keydown', this.#onEscKeyDown);
+    document.addEventListener('keydown', this.#handleEscKeyDown);
 
     if (prevFilmDetailsComponent === null || this.mode === Mode.DEFAULT) {
       this.#renderFilmDetails();
@@ -160,11 +160,11 @@ export default class FilmDetailsPresenter {
     });
   };
 
-  #onEscKeyDown = (evt) => {
+  #handleEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       remove(this.#filmDetailsComponent);
-      document.removeEventListener('keydown', this.#onEscKeyDown);
+      document.removeEventListener('keydown', this.#handleEscKeyDown);
       showOverflow();
       this.mode = Mode.DEFAULT;
     }
@@ -173,22 +173,22 @@ export default class FilmDetailsPresenter {
   #handleFilmDetailsCloseBtnClick = () => {
     remove(this.#filmDetailsComponent);
     showOverflow();
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
     this.mode = Mode.DEFAULT;
   };
 
   #renderFilmDetailsControls = () => {
-    const filmDetailsInfo = document.querySelector(Selectors.FILM_DETAILS_INFO_WRAP);
+    const filmDetailsInfo = document.querySelector(Selector.FILM_DETAILS_INFO_WRAP);
     render(this.#filmDetailsControlsComponent, filmDetailsInfo, RenderPosition.AFTEREND);
   };
 
   #renderFilmDetailsNewComment = () => {
-    const filmDetailsCommentsWrap = document.querySelector(Selectors.FILM_DETAILS_COMMENTS_WRAP);
+    const filmDetailsCommentsWrap = document.querySelector(Selector.FILM_DETAILS_COMMENTS_WRAP);
     render(this.#filmDetailsNewCommentComponent, filmDetailsCommentsWrap);
   };
 
   #renderFilmDetailsCommentsList = () => {
-    const filmDetailsCommentsTitle = document.querySelector(Selectors.FILM_DETAILS_COMMENTS_TITLE);
+    const filmDetailsCommentsTitle = document.querySelector(Selector.FILM_DETAILS_COMMENTS_TITLE);
     render(
       this.#filmDetailsCommentsListComponent,
       filmDetailsCommentsTitle,

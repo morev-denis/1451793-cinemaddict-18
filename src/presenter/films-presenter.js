@@ -2,10 +2,10 @@ import {
   FILM_COUNT_PER_STEP,
   MOST_COMMENTED_FILM_COUNT,
   TOP_RATED_FILM_COUNT,
-  Classes,
+  Class,
   FilterType,
   SortType,
-  Selectors,
+  Selector,
   UpdateType,
   UserAction,
   TimeLimit,
@@ -38,7 +38,7 @@ import FilterPresenter from './filter-presenter.js';
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
-const footerStatisticsElement = siteFooterElement.querySelector(Selectors.FOOTER_STATISTICS);
+const footerStatisticsElement = siteFooterElement.querySelector(Selector.FOOTER_STATISTICS);
 
 export default class FilmsPresenter {
   #headerProfileComponent = null;
@@ -389,7 +389,7 @@ export default class FilmsPresenter {
 
     if (filmCount !== 0 && this.#filterType === FilterType.ALL) {
       this.#renderSort();
-      this.#renderFilmsListTitle(this.#filmsListComponent.element, Classes.VISUALLY_HIDDEN_CLASS);
+      this.#renderFilmsListTitle(this.#filmsListComponent.element, Class.VISUALLY_HIDDEN_CLASS);
     } else {
       remove(this.#filmsListTitleComponent);
       if (filmCount === 0) {
